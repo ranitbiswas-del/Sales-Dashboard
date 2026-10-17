@@ -597,7 +597,7 @@ var CONFIG = {
     var b=$('banner');
     if(mode==='loading'){b.className='banner';b.innerHTML='Loading data…'}
     else if(mode==='demo'){b.className='banner demo';b.innerHTML='<b>Sample data.</b><span>Built from your screenshot totals. Paste your Apps Script link into CONFIG.API_URL at the top of the script to show your own sheet.</span>'}
-    else if(mode==='live'){b.className='banner ok';b.innerHTML='<b>Live from Google Sheet</b><span class="num">'+esc(data.length)+' rows · updated '+esc(updated)+'</span>'+(limited?'<span>Your view is limited to the HOD, AM, TL, FOS, Type and Status values you were given.</span>':'')}
+    else if(mode==='live'){b.className='banner ok';b.innerHTML='<b>Live from Google Sheet</b><span class="num">'+esc(data.length)+' rows · updated '+esc(updated)+'</span>'+(limited?'<span></span>':'')}
     else{b.className='banner err';b.innerHTML='<b>Could not load the sheet.</b><span>'+esc(errMsg)+' Check the link, the deployment access ("Anyone") and the sheet tab name.</span>'}
   }
 
