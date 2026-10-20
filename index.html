@@ -25,7 +25,7 @@
   --accent:#5EEAD4; --accent-2:#8B9BFF; --track:rgba(255,255,255,.12);
   --sel-bg:rgba(94,234,212,.12); --sel-line:rgba(94,234,212,.55);
   --c-confirmed:#5EEAD4; --c-cancelled:#FB7185; --c-resale:#FCD34D; --c-notconf:#C4B5FD; --c-other:#94A3B8; --c-dup:#FDBA74;
-  --warn:#FCD34D; --bad:#FB7185;
+  --warn:#FCD34D; --bad:#FB7185; --on-accent:#04201C;
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
@@ -41,7 +41,7 @@
     --accent:#08796E; --accent-2:#4553D6; --track:rgba(16,23,51,.12);
     --sel-bg:rgba(8,121,110,.10); --sel-line:rgba(8,121,110,.6);
     --c-confirmed:#0E9F8F; --c-cancelled:#D93A56; --c-resale:#B7791F; --c-notconf:#7C5CE0; --c-other:#64748B; --c-dup:#C2410C;
-    --warn:#8A5A00; --bad:#B4233F;
+    --warn:#8A5A00; --bad:#B4233F; --on-accent:#FFFFFF;
   }
 }
 :root[data-theme="light"]{
@@ -57,7 +57,7 @@
   --accent:#08796E; --accent-2:#4553D6; --track:rgba(16,23,51,.12);
   --sel-bg:rgba(8,121,110,.10); --sel-line:rgba(8,121,110,.6);
   --c-confirmed:#0E9F8F; --c-cancelled:#D93A56; --c-resale:#B7791F; --c-notconf:#7C5CE0; --c-other:#64748B; --c-dup:#C2410C;
-  --warn:#8A5A00; --bad:#B4233F;
+  --warn:#8A5A00; --bad:#B4233F; --on-accent:#FFFFFF;
 }
 :root[data-theme="dark"]{color-scheme:dark}
 
@@ -89,9 +89,9 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;letter-spaci
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:600;font-size:15px;white-space:nowrap}
 .brand i{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
 .links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
-.links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;padding:9px 14px;border-radius:999px;min-height:40px;display:inline-flex;align-items:center}
+.links a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;padding:9px 14px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center}
 .links a:hover{color:var(--fg);background:var(--row)}
-.btn{border:1px solid var(--line);background:var(--row);color:var(--fg);font:inherit;font-weight:600;font-size:13px;padding:0 14px;min-height:40px;border-radius:999px;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--row);color:var(--fg);font:inherit;font-weight:600;font-size:13px;padding:0 14px;min-height:44px;border-radius:999px;cursor:pointer;transition:border-color .15s,background .15s}
 .btn:hover{border-color:var(--line-strong)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
@@ -111,19 +111,23 @@ h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;letter-spaci
 .filters .head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
 .filters .head span{font-family:var(--font-display);font-weight:600;font-size:15px}
 .fgrid{display:grid;grid-template-columns:1fr;gap:14px}
+.ftoggle{display:inline-flex;align-items:center;gap:10px;background:none;border:0;color:var(--fg);font-family:var(--font-display);font-weight:600;font-size:15px;padding:0;min-height:44px;cursor:default}
+.ftoggle .chev{display:none;transition:transform .2s}
+.badge{min-width:22px;height:22px;padding:0 7px;border-radius:99px;background:var(--accent);color:var(--on-accent);font:700 12px/22px var(--font-body);text-align:center}
+.filters .head{margin-bottom:6px}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:28px;align-items:start}
 .main{display:flex;flex-direction:column;gap:36px;min-width:0}
 .side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px);max-height:calc(100vh - 104px);overflow-y:auto}
-@media (max-width:980px){.layout{grid-template-columns:1fr}.side{position:static;max-height:none;order:-1}.fgrid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
+@media (max-width:980px){.ftoggle{cursor:pointer}.ftoggle .chev{display:block}.ftoggle[aria-expanded="false"] .chev{transform:rotate(-90deg)}#fbody[hidden]{display:none}.layout{grid-template-columns:1fr}.side{position:static;max-height:none;order:-1}.fgrid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
 .f{display:flex;flex-direction:column;gap:6px;min-width:0}
-.f label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.f label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
 select,.f input,.field input{height:44px;padding:0 12px;border-radius:14px;border:1px solid var(--line-strong);background:var(--field);color:var(--fg);font:inherit;font-size:14px;width:100%;min-width:0}
 select:disabled{opacity:.55}
 select.active{border-color:var(--accent)}
 
 .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;perspective:1000px}
 .kpi{border-radius:22px;padding:16px 18px;min-width:0;transition:transform .25s ease-out}
-.kpi .label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.kpi .label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
 .kpi .big{font-family:var(--font-display);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-top:8px;font-size:clamp(20px,2.2vw,26px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kpi .sub{margin-top:6px;color:var(--muted);font-size:12px}
 
@@ -142,7 +146,7 @@ section{scroll-margin-top:90px;display:flex;flex-direction:column;gap:20px}
 .prow{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:18px;border:1px solid transparent;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;min-height:56px;transition:background .2s}
 .prow:hover{background:var(--row)}
 .prow .ck{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--faint);flex:none;display:grid;place-items:center;font-size:12px;line-height:1;color:transparent}
-.prow[aria-pressed="true"] .ck{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:#fff}
+.prow[aria-pressed="true"] .ck{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:var(--on-accent)}
 .sel-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:0 6px 10px;font-size:13px}
 .prow[aria-pressed="true"]{background:var(--sel-bg);border-color:var(--sel-line)}
 .prow .rk{width:24px;font-size:12px;color:var(--faint);flex:none}
@@ -162,7 +166,7 @@ section{scroll-margin-top:90px;display:flex;flex-direction:column;gap:20px}
 .ring{flex:none;max-width:100%}
 .ring text{fill:var(--fg)}
 .ring .rn{font-family:var(--font-display);font-weight:700;font-size:34px}
-.ring .rl{font-size:11px;fill:var(--muted)}
+.ring .rl{font-size:12px;fill:var(--muted)}
 .legend{flex:1 1 190px;min-width:0;display:flex;flex-direction:column;gap:10px}
 .lg{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;background:var(--row);border:1px solid var(--line)}
 .lg .dot{width:12px;height:12px;border-radius:50%;flex:none}
@@ -181,15 +185,17 @@ section{scroll-margin-top:90px;display:flex;flex-direction:column;gap:20px}
 .field input::placeholder{color:var(--faint)}
 .scrollx{overflow-x:auto}
 .tbl{min-width:1300px;display:flex;flex-direction:column;gap:8px}
-.tr{display:grid;grid-template-columns:104px minmax(180px,1.6fr) 84px 110px 124px 90px 120px 130px 110px 110px;}
-.tbl.nocr .tr{grid-template-columns:104px minmax(180px,1.6fr) 84px 110px 124px 90px 120px 130px 110px;gap:12px;align-items:center;padding:14px 16px;border-radius:18px;background:var(--row);border:1px solid var(--line);font-size:14px}
-.tr.th{background:transparent;border-color:transparent;padding-block:6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.tr{display:grid;gap:12px;align-items:center;padding:12px 16px;min-height:48px;border-radius:16px;background:var(--row);border:1px solid var(--line);font-size:14px}
+.tr:not(.th):hover{border-color:var(--line-strong)}
+.tr.th{position:sticky;top:0;z-index:1;min-height:0;background:transparent;border-color:transparent;padding-block:6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)}
 .tr .nmx{font-weight:600;overflow-wrap:anywhere}
 .tr .r{text-align:right}
 .pill{justify-self:start;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--pc);background:color-mix(in srgb,var(--pc) 16%,transparent);border:1px solid color-mix(in srgb,var(--pc) 48%,transparent)}
 footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 
 [hidden]{display:none!important}
+.skip{position:absolute;left:12px;top:-60px;z-index:50;background:var(--accent);color:var(--on-accent);padding:12px 18px;border-radius:12px;font-weight:700;text-decoration:none}
+.skip:focus{top:12px}
 #app{display:flex;flex-direction:column;gap:36px}
 .navapp{display:flex;gap:4px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
 .who{font-size:12px;color:var(--muted);padding-inline:6px;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -201,7 +207,7 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 .login .f input{height:50px;padding:0 16px;border-radius:16px}
 .pw{display:flex;gap:8px;align-items:center}
 .pw input{flex:1}
-.go{min-height:52px;border-radius:16px;border:0;background:var(--accent);color:var(--bg);font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.go{min-height:52px;border-radius:16px;border:0;background:var(--accent);color:var(--on-accent);font:inherit;font-weight:700;font-size:15px;cursor:pointer}
 .go:disabled{opacity:.6;cursor:wait}
 .msg{min-height:20px;font-size:13px;color:var(--bad)}
 
@@ -231,15 +237,15 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 .dim{border:1px solid var(--line);border-radius:22px;padding:14px 16px 16px;margin:0;min-width:0;background:var(--row)}
 .dim legend{font-family:var(--font-display);font-weight:600;padding:0 8px}
 .seg{display:flex;flex-wrap:wrap;gap:8px}
-.seg label{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;min-height:40px;border-radius:999px;border:1px solid var(--line);background:var(--field);cursor:pointer;font-size:14px}
+.seg label{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;min-height:44px;border-radius:999px;border:1px solid var(--line);background:var(--field);cursor:pointer;font-size:14px}
 .seg input{accent-color:var(--accent)}
 .pick{margin-top:12px;display:flex;flex-direction:column;gap:10px}
 .ps{height:42px;padding:0 14px;border-radius:14px;border:1px solid var(--line-strong);background:var(--field);color:var(--fg);font:inherit;font-size:14px;width:100%}
 .pb{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.btn.sm{min-height:36px;font-size:12px;padding:0 12px}
+.btn.sm{min-height:44px;font-size:12px;padding:0 12px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.danger{border-color:var(--bad);color:var(--bad)}
-.cnt{margin-left:auto;font-size:12px;color:var(--muted)}
+.pcount{margin-left:auto;font-size:12px;color:var(--muted)}
 .plist{max-height:230px;overflow:auto;border:1px solid var(--line);border-radius:16px;background:var(--field);padding:6px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:2px}
 .opt{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:13px;min-width:0}
 .opt:hover{background:var(--row)}
@@ -250,7 +256,7 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 .go.sm{min-height:48px;padding:0 28px}
 
 @media (max-width:560px){
-  .nav{border-radius:28px;padding:10px 12px}
+  .nav{border-radius:28px;padding:10px 12px;position:static}
   .brand span{display:none}
   .panel{padding:20px;border-radius:28px}
   .kpi{padding:14px 16px}
@@ -259,17 +265,68 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
 .tabs{display:flex;gap:8px;flex-wrap:wrap}
-.tabs .btn[aria-pressed="true"]{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent}
+.tabs .btn[aria-pressed="true"]{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);border-color:transparent}
 .tm{padding:18px;display:flex;flex-direction:column;gap:14px;overflow-x:auto}
 .tm-head,.tm-row{display:grid;gap:14px;align-items:center;padding:12px 14px}
 .tm-total{font-weight:700;border-top:1px solid var(--track);border-radius:0}
-.tm-head{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.tm-head{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
 .tm-row{border-radius:16px}.tm-row:hover{background:var(--row)}
 .tm-head .r,.tm-row .r{text-align:right}
 @media (max-width:700px){.tm-head,.tm-row{gap:8px;padding:10px 8px}}
-.cnt{background:none;border:0;font:inherit;font-weight:700;color:var(--accent);padding:4px 10px;border-radius:8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.cnt{background:none;border:0;font:inherit;font-weight:700;color:var(--accent);min-height:44px;min-width:44px;padding:4px 10px;border-radius:10px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .cnt:hover{background:var(--row)}
 .cnt:disabled{color:var(--faint);cursor:default;text-decoration:none;background:none}
+
+/* employees page */
+.etools{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:16px}
+.etools .field{flex:1 1 260px}
+.etools .f{flex:0 1 180px}
+.etools .grow{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.chk{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:14px;cursor:pointer}
+.chk input{width:20px;height:20px;accent-color:var(--accent)}
+.tree,.tree ul{list-style:none;margin:0;padding:0}
+.tree ul{margin-left:20px;padding-left:12px;border-left:1px solid var(--line-strong)}
+.tn>details>summary,.tn>.leaf{display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 12px;border-radius:14px;list-style:none}
+.tn>details>summary{cursor:pointer}
+.tn>details>summary::-webkit-details-marker{display:none}
+.tn>details>summary:hover{background:var(--row)}
+.tn .chev2{flex:none;transition:transform .2s;color:var(--muted)}
+.tn details[open]>summary .chev2{transform:rotate(90deg)}
+.tn .sp{width:16px;flex:none}
+.tnm{font-weight:600;overflow-wrap:anywhere}
+.tmeta{color:var(--muted);font-size:12px}
+.tcount{margin-left:auto;color:var(--muted);font-size:12px;white-space:nowrap;padding-left:10px}
+.tn.ext .tnm{font-style:italic;color:var(--muted)}
+.tn.gone .tnm{color:var(--muted)}
+.home{position:relative;height:calc(100vh - 150px);min-height:460px;border-radius:36px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(180deg,transparent,var(--glass-2))}
+.home canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.navapp .btn[aria-pressed="true"]{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);border-color:transparent}
+.pg{margin-top:16px;border:1px solid var(--line);border-radius:24px;background:var(--glass-2)}
+.pg>summary{cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;font-family:var(--font-display);font-weight:600;font-size:17px;list-style:none}
+.pg>summary::-webkit-details-marker{display:none}
+.pg>summary::after{content:"+";order:3;font-size:20px;line-height:1;color:var(--muted)}
+.pg[open]>summary::after{content:"\2212"}
+.pg[open]>summary{border-bottom:1px solid var(--line)}
+.pg>summary .pgc{margin-left:auto;font:500 12px var(--font-body,inherit);color:var(--muted)}
+.pgb{padding:4px 18px 18px}
+.rq{color:var(--bad)}
+.fh{display:block;margin:2px 0 4px;font-size:12px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--faint)}
+.fe{min-height:0;font-size:12px;color:var(--bad)}
+.f textarea{width:100%;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit;resize:vertical}
+.oth{margin-top:8px}
+.dsrf{justify-content:flex-end}
+.dsrf .seg label{text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:600;color:var(--ink);min-height:0;padding:7px 14px}
+.btn.danger{border-color:var(--bad);color:var(--bad)}
+.dsr-kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px 26px;margin-top:22px}
+.dsr-kv small{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.dsr-kv span{overflow-wrap:anywhere}
+.stages{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.stages li{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:16px;background:var(--row);border:1px solid var(--line)}
+.stages small{display:block;color:var(--muted)}
+.dsr-act{margin-top:18px;padding:16px;border-radius:18px;border:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.dsr-head{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.dsr-head .btn{margin-left:auto}
+.dsrrow{cursor:pointer}.dsrrow:hover{border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -277,20 +334,20 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 <div class="orb o2" aria-hidden="true"></div>
 <div class="orb o3" aria-hidden="true"></div>
 
+<a class="skip" href="#overview">Skip to report</a>
 <div class="wrap">
   <nav class="nav glass" aria-label="Page sections">
     <div class="brand"><i aria-hidden="true"></i><span>Booking Status Board</span></div>
     <div class="links">
       <span class="navapp" id="navApp" hidden>
         <span class="navapp" id="navLinks">
-          <a href="#overview">Overview</a>
-          <a href="#projects">Projects</a>
-          <a href="#bookings">Bookings</a>
-          <a href="#team" hidden>Team report</a>
-          <button class="btn" id="refreshBtn" type="button">Refresh</button>
+          <button class="btn" type="button" data-v="home" aria-pressed="true">Home</button>
+          <button class="btn" type="button" data-v="report" aria-pressed="false">Sales</button>
+          <button class="btn" type="button" data-v="emp" aria-pressed="false" hidden>Employees</button>
+          <button class="btn" type="button" data-v="dsr" aria-pressed="false" hidden>DSR</button>
+          <button class="btn" type="button" data-v="admin" aria-pressed="false" hidden>Admin</button>
         </span>
-        <button class="btn" id="adminBtn" type="button" hidden>Admin</button>
-        <button class="btn" id="reportBtn" type="button" hidden>Report</button>
+        <button class="btn" id="refreshBtn" type="button">Refresh</button>
         <span class="who" id="who"></span>
         <button class="btn" id="signoutBtn" type="button">Sign out</button>
       </span>
@@ -314,8 +371,11 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
     </div>
   </section>
 
+  <section class="home" id="home" hidden><canvas id="homeCv" role="img" aria-label="A city skyline being built floor by floor under cranes, over a moving data network"></canvas></section>
+
   <div id="app" hidden>
   <div id="banner" class="banner" role="status">Loading data…</div>
+  <div class="tabs" id="salesTabs"></div>
 
   <div class="layout"><div class="main">
   <header class="hero" id="overview">
@@ -370,7 +430,7 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
           <input id="q" type="text" placeholder="For example Gupta, BS-324, Confirmed or a request no" autocomplete="off">
         </div>
       </div>
-      <div class="scrollx"><div class="tbl" id="tbl"></div></div>
+      <div class="scrollx" tabindex="0" role="region" aria-label="Bookings table, scrolls sideways"><div class="tbl" id="tbl" role="table" aria-label="Bookings"></div></div>
     </div>
   </section>
 
@@ -392,16 +452,59 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
       <p id="bkSub"></p>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="bkBack" type="button">← Back to team report</button><button class="btn" id="bkXls" type="button">Download Excel</button></div>
-    <div class="panel glass tm"><div class="scrollx"><div class="tbl" id="bkTbl"></div></div></div>
+    <div class="panel glass tm"><div class="scrollx"><div class="tbl" id="bkTbl" role="table" aria-label="Booking details"></div></div></div>
   </section>
   <footer id="foot"></footer>
   </div>
   <aside class="side filters glass" aria-label="Filters">
-    <div class="head"><span>Filters</span><button class="btn" id="resetBtn" type="button">Reset</button></div>
-    <div class="fgrid" id="fgrid"></div>
+    <div class="head"><button class="ftoggle" id="fToggle" type="button" aria-expanded="true" aria-controls="fbody"><span>Filters</span><span class="badge num" id="fCount" hidden></span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><button class="btn" id="resetBtn" type="button">Reset</button></div>
+    <div id="fbody"><div class="fgrid" id="fgrid"></div></div>
   </aside>
   </div>
   </div>
+
+  <section class="adm" id="emp" hidden aria-labelledby="empTitle">
+    <div>
+      <div class="eyebrow">People</div>
+      <h1 id="empTitle">Employee directory</h1>
+      <p class="lead">Who works here, who they report to, and how often their manager has changed.</p>
+    </div>
+    <div class="banner" id="empMsg" role="status" hidden></div>
+    <div class="tabs" id="empTabs"></div>
+    <div class="kpis" id="empKpis"></div>
+    <div class="panel glass" id="empListBox">
+      <div class="etools">
+        <div class="field"><label for="eq">Search name, ID, username, email, mobile or manager</label><input id="eq" type="search" autocomplete="off"></div>
+        <div class="f"><label for="es">Status</label><select id="es"><option value="">All</option><option value="active">Working</option><option value="left">Left</option></select></div>
+        <div class="f"><label for="el">Location</label><select id="el"></select></div>
+        <div class="grow"><button class="btn" id="eRefresh" type="button">Refresh</button><button class="btn" id="eXls" type="button">Download Excel</button></div>
+      </div>
+      <p class="hint" id="eCount" style="margin:0 0 12px"></p>
+      <div class="scrollx" tabindex="0" role="region" aria-label="Employee table, scrolls sideways"><div class="tbl" id="etbl" role="table" aria-label="Employees"></div></div>
+    </div>
+    <div class="panel glass" id="empTreeBox" hidden>
+      <div class="etools">
+        <div class="field"><label for="tq">Find a person in the hierarchy</label><input id="tq" type="search" autocomplete="off"></div>
+        <label class="chk"><input type="checkbox" id="tLeft" checked> Show people who left</label>
+        <div class="grow"><button class="btn" id="tOpen" type="button">Expand all</button><button class="btn" id="tShut" type="button">Collapse all</button><button class="btn" id="tXls" type="button">Download Excel</button></div>
+      </div>
+      <p class="hint" id="tCount" style="margin:0 0 12px"></p>
+      <ul class="tree" id="etree"></ul>
+    </div>
+  </section>
+
+  <section class="adm" id="dsr" hidden aria-labelledby="dsrTitle">
+    <div>
+      <div class="eyebrow">Daily sales report</div>
+      <h1 id="dsrTitle">DSR</h1>
+      <p class="lead">Fill in the sales update. It is emailed to the approvers you name at the bottom of the form. Each approver opens the link in the email, checks the DSR and approves or rejects it.</p>
+    </div>
+    <div class="banner" id="dsrMsg" role="status" hidden></div>
+    <div class="tabs" id="dsrTabs"></div>
+    <div class="panel glass" id="dsrNew" hidden style="padding:24px"><form id="dsrForm" novalidate autocomplete="off"></form></div>
+    <div class="panel glass" id="dsrList" hidden style="padding:18px"><div class="scrollx"><div class="tbl" id="dsrRows" style="min-width:980px"></div></div></div>
+    <div class="panel glass" id="dsrDetail" hidden style="padding:24px"></div>
+  </section>
 
   <section class="adm" id="admin" hidden aria-labelledby="admTitle">
     <div>
@@ -423,7 +526,8 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 <script>
 /* ============ SETTINGS: edit these ============ */
 var CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbyOl0UHZCsy043fjXgaPwWrsQDvF6MF40rSPOSION0y5MSUXV4ZKb4BZRtBgRAJfGmk/exec',               // Paste your Apps Script Web app URL here (ends with /exec). Empty = sample data, no login.
+  API_URL: 'https://script.google.com/macros/s/AKfycby8gUN6uiVruPlTi47pzCe8nhOHDMx2gdyK7QiTOU0gDuUo-I6_L8fKzJYGR1bAe0Qy/exec',               // Paste your Apps Script Web app URL here (ends with /exec). Empty = sample data, no login.
+  EMP_API_URL: 'https://script.google.com/macros/s/AKfycbzCWXHQA7CqoTv10Qj5_IBdWjIsH3rflnXBQj3pca1SGvdYzHZ2t6fdfItQcaqmvH4/exec',           // Only if the employee list is in a SECOND Google Sheet: paste that script's /exec link here. Empty = same sheet as above.
   AUTO_REFRESH_SECONDS: 0,   // 0 = off. Example: 300 reloads the data every 5 minutes.
   MAX_TABLE_ROWS: 200
 };
@@ -536,7 +640,7 @@ var CONFIG = {
 
   /* ---------- loading ---------- */
   /* ---------- sign-in session (kept only until this tab is closed) ---------- */
-  var isAdmin=false,limited=false,view='report',reports=null,creditOK=true,hid=[],teamLevel='',teamOn=false,bk=null;
+  var isAdmin=false,limited=false,view='home',sTab='overview',reports=null,creditOK=true,hid=[],teamLevel='',teamOn=false,bk=null,empAcc=[];
   var adm={users:[],options:{},draft:null};
   var token='',userEmail='';
   try{token=sessionStorage.getItem('bsb-token')||'';userEmail=sessionStorage.getItem('bsb-email')||''}catch(e){}
@@ -547,31 +651,39 @@ var CONFIG = {
       else{sessionStorage.removeItem('bsb-token');sessionStorage.removeItem('bsb-email')}
     }catch(e){}
   }
-  function post(body){
-    return fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(function(r){
+  function post(body,url){
+    return fetch(url||CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(function(r){
       if(!r.ok)throw new Error('The server answered '+r.status);
       return r.json();
     });
   }
   function showLogin(msg){
     data=[];
-    isAdmin=false;limited=false;view='report';adm.draft=null;adm.users=[];
-    $('app').hidden=true;$('admin').hidden=true;$('navApp').hidden=true;$('login').hidden=false;
-    ['rows','tbl','detail','fgrid'].forEach(function(id){$(id).innerHTML=''});
+    isAdmin=false;limited=false;view='home';adm.draft=null;adm.users=[];empAcc=[];emps=null;eTab='list';['eq','tq'].forEach(function(id){$(id).value=''});$('es').value='';
+    $('home').hidden=true;homeAnim(false);dsr.form=null;dsr.rows=[];dsr.tab='';$('dsrForm').innerHTML='';$('app').hidden=true;$('admin').hidden=true;$('emp').hidden=true;$('navApp').hidden=true;$('login').hidden=false;
+    ['rows','tbl','detail','fgrid','etbl','etree','empKpis'].forEach(function(id){$(id).innerHTML=''});
     $('loginMsg').textContent=msg||'';
     $('pw').value='';
   }
+  function empOK(){return empAcc.length>0}
+  function salesTabs(){
+    var t=[];
+    [['overview','Overview'],['projects','Projects'],['bookings','Bookings']].forEach(function(x){if(!reports||reports.indexOf(x[0])>-1)t.push(x)});
+    if(teamLevels().length>0&&vis('team'))t.push(['team','Team report']);
+    return t;
+  }
+  function viewOK(v){return (v==='home'&&vis('p_home'))||(v==='report'&&salesTabs().length>0)||(v==='emp'&&empOK())||(v==='admin'&&isAdmin)||(v==='dsr'&&dsrOK())}
   function applyView(){
-    var onAdmin=isAdmin&&view==='admin';
-    $('app').hidden=onAdmin;$('admin').hidden=!onAdmin;
-    $('navLinks').hidden=onAdmin;
-    $('adminBtn').hidden=!(isAdmin&&!onAdmin);
-    $('reportBtn').hidden=!onAdmin;
+    if(!viewOK(view))view=['home','report','emp','dsr','admin'].filter(viewOK)[0]||'home';
+    $('home').hidden=view!=='home';$('app').hidden=view!=='report';$('emp').hidden=view!=='emp';$('dsr').hidden=view!=='dsr';$('admin').hidden=view!=='admin';
+    document.querySelectorAll('#navLinks [data-v]').forEach(function(b){var v=b.getAttribute('data-v');b.hidden=!viewOK(v);b.setAttribute('aria-pressed',v===view)});
+    homeAnim(view==='home');
   }
   function showApp(){
     $('login').hidden=true;$('navApp').hidden=false;
     $('who').textContent=userEmail;
     applyView();
+    if(view==='emp')loadEmps();
   }
   function load(){
     if(!CONFIG.API_URL){
@@ -587,8 +699,8 @@ var CONFIG = {
       if(!arr)throw new Error('The reply has no "rows" list. Check Code.gs and redeploy.');
       data=arr.map(clean).filter(function(r){return r.project});
       updated=(j&&j.updated)?new Date(j.updated).toLocaleString():new Date().toLocaleString();
-      isAdmin=(j.role==='ADMIN');limited=!!j.limited;reports=Array.isArray(j.reports)?j.reports:null;creditOK=j.credit!==false;hid=Array.isArray(j.hidden)?j.hidden:[];teamLevel=j.level||(j.role==='ADMIN'?'ADMIN':'');
-      mode='live';showApp();start();
+      isAdmin=(j.role==='ADMIN');empAcc=Array.isArray(j.empAccess)?j.empAccess:[];limited=!!j.limited;reports=Array.isArray(j.reports)?j.reports:null;creditOK=j.credit!==false;hid=Array.isArray(j.hidden)?j.hidden:[];teamLevel=j.level||(j.role==='ADMIN'?'ADMIN':'');
+      mode='live';if(reports&&!reports.length&&empAcc.length)view='emp';if(dsr.deep&&dsrOK())view='dsr';showApp();start();if(view==='dsr'&&dsr.deep)dsrEnter();
     }).catch(function(e){
       errMsg=e.message||String(e);mode='error';showApp();start();
     });
@@ -641,6 +753,7 @@ var CONFIG = {
 
     var scope=[];FILTERS.forEach(function(f){if(state.f[f[0]])scope.push(state.f[f[0]])});
     $('scope').textContent=scope.length?scope.join(' · '):'All data';
+    var fc=scope.length+(state.q.trim()?0:0);$('fCount').textContent=fc;$('fCount').hidden=!fc;$('fToggle').setAttribute('aria-label','Filters, '+fc+' active');
 
     $('kSales').textContent=sales.length.toLocaleString('en-IN');
     $('kSalesSub').textContent=cancelled?cancelled+' cancelled / duplicate DSR not counted':'No cancelled or duplicate bookings';
@@ -670,19 +783,20 @@ var CONFIG = {
     var max=list.length?list[0].c:1,h='';
     list.forEach(function(p,i){
       if(!pm(p.n))return;
-      h+='<button type="button" class="prow" data-p="'+esc(p.n)+'" aria-pressed="'+(state.sel.indexOf(p.n)>-1)+'"><span class="ck" aria-hidden="true">✓</span><span class="rk num">'+(i+1)+'</span><span class="mid"><span class="top"><span class="nm">'+esc(p.n)+'</span><span class="ct num">'+p.c+'</span></span><span class="bar"><i style="width:'+Math.max(4,Math.round(p.c/max*100))+'%"></i></span></span><span class="cr num">'+cr(p.v)+'</span></button>';
+      h+='<button type="button" class="prow" data-p="'+esc(p.n)+'" aria-pressed="'+(state.sel.indexOf(p.n)>-1)+'"><span class="ck" aria-hidden="true">✓</span><span class="rk num">'+(i+1)+'</span><span class="mid"><span class="top"><span class="nm">'+esc(p.n)+'</span><span class="ct num">'+p.c+'</span></span><span class="bar"><i style="width:'+Math.max(4,Math.round(p.c/max*100))+'%"></i></span></span>'+(vis('p_rev')?'<span class="cr num">'+cr(p.v)+'</span>':'')+'</button>';
     });
     $('rows').innerHTML=h||'<div class="empty">'+(list.length?'No project matches your search.':'No bookings match these filters.')+'</div>';
 
     renderDetail(rows);
     renderTable(rows);
-    if(teamOn){if(bk)renderBk(rows);else renderTeam(rows)}
+    if(sTab==='team'){if(bk)renderBk(rows);else renderTeam(rows)}
     $('foot').textContent='Sales = bookings whose status is not Cancelled or Duplicate DSR. Revenue, Total BSP, Area and Gross value are summed over those bookings only.';
   }
 
   // Add a KPI here later and it becomes a new column: [label, detail filter, function(employee)].
   var TEAM_KPIS=[['Total Sales','total',function(o){return o.sales}],['Confirm Sales','confirm',function(o){return o.conf}],['Cancel Sales','cancel',function(o){return o.cancel}]];
   function renderTeam(rows){
+    var TK=TEAM_KPIS.filter(function(k){return vis('tm_'+k[1])});
     var lv=teamLevels();if(!lv.length)return;
     if(lv.indexOf(state.tab)<0)state.tab=lv[0];
     $('tmTabs').innerHTML=lv.map(function(l){return '<button type="button" class="btn" data-l="'+l+'" aria-pressed="'+(l===state.tab)+'">'+l+' wise</button>'}).join('');
@@ -694,9 +808,9 @@ var CONFIG = {
     });
     var list=Object.keys(g).map(function(k){return g[k]}).sort(function(a,b){return b.sales-a.sales||b.cancel-a.cancel});
     $('tmSub').textContent=state.tab+' wise · '+list.length+' employees. Click a number to see the bookings behind it. Duplicate DSR is not counted as a sale.';
-    var gt='grid-template-columns:36px minmax(90px,1.4fr) repeat('+TEAM_KPIS.length+',minmax(70px,1fr))';
-    var cells=function(o){return TEAM_KPIS.map(function(k){var v=k[2](o);return '<span class="r"><button type="button" class="cnt num" data-n="'+esc(o.n)+'" data-k="'+k[1]+'"'+(v?'':' disabled')+'>'+v.toLocaleString('en-IN')+'</button></span>'}).join('')};
-    var h='<div class="tm-head" style="'+gt+'"><span>#</span><span>Employee name</span>'+TEAM_KPIS.map(function(k){return '<span class="r">'+k[0]+'</span>'}).join('')+'</div>';
+    var gt='grid-template-columns:36px minmax(90px,1.4fr) repeat('+TK.length+',minmax(70px,1fr))';
+    var cells=function(o){return TK.map(function(k){var v=k[2](o);return '<span class="r">'+(vis('tm_details')?'<button type="button" class="cnt num" data-n="'+esc(o.n)+'" data-k="'+k[1]+'"'+(v?'':' disabled')+'>'+v.toLocaleString('en-IN')+'</button>':'<span class="num">'+v.toLocaleString('en-IN')+'</span>')+'</span>'}).join('')};
+    var h='<div class="tm-head" style="'+gt+'"><span>#</span><span>Employee name</span>'+TK.map(function(k){return '<span class="r">'+k[0]+'</span>'}).join('')+'</div>';
     list.forEach(function(o,i){h+='<div class="tm-row" style="'+gt+'"><span class="num muted">'+(i+1)+'</span><span class="nmx">'+esc(o.n)+'</span>'+cells(o)+'</div>'});
     if(list.length)h+='<div class="tm-row tm-total" style="'+gt+'"><span></span><span>Total</span>'+cells(T)+'</div>';
     $('tmRows').innerHTML=list.length?h:'<div class="empty">No bookings match these filters.</div>';
@@ -725,11 +839,11 @@ var CONFIG = {
     var list=bkList(rows),cols=bkCols();
     $('bkh').textContent=BKLBL[bk.k]+' · '+(bk.n||'All '+bk.tab);
     $('bkSub').textContent=bk.tab+' wise · '+list.length.toLocaleString('en-IN')+' bookings'+(list.length>1000?' (first 1,000 shown; Excel has all)':'');
-    $('bkXls').hidden=!vis('dl_excel');
+    $('bkXls').hidden=!(vis('dl_excel')&&vis('dl_book'));
     var gt='grid-template-columns:56px '+cols.map(function(c){return c[1]}).join(' ');
     var mw=56+cols.reduce(function(a,c){return a+c[4]},0)+cols.length*12+32;
-    var h='<div class="tr th" style="'+gt+'"><span>S No.</span>'+cols.map(function(c){return '<span'+(c[3]?' class="r"':'')+'>'+c[2]+'</span>'}).join('')+'</div>';
-    list.slice(0,1000).forEach(function(r,i){h+='<div class="tr" style="'+gt+'"><span class="num muted">'+(i+1)+'</span>'+cols.map(function(c){return CELL[c[0]](r)}).join('')+'</div>'});
+    var h='<div class="tr th" role="row" style="'+gt+'"><span role="columnheader">S No.</span>'+cols.map(function(c){return '<span role="columnheader"'+(c[3]?' class="r"':'')+'>'+c[2]+'</span>'}).join('')+'</div>';
+    list.slice(0,1000).forEach(function(r,i){h+='<div class="tr" role="row" style="'+gt+'"><span role="cell" class="num muted">'+(i+1)+'</span>'+cols.map(function(c){return cellA(CELL[c[0]](r))}).join('')+'</div>'});
     $('bkTbl').style.minWidth=mw+'px';
     $('bkTbl').innerHTML=list.length?h:'<div class="empty">No bookings.</div>';
   }
@@ -806,6 +920,7 @@ var CONFIG = {
   }
 
   var TCOLS=[['t_date','104px','Date','',104],['t_project','150px','Project','',150],['t_customer','minmax(180px,1.6fr)','Customer','',180],['t_unit','84px','Unit','',84],['t_developer','110px','Developer','',110],['t_status','124px','Status','',124],['t_area','90px','Area','r',90],['t_bsp','120px','Total BSP','r',120],['t_gross','130px','Gross value','r',130],['credit','110px','Credit note','r',110],['t_revenue','110px','Revenue','r',110]];
+  function cellA(h){return h.replace('<span ','<span role="cell" ')}
   var CELL={
     t_project:function(r){return '<span class="nmx">'+esc(r.project||'—')+'</span>'},
     t_date:function(r){return '<span class="num muted">'+fmtDate(r.date)+'</span>'},
@@ -830,9 +945,9 @@ var CONFIG = {
     var cols=TCOLS.filter(function(c){return vis(c[0])&&(c[0]!=='credit'||creditOK)&&(c[0]!=='t_project'||state.sel.length>1)});
     var gt='grid-template-columns:'+cols.map(function(c){return c[1]}).join(' ');
     var mw=cols.reduce(function(a,c){return a+c[4]},0)+(cols.length-1)*12+32;
-    var h='<div class="tr th" style="'+gt+'">'+cols.map(function(c){return '<span'+(c[3]?' class="r"':'')+'>'+c[2]+'</span>'}).join('')+'</div>';
+    var h='<div class="tr th" role="row" style="'+gt+'">'+cols.map(function(c){return '<span role="columnheader"'+(c[3]?' class="r"':'')+'>'+c[2]+'</span>'}).join('')+'</div>';
     shown.forEach(function(r){
-      h+='<div class="tr" style="'+gt+'">'+cols.map(function(c){return CELL[c[0]](r)}).join('')+'</div>';
+      h+='<div class="tr" role="row" style="'+gt+'">'+cols.map(function(c){return cellA(CELL[c[0]](r))}).join('')+'</div>';
     });
     if(!shown.length)h+='<div class="empty">No bookings match.</div>';
     $('tbl').style.minWidth=mw+'px';$('tbl').innerHTML=h;
@@ -840,16 +955,18 @@ var CONFIG = {
 
   function teamLevels(){var l=teamLevel;if(l==='ADMIN')return LV.slice();var i=LV.indexOf(l);return i<0?[]:(i===LV.length-1?['FOS']:LV.slice(i+1))}
   function applySections(){
-    var tOK=teamLevels().length>0&&vis('team'),ta=document.querySelector('#navLinks a[href="#team"]');
-    if(teamOn&&!tOK)teamOn=false;
-    if(ta)ta.hidden=!tOK;$('team').hidden=!teamOn||!!bk;$('bkpage').hidden=!(teamOn&&bk);
-    ['overview','projects','bookings'].forEach(function(k){
-      var on=!reports||reports.indexOf(k)>-1,a=document.querySelector('#navLinks a[href="#'+k+'"]');
-      $(k).hidden=!on||teamOn;if(a)a.hidden=!on;
-    });
+    var tabs=salesTabs(),ids=tabs.map(function(t){return t[0]});
+    if(ids.indexOf(sTab)<0)sTab=ids[0]||'overview';
+    if(sTab!=='team')bk=null;
+    $('salesTabs').innerHTML=tabs.map(function(t){return '<button type="button" class="btn" data-s="'+t[0]+'" aria-pressed="'+(t[0]===sTab)+'">'+t[1]+'</button>'}).join('');
+    $('salesTabs').hidden=tabs.length<2;
+    ['overview','projects','bookings'].forEach(function(k){$(k).hidden=sTab!==k});
+    $('team').hidden=!(sTab==='team'&&!bk);$('bkpage').hidden=!(sTab==='team'&&bk);
     var CARDS={c_sales:'kSales',c_rev:'kRev',c_top:'kTop',c_bsp:'kBsp',c_area:'kArea',c_gross:'kGross'};
     Object.keys(CARDS).forEach(function(k){$(CARDS[k]).parentNode.hidden=!vis(k)});
     ($('q').closest('.f')||$('q').parentNode).hidden=!vis('search');
+    ($('pq').closest('.field')||$('pq').parentNode).hidden=!vis('p_search');
+    applyView();
   }
   function vis(k){return hid.indexOf(k)<0}
   function start(){setBanner();buildFilters();applySections();render()}
@@ -859,6 +976,12 @@ var CONFIG = {
     var k=e.target.getAttribute('data-k');if(!k)return;
     state.f[k]=e.target.value;e.target.className=e.target.value?'active':'';render();
   });
+  var mq=window.matchMedia('(max-width:980px)');
+  function setFilters(open){$('fToggle').setAttribute('aria-expanded',open);$('fbody').hidden=!open}
+  function syncFilters(){setFilters(!mq.matches)}
+  if(mq.addEventListener)mq.addEventListener('change',syncFilters);
+  if(mq.matches)setFilters(false);
+  $('fToggle').addEventListener('click',function(){if(mq.matches)setFilters(this.getAttribute('aria-expanded')!=='true')});
   $('resetBtn').addEventListener('click',function(){state.f={};state.q='';$('q').value='';buildFilters();render()});
   $('rows').addEventListener('click',function(e){
     var b=e.target.closest('.prow');if(!b)return;
@@ -867,10 +990,16 @@ var CONFIG = {
     render();
   });
   $('navLinks').addEventListener('click',function(e){
-    var a=e.target.closest('a');if(!a)return;
-    var on=a.getAttribute('href')==='#team';
-    if(on!==teamOn||(on&&bk)){teamOn=on;bk=null;applySections();if(on)renderTeam(filtered())}
-    if(on){e.preventDefault();window.scrollTo(0,0)}
+    var b=e.target.closest('[data-v]');if(!b)return;
+    view=b.getAttribute('data-v');applyView();window.scrollTo(0,0);
+    if(view==='emp')loadEmps();
+    if(view==='admin')admLoad();
+    if(view==='dsr')dsrEnter();
+    if(view==='report'&&mode!=='live'&&mode!=='demo')load();
+  });
+  $('salesTabs').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-s]');if(!b)return;
+    sTab=b.getAttribute('data-s');bk=null;applySections();render();window.scrollTo(0,0);
   });
   $('tmRows').addEventListener('click',function(e){
     var b=e.target.closest('button.cnt');if(!b||b.disabled)return;
@@ -878,7 +1007,7 @@ var CONFIG = {
     applySections();renderBk(filtered());window.scrollTo(0,0);
   });
   $('bkBack').addEventListener('click',function(){bk=null;applySections();renderTeam(filtered());window.scrollTo(0,0)});
-  $('bkXls').addEventListener('click',function(){if(bk&&vis('dl_excel'))downloadBk(filtered())});
+  $('bkXls').addEventListener('click',function(){if(bk&&vis('dl_excel')&&vis('dl_book'))downloadBk(filtered())});
   $('tmTabs').addEventListener('click',function(e){
     var b=e.target.closest('button[data-l]');if(!b)return;
     state.tab=b.getAttribute('data-l');renderTeam(filtered());
@@ -935,25 +1064,44 @@ var CONFIG = {
   /* ---------- admin page ---------- */
   var DIMS=[['status','Status'],['hod','HOD'],['am','AM'],['tl','TL'],['fos','FOS'],['type','Type']];
   var REPORTS=[['overview','Overview'],['projects','Projects'],['bookings','Bookings']];
-  var GROUPS=[
-    ['Reports',[['overview','Overview report'],['projects','Projects report'],['bookings','Bookings report'],['team','Team report page (needs a level in Team report access)']]],
-    ['Overview boxes',[['c_sales','Total sales'],['c_rev','FOS revenue'],['c_top','Top project'],['c_bsp','Average BSP'],['c_area','Total area'],['c_gross','Gross value'],['credit','Credit note (box, column, totals and data)']]],
-    ['Filters on the right',FILTERS.map(function(f){return ['f_'+f[0],f[1]+' filter']}).concat([['search','Booking search box']])],
-    ['Project detail boxes',[['d_split','Status split chart'],['d_rev','FOS revenue total'],['d_bsp','Total BSP'],['d_area','Area'],['d_gross','Gross value']]],
-    ['Bookings table columns',[['t_date','Date'],['t_customer','Customer'],['t_unit','Unit'],['t_developer','Developer'],['t_status','Status'],['t_area','Area'],['t_bsp','Total BSP'],['t_gross','Gross value'],['t_revenue','Revenue']]],
-    ['Downloads',[['dl_excel','Download Excel (Booking details)']]]
+  var PAGES=[
+    ['Home page','The animated start page.',[['Home',[['p_home','Show the Home page']]]]],
+    ['Sales page','Opens from Sales in the top bar. Each tab is one tab of the page.',[
+      ['Tabs',[['overview','Overview tab'],['projects','Projects tab'],['bookings','Bookings tab'],['team','Team report tab']]],
+      ['Overview boxes',[['c_sales','Total sales'],['c_rev','FOS revenue'],['c_top','Top project'],['c_bsp','Average BSP'],['c_area','Total area'],['c_gross','Gross value'],['credit','Credit note (box, booking column, totals and data)']]],
+      ['Projects tab',[['p_search','Project search box'],['p_rev','Revenue beside each project'],['d_split','Status split chart'],['d_rev','FOS revenue total'],['d_bsp','Total BSP'],['d_area','Area'],['d_gross','Gross value']]],
+      ['Bookings tab',[['search','Booking search box'],['t_date','Date'],['t_project','Project (when several are picked)'],['t_customer','Customer'],['t_unit','Unit'],['t_developer','Developer'],['t_status','Status'],['t_area','Area'],['t_bsp','Total BSP'],['t_gross','Gross value'],['t_revenue','Revenue']]],
+      ['Team report tab',[['tm_total','Total Sales column'],['tm_confirm','Confirm Sales column'],['tm_cancel','Cancel Sales column'],['tm_details','Open booking details when a number is clicked']]],
+      '@team',
+      ['Filters on the right',FILTERS.map(function(f){return ['f_'+f[0],f[1]+' filter']})],
+      ['Downloads',[['dl_book','Download Excel of booking details']]],
+      '@limits']],
+    ['Employees page','Opens from Employees in the top bar.',[
+      ['Pages',[['x_list','Employee list'],['x_tree','Hierarchy list']]],
+      ['Employee list',[['e_search','Search box'],['e_filters','Status and Location filters'],['e_kpis','Summary boxes at the top']]],
+      ['Employee list columns',[["e_id", "Emp ID"], ["e_username", "Username"], ["e_company", "Company"], ["e_location", "Location"], ["e_email", "Email"], ["e_mobile", "Mobile"], ["e_doj", "DOJ"], ["e_dol", "DOL"], ["e_mgr", "Manager history: since date, last manager, changes"], ["e_manager", "Current manager"]]],
+      ['Hierarchy list',[['t_left','Show people who left']]],
+      '@escope',
+      ['Downloads',[['dl_emp','Download Excel of the employee list'],['dl_tree','Download Excel of the hierarchy']]]]],
+    ['DSR page','Opens from DSR in the top bar. The server checks these rights too, so they cannot be skipped.',[
+      ['DSR tabs',[['p_dsr','Show the DSR page'],['dsr_new','New DSR form'],['dsr_mine','My DSRs (the ones this person submitted)'],['dsr_appr','Approvals (needed by approvers; Admins can approve any DSR)']]]]],
+    ['Admin page','Opens from Admin in the top bar.',['@admin']]
   ];
+  var ALLP=['Every page',[['dl_excel','Allow Excel downloads (master switch, the download ticks on each page work only when this is on)']]];
+  var GROUPS=[ALLP];
+  PAGES.forEach(function(p){p[2].forEach(function(b){if(typeof b!=='string')GROUPS.push(b)})});
+  function isX(k){return k.indexOf('x_')===0}
   function isRep(k){return REPORTS.some(function(r){return r[0]===k})}
   function initVis(u){
     var o={},hh=(u&&u.hidden)||[];
     GROUPS.forEach(function(g){g[1].forEach(function(it){var k=it[0];
-      o[k]=k==='credit'?(!u||u.credit!==false):isRep(k)?(!u||!u.reports||u.reports.indexOf(k)>-1):hh.indexOf(k)<0})});
+      o[k]=isX(k)?!!(u&&u.empAccess&&u.empAccess.indexOf(k.slice(2))>-1):k==='credit'?(!u||u.credit!==false):isRep(k)?(!u||!u.reports||u.reports.indexOf(k)>-1):hh.indexOf(k)<0})});
     return o;
   }
   function syncVis(d){
     d.reports=REPORTS.map(function(r){return r[0]}).filter(function(k){return d.vis[k]});
-    d.credit=!!d.vis.credit;d.hidden=[];
-    GROUPS.forEach(function(g){g[1].forEach(function(it){var k=it[0];if(!d.vis[k]&&k!=='credit'&&!isRep(k))d.hidden.push(k)})});
+    d.credit=!!d.vis.credit;d.hidden=[];d.empAccess=['list','tree'].filter(function(t){return d.vis['x_'+t]});
+    GROUPS.forEach(function(g){g[1].forEach(function(it){var k=it[0];if(!d.vis[k]&&k!=='credit'&&!isRep(k)&&!isX(k))d.hidden.push(k)})});
   }
 
   function admMsg(t,kind){
@@ -968,7 +1116,7 @@ var CONFIG = {
     return post({action:'admin',token:token}).then(function(j){
       if(j&&j.error==='unauthorized'){sessionEnded();return}
       if(j&&j.error){admMsg(j.error,'err');return}
-      adm.users=j.users||[];adm.options=j.options||{};admMsg('');
+      adm.users=j.users||[];adm.options=j.options||{};adm.employees=j.employees||[];admMsg('');
       renderUsers();
       if(!adm.draft)renderEditor();
     }).catch(function(e){admMsg('Could not reach the server. '+(e.message||''),'err')});
@@ -978,6 +1126,7 @@ var CONFIG = {
     var p=[];
     DIMS.forEach(function(d){var s=u.scopes[d[0]];if(s!==null&&s!==undefined)p.push(d[1]+' '+s.length)});
     if(u.reports&&u.reports.length<REPORTS.length)p.push('Reports '+u.reports.length);if(u.credit===false)p.push('No credit note');if(u.hidden&&u.hidden.length)p.push(u.hidden.length+' boxes hidden');if(u.level)p.push('Team report: '+u.level+(u.emp?' · '+u.emp:''));
+    if(u.empAccess&&u.empAccess.length)p.push('Employees: '+u.empAccess.map(function(t){return t==='tree'?'hierarchy':t}).join(', ')+(u.empScope==='TEAM'?' (own team)':''));
     return p.length?'Limited: '+p.join(' · '):'Sees all data';
   }
   function renderUsers(){
@@ -992,7 +1141,7 @@ var CONFIG = {
 
   function openEditor(u){
     var d={isNew:!u,email:u?u.email:'',active:u?u.active:true,role:u?u.role:'VIEWER',scopes:{},confirmDel:false};
-    d.vis=initVis(u);syncVis(d);d.level=u?(u.level||''):'';d.emp=u?(u.emp||''):'';
+    d.vis=initVis(u);syncVis(d);d.level=u?(u.level||''):'';d.emp=u?(u.emp||''):'';d.empScope=u?(u.empScope||'ALL'):'ALL';d.pick=null;
     DIMS.forEach(function(x){var s=u?u.scopes[x[0]]:null;d.scopes[x[0]]=(s===null||s===undefined)?null:s.slice()});
     adm.draft=d;renderEditor();renderUsers();admMsg('');
   }
@@ -1012,7 +1161,7 @@ var CONFIG = {
       h+='<p class="hint">No '+lab+' values found. Check that the Bookings tab has a column named '+lab+'.</p>';
     }else{
       h+='<input class="ps" type="search" aria-label="Search '+lab+'" placeholder="Search '+lab+'…" autocomplete="off">'+
-        '<div class="pb"><button type="button" class="btn sm" data-a="shown">Select shown</button><button type="button" class="btn sm" data-a="clear">Clear</button><span class="cnt num" aria-live="polite"></span></div>'+
+        '<div class="pb"><button type="button" class="btn sm" data-a="shown">Select shown</button><button type="button" class="btn sm" data-a="clear">Clear</button><span class="pcount num" aria-live="polite"></span></div>'+
         '<div class="plist">';
       opts.forEach(function(v){h+='<label class="opt"><input type="checkbox" value="'+esc(v)+'"'+(set[v]?' checked':'')+'><span title="'+esc(v)+'">'+esc(v)+'</span></label>'});
       h+='</div>';
@@ -1027,27 +1176,61 @@ var CONFIG = {
     return '<label for="aEmp"><b>Employee name</b> (as written in the '+d.level+' column)</label><select id="aEmp"><option value="">Choose the employee</option>'+o.map(function(v){return '<option'+(v===d.emp?' selected':'')+'>'+esc(v)+'</option>'}).join('')+'</select>';
   }
   function teamHtml(){
-    var d=adm.draft,L=[['','No team report'],['ADMIN','Admin level: sees all reports (HOD, AM, TL and FOS)'],['HOD','HOD: sees AM, TL and FOS reports'],['AM','AM: sees TL and FOS reports'],['TL','TL: sees FOS report'],['FOS','FOS: sees only own FOS report']];
-    return '<fieldset class="dim" data-r="1" style="margin-top:14px"><legend>Team report access</legend><div class="seg"><select id="aLevel">'+L.map(function(x){return '<option value="'+x[0]+'"'+(d.level===x[0]?' selected':'')+'>'+x[1]+'</option>'}).join('')+'</select></div><div id="aEmpBox" style="margin-top:10px">'+empHtml()+'</div><p class="hint">HOD, AM, TL and FOS levels only see bookings of the chosen employee and their team. Users with the Admin role always see every team. The Team report tick above must also be on.</p></fieldset>';
+    var d=adm.draft,L=[['','No team role'],['ADMIN','Admin level: sees all reports (HOD, AM, TL and FOS)'],['HOD','HOD: sees AM, TL and FOS reports'],['AM','AM: sees TL and FOS reports'],['TL','TL: sees FOS report'],['FOS','FOS: sees only own FOS report']];
+    return '<fieldset class="dim" data-r="1" style="margin-top:14px"><legend>Team role: HOD, AM, TL or FOS</legend><div class="seg"><select id="aLevel">'+L.map(function(x){return '<option value="'+x[0]+'"'+(d.level===x[0]?' selected':'')+'>'+x[1]+'</option>'}).join('')+'</select></div><div id="aEmpBox" style="margin-top:10px">'+empHtml()+'</div><p class="hint">HOD, AM, TL and FOS levels only see bookings of the chosen employee and their team. Users with the Admin role always see every team. The Team report tick above must also be on.</p></fieldset>';
   }
-  function repHtml(){
+  function grp(g){
     var d=adm.draft;
-    return GROUPS.map(function(g){
-      return '<fieldset class="dim" data-r="1" style="margin-top:14px"><legend>'+g[0]+'</legend><div class="seg">'+g[1].map(function(it){return '<label><input type="checkbox" name="vis" value="'+it[0]+'"'+(d.vis[it[0]]?' checked':'')+'> '+it[1]+'</label>'}).join('')+'</div></fieldset>';
-    }).join('')+'<p class="hint">Tick = this person sees it. Untick = hidden on the website. Credit Note is also removed from the data sent to this person. To restrict the rows themselves, use the limits below.</p>';
+    return '<fieldset class="dim" data-r="1" style="margin-top:12px"><legend>'+g[0]+'</legend><div class="seg">'+g[1].map(function(it){return '<label><input type="checkbox" name="vis" value="'+it[0]+'"'+(d.vis[it[0]]?' checked':'')+'> '+it[1]+'</label>'}).join('')+'</div></fieldset>';
+  }
+  function pagesHtml(){
+    var h='<p class="hint" style="margin-top:18px">Rights are grouped by page, in the same order as the top bar. Tick = this person sees it. Untick = hidden on the website. Only Credit note, the Employee pages and the Employee columns are also withheld by the server; to restrict the rows themselves, use the row limits.</p>'+grp(ALLP);
+    PAGES.forEach(function(p){
+      h+='<details class="pg" open><summary><span>'+p[0]+'</span><span class="pgc num"></span></summary><div class="pgb"><p class="hint" style="margin:8px 0 0">'+p[1]+'</p>';
+      p[2].forEach(function(b){
+        if(b==='@team')h+=teamHtml();
+        else if(b==='@escope')h+=empScopeHtml();
+        else if(b==='@limits')h+='<p class="hint" style="margin-top:18px"><b>Rows this person can see on the Sales page.</b> Leave on All to show everything.</p><div class="scopes">'+DIMS.map(dimHtml).join('')+'</div>';
+        else if(b==='@admin')h+='<p class="hint">The Admin page opens only for people whose Role is Admin. Change the Role at the top of this form.</p>';
+        else h+=grp(b);
+      });
+      h+='</div></details>';
+    });
+    return h;
+  }
+  function updPg(){
+    document.querySelectorAll('#admEditor details.pg').forEach(function(p){
+      var all=p.querySelectorAll('input[name="vis"]').length,on=p.querySelectorAll('input[name="vis"]:checked').length,c=p.querySelector('.pgc');
+      if(c)c.textContent=all?on+' of '+all+' on':'';
+    });
+  }
+  function norm2(v){return norm(v)}
+  function matchEmp(level){
+    var p=adm.draft&&adm.draft.pick;if(!p||LV.indexOf(level)<0)return '';
+    var o=adm.options[level.toLowerCase()]||[],keys=[norm2(p.name),norm2(p.username)];
+    for(var i=0;i<o.length;i++)if(keys.indexOf(norm2(o[i]))>-1)return o[i];
+    return '';
+  }
+  function pickHtml(){
+    var d=adm.draft,L=adm.employees||[];if(!d.isNew||!L.length)return '';
+    return '<div class="f" style="margin-bottom:14px"><label for="aPick">Start from the employee list</label><select id="aPick"><option value="">Choose a working employee to fill the email…</option>'+L.map(function(e,i){return '<option value="'+i+'"'+(d.pick&&d.pick.email===e.email?' selected':'')+'>'+esc(e.name)+' · '+esc(e.email)+(e.id?' ('+esc(e.id)+')':'')+'</option>'}).join('')+'</select></div>';
+  }
+  function empScopeHtml(){
+    var d=adm.draft;
+    return '<fieldset class="dim" data-r="1" style="margin-top:14px"><legend>Employee list rows</legend><div class="seg"><select id="aEScope"><option value="ALL"'+(d.empScope==='ALL'?' selected':'')+'>All employees</option><option value="TEAM"'+(d.empScope==='TEAM'?' selected':'')+'>Only this person and their team</option></select></div><p class="hint">Own-team view follows the Current Manager column downwards from the employee chosen in the team role above. It applies only if an Employee page is ticked above. Admins always see everyone.</p></fieldset>';
   }
   function renderEditor(){
     var d=adm.draft,box=$('admEditor');
     if(!d){box.innerHTML='<div class="empty">Choose a person on the left, or add a new one.</div>';return}
     var self=!d.isNew&&d.email.toLowerCase()===String(userEmail).toLowerCase();
     var h='<div class="eyebrow" style="color:var(--muted)">'+(d.isNew?'New person':'Edit person')+'</div>'+
-      '<h2 class="et">'+(d.isNew?'Add a person':esc(d.email))+'</h2><div class="fgrid2">';
+      '<h2 class="et">'+(d.isNew?'Add a person':esc(d.email))+'</h2>'+pickHtml()+'<div class="fgrid2">';
     if(d.isNew)h+='<div class="f"><label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="off" placeholder="name@company.com"></div>';
     h+='<div class="f"><label for="aPw">'+(d.isNew?'Password':'New password')+'</label><div class="pw"><input id="aPw" type="password" autocomplete="new-password" placeholder="'+(d.isNew?'At least 10 characters':'Leave empty to keep it')+'"><button type="button" class="btn" id="aShow" aria-pressed="false">Show</button></div></div>'+
       '<div class="f"><label for="aRole">Role</label><select id="aRole"'+(self?' disabled':'')+'><option value="VIEWER"'+(d.role==='VIEWER'?' selected':'')+'>Viewer: sees the report</option><option value="ADMIN"'+(d.role==='ADMIN'?' selected':'')+'>Admin: also manages access</option></select></div></div>'+
       '<label class="sw"><input type="checkbox" id="aActive"'+(d.active?' checked':'')+(self?' disabled':'')+'><span><b>Can view the report</b><small>Turn this off to block the person completely.</small></span></label>';
     if(self)h+='<p class="hint">You cannot block yourself, remove your own admin role or remove yourself.</p>';
-    h+=repHtml()+teamHtml()+'<div class="scopes">'+DIMS.map(dimHtml).join('')+'</div><div class="sum" id="aSum"></div>'+
+    h+=pagesHtml()+'<div class="sum" id="aSum"></div>'+
       '<div class="abtns"><button class="go sm" id="aSave" type="button">Save</button>'+
       (d.isNew?'':'<button class="btn danger" id="aDel" type="button"'+(self?' disabled':'')+'>Remove person</button>')+'</div>';
     box.innerHTML=h;
@@ -1062,15 +1245,16 @@ var CONFIG = {
     return out;
   }
   function countSel(k){
-    var c=fsOf(k).querySelector('.cnt');
+    var c=fsOf(k).querySelector('.pcount');
     if(c)c.textContent=checkedVals(k).length+' selected';
   }
   function refreshSummary(){
+    updPg();
     var d=adm.draft,s=$('aSum');if(!d||!s)return;
     if(!d.active){s.textContent='This person is blocked and sees nothing.';return}
     var p=[];
     DIMS.forEach(function(x){var v=d.scopes[x[0]];if(v!==null)p.push(x[1]+': '+(v.length?v.length+' selected':'none selected'))});
-    if(d.reports.length<REPORTS.length)p.push('Reports: '+d.reports.length+' of '+REPORTS.length);if(!d.credit)p.push('No credit note');if(d.hidden.length)p.push(d.hidden.length+' boxes hidden');if(d.level)p.push('Team report: '+d.level+(d.emp?' · '+d.emp:''));
+    if(d.reports.length<REPORTS.length)p.push('Reports: '+d.reports.length+' of '+REPORTS.length);if(!d.credit)p.push('No credit note');if(d.hidden.length)p.push(d.hidden.length+' boxes hidden');if(d.level)p.push('Team report: '+d.level+(d.emp?' · '+d.emp:''));if(d.empAccess.length)p.push('Employees: '+d.empAccess.join(' + ')+(d.empScope==='TEAM'?' (own team)':''));
     s.textContent=p.length?'Rows must match every limit. '+p.join(' · ')+'.':'This person sees all data.';
   }
 
@@ -1080,7 +1264,8 @@ var CONFIG = {
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){admMsg('Enter a valid email address.','err');return}
     if((d.isNew||pw)&&pw.length<10){admMsg('Choose a password of at least 10 characters.','err');return}
     if(d.active){
-      if(!d.reports.length){admMsg('Tick at least one report.','err');return}
+      if(!d.reports.length&&!d.empAccess.length){admMsg('Tick at least one report or employee page.','err');return}
+      if(d.empScope==='TEAM'&&(LV.indexOf(d.level)<0||!d.emp)){admMsg('Own-team employee view needs a team role (HOD, AM, TL or FOS) and the employee name.','err');return}
       if(LV.indexOf(d.level)>-1&&!d.emp){admMsg('Choose the employee name for the '+d.level+' level.','err');return}
       for(var i=0;i<DIMS.length;i++){
         var v=d.scopes[DIMS[i][0]];
@@ -1088,7 +1273,7 @@ var CONFIG = {
       }
     }
     var btn=$('aSave');btn.disabled=true;btn.textContent='Saving…';admMsg('Saving…');
-    post({action:'adminSave',token:token,user:{email:email,password:pw,active:d.active,role:d.role,scopes:d.scopes,reports:d.reports.length===REPORTS.length?null:d.reports,credit:d.credit,hidden:d.hidden,level:d.level,emp:d.emp}}).then(function(j){
+    post({action:'adminSave',token:token,user:{email:email,password:pw,active:d.active,role:d.role,scopes:d.scopes,reports:d.reports.length===REPORTS.length?null:d.reports,credit:d.credit,hidden:d.hidden,level:d.level,emp:d.emp,empAccess:d.empAccess,empScope:d.empScope}}).then(function(j){
       if(j&&j.error==='unauthorized'){sessionEnded();return}
       if(j&&j.error){admMsg(j.error,'err');return}
       adm.users=j.users||[];d.isNew=false;d.email=email;
@@ -1111,8 +1296,6 @@ var CONFIG = {
     }).catch(function(e){admMsg('Could not reach the server. '+(e.message||''),'err')});
   }
 
-  $('adminBtn').addEventListener('click',function(){view='admin';applyView();window.scrollTo(0,0);admLoad()});
-  $('reportBtn').addEventListener('click',function(){view='report';applyView();window.scrollTo(0,0);load()});
   $('admNew').addEventListener('click',function(){openEditor(null);var e=$('aEmail');if(e)e.focus()});
   $('ulist').addEventListener('click',function(e){
     var b=e.target.closest('.urow');if(!b)return;
@@ -1127,7 +1310,9 @@ var CONFIG = {
     var t=e.target;
     if(t.id==='aActive'){d.active=t.checked;refreshSummary();return}
     if(t.id==='aRole'){d.role=t.value;return}
-    if(t.id==='aLevel'){d.level=t.value;d.emp='';$('aEmpBox').innerHTML=empHtml();refreshSummary();return}
+    if(t.id==='aPick'){var pe=(adm.employees||[])[+t.value];d.pick=pe||null;if(pe){$('aEmail').value=pe.email;d.emp=matchEmp(d.level);$('aEmpBox').innerHTML=empHtml()}return}
+    if(t.id==='aEScope'){d.empScope=t.value;refreshSummary();return}
+    if(t.id==='aLevel'){d.level=t.value;d.emp=matchEmp(d.level);$('aEmpBox').innerHTML=empHtml();refreshSummary();return}
     if(t.id==='aEmp'){d.emp=t.value;return}
     if(t.name==='vis'){ed.querySelectorAll('input[name="vis"]').forEach(function(c){d.vis[c.value]=c.checked});syncVis(d);refreshSummary();return}
     var fs=t.closest('fieldset[data-k]');if(!fs)return;
@@ -1165,7 +1350,449 @@ var CONFIG = {
     adm.draft.scopes[k]=checkedVals(k);countSel(k);refreshSummary();
   });
 
-  if(CONFIG.AUTO_REFRESH_SECONDS>0)setInterval(function(){if(token&&view==='report')load()},CONFIG.AUTO_REFRESH_SECONDS*1000);
+  /* ---------- employees page ---------- */
+  var emps=null,eTab='list';
+  var ECOLS=[
+    ['id','92px','Emp ID','',92,'e_id',function(e){return e.id}],
+    ['name','minmax(170px,1.3fr)','Name','',170,'',function(e){return pn(e.name)}],
+    ['username','140px','Username','',140,'e_username',function(e){return e.username}],
+    ['company','minmax(170px,1.2fr)','Company','',170,'e_company',function(e){return e.company}],
+    ['location','100px','Location','',100,'e_location',function(e){return e.location}],
+    ['email','minmax(220px,1.5fr)','Email','',220,'e_email',function(e){return e.email}],
+    ['mobile','124px','Mobile','',124,'e_mobile',function(e){return e.mobile}],
+    ['doj','108px','DOJ','',108,'e_doj',function(e){return eDate(e.doj)}],
+    ['dol','108px','DOL','',108,'e_dol',function(e){return e.active?'Working':eDate(e.dol)}],
+    ['since','132px','Manager since','',132,'e_mgr',function(e){return eDate(e.since)}],
+    ['manager','minmax(160px,1.1fr)','Current manager','',160,'e_manager',function(e){return e.manager}],
+    ['prev','minmax(160px,1.1fr)','Last manager','',160,'e_mgr',function(e){return e.prev}],
+    ['changes','96px','Manager changes','r',96,'e_mgr',function(e){return e.changes===undefined?'':e.changes}]
+  ];
+  function pn(v){return String(v==null?'':v).replace(/\./g,' ').replace(/\s+/g,' ').trim()}
+  function eDate(v){var d=parseDate(v);return d?fmtDate(d):''}
+  function eCols(){return ECOLS.filter(function(c){return !c[5]||vis(c[5])})}
+  function eCell(c,e){
+    var v=c[6](e),h=esc(v===''||v==null?'—':v);
+    if(c[0]==='name')return '<span role="cell" class="nmx">'+h+'</span>';
+    if(c[0]==='dol'&&e.active)return '<span role="cell"><span class="pill" style="--pc:var(--c-confirmed)">Working</span></span>';
+    if(c[0]==='since'&&v){var d=parseDate(e.since),days=d?Math.max(0,Math.round((Date.now()-d.getTime())/864e5)):null;return '<span role="cell" class="num muted"'+(days!==null?' title="'+days+' days with the current manager"':'')+'>'+h+'</span>'}
+    if(c[0]==='changes')return '<span role="cell" class="num r">'+h+'</span>';
+    return '<span role="cell"'+(c[0]==='id'||c[0]==='mobile'||c[0]==='doj'||c[0]==='dol'?' class="num"':'')+'>'+h+'</span>';
+  }
+  function eMsg(t,kind){
+    var b=$('empMsg');b.hidden=!t;b.className='banner'+(kind==='err'?' err':'');
+    b.innerHTML=t?'<b>'+(kind==='err'?'Problem':'Working')+'</b><span>'+esc(t)+'</span>':'';
+  }
+  function loadEmps(){
+    eMsg('Loading employees…');
+    return post({action:'employees',token:token},CONFIG.EMP_API_URL||CONFIG.API_URL).then(function(j){
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(j&&j.error){eMsg(j.error,'err');return}
+      emps=(j.rows||[]);empAcc=Array.isArray(j.access)?j.access:empAcc;eMsg('');
+      var ls={};emps.forEach(function(e){if(e.location)ls[e.location]=1});
+      $('el').innerHTML='<option value="">All</option>'+Object.keys(ls).sort().map(function(l){return '<option>'+esc(l)+'</option>'}).join('');
+      renderEmp();
+    }).catch(function(e){eMsg('Could not reach the server. '+(e.message||''),'err')});
+  }
+  function renderEmp(){
+    if(!emps)return;
+    var tabs=[['list','Employee list'],['tree','Hierarchy list']].filter(function(t){return empAcc.indexOf(t[0])>-1});
+    if(!tabs.length)return;
+    if(!tabs.some(function(t){return t[0]===eTab}))eTab=tabs[0][0];
+    $('empTabs').hidden=tabs.length<2;
+    $('empTabs').innerHTML=tabs.map(function(t){return '<button type="button" class="btn" data-t="'+t[0]+'" aria-pressed="'+(t[0]===eTab)+'">'+t[1]+'</button>'}).join('');
+    $('empListBox').hidden=eTab!=='list';$('empTreeBox').hidden=eTab!=='tree';
+    var act=emps.filter(function(e){return e.active}).length,ch=emps.filter(function(e){return e.changes>0}).length,showCh=emps.some(function(e){return e.changes!==undefined});
+    var K=[['Employees',emps.length,'in this list'],['Working',act,'no leaving date'],['Left',emps.length-act,'have a leaving date']];
+    if(showCh)K.push(['Changed manager',ch,'at least once']);
+    $('empKpis').innerHTML=K.map(function(k){return '<div class="kpi glass"><div class="label">'+k[0]+'</div><div class="big num">'+k[1].toLocaleString('en-IN')+'</div><div class="sub">'+k[2]+'</div></div>'}).join('');
+    $('eXls').hidden=!(vis('dl_excel')&&vis('dl_emp'));$('tXls').hidden=!(vis('dl_excel')&&vis('dl_tree'));
+    ($('eq').closest('.field')||$('eq').parentNode).hidden=!vis('e_search');
+    ($('es').closest('.f')||$('es').parentNode).hidden=!vis('e_filters');($('el').closest('.f')||$('el').parentNode).hidden=!vis('e_filters');
+    $('empKpis').hidden=!vis('e_kpis');($('tLeft').closest('.chk')||$('tLeft').parentNode).hidden=!vis('t_left');
+    if(eTab==='list')renderEList();else renderETree();
+  }
+  function eFiltered(){
+    var q=$('eq').value.trim().toLowerCase(),st=$('es').value,lc=$('el').value;
+    return emps.filter(function(e){
+      if(st==='active'&&!e.active)return false;
+      if(st==='left'&&e.active)return false;
+      if(lc&&e.location!==lc)return false;
+      return !q||[e.id,e.username,e.name,e.company,e.location,e.email,e.mobile,e.manager,e.prev].join(' ').toLowerCase().indexOf(q)>-1;
+    }).sort(function(a,b){return a.name.toLowerCase()<b.name.toLowerCase()?-1:1});
+  }
+  function renderEList(){
+    var list=eFiltered(),cols=eCols();
+    $('eCount').textContent=list.length.toLocaleString('en-IN')+' of '+emps.length.toLocaleString('en-IN')+' employees';
+    var gt='grid-template-columns:'+cols.map(function(c){return c[1]}).join(' ');
+    $('etbl').style.minWidth=(cols.reduce(function(a,c){return a+c[4]},0)+cols.length*12+32)+'px';
+    var h='<div class="tr th" role="row" style="'+gt+'">'+cols.map(function(c){return '<span role="columnheader"'+(c[3]?' class="r"':'')+'>'+c[2]+'</span>'}).join('')+'</div>';
+    list.slice(0,1500).forEach(function(e){h+='<div class="tr" role="row" style="'+gt+'">'+cols.map(function(c){return eCell(c,e)}).join('')+'</div>'});
+    $('etbl').innerHTML=list.length?h:'<div class="empty">No employees match.</div>';
+  }
+  /* hierarchy: each person hangs under the employee whose name matches their "Current manager" */
+  function buildTree(rows){
+    var by={},nodes=rows.map(function(e){var n={e:e,kids:[]};if(!by[norm(e.name)])by[norm(e.name)]=n;return n});
+    var roots=[],ext={};
+    nodes.forEach(function(n){
+      var m=norm(n.e.manager),p=m?by[m]:null;
+      if(p&&p!==n)p.kids.push(n);
+      else if(m){var x=ext[m]||(ext[m]={name:n.e.manager,ext:true,kids:[]});x.kids.push(n);if(roots.indexOf(x)<0)roots.push(x)}
+      else roots.push(n);
+    });
+    var seen=[];function walk(n){if(seen.indexOf(n)>-1)return;seen.push(n);n.kids.forEach(walk)}
+    roots.forEach(walk);
+    nodes.forEach(function(n){if(seen.indexOf(n)<0){roots.push(n);walk(n)}});   // anyone caught in a loop
+    function size(n,stack){n.size=0;n.kids.forEach(function(k){if(stack.indexOf(k)>-1)return;size(k,stack.concat(k));n.size+=1+k.size})}
+    roots.forEach(function(r){size(r,[r])});
+    roots.sort(function(a,b){return b.size-a.size});
+    return roots;
+  }
+  var CHEV='<svg class="chev2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+  function treeRows(){return emps.filter(function(e){return (vis('t_left')&&$('tLeft').checked)||e.active})}
+  function renderETree(){
+    var rows=treeRows(),roots=buildTree(rows),q=$('tq').value.trim().toLowerCase(),shown=0,drawn=[];
+    function hit(n){
+      if(n._m!==undefined&&n._q===q)return n._m;n._q=q;
+      var self=!q||(n.ext?n.name:[n.e.name,n.e.id,n.e.username].join(' ')).toLowerCase().indexOf(q)>-1;
+      n._m=false;var any=n.kids.some(function(k){return hit(k)});n._m=self||any;return n._m;
+    }
+    function html(n,depth){
+      if(drawn.indexOf(n)>-1||!hit(n))return '';drawn.push(n);
+      var kids=n.kids.map(function(k){return html(k,depth+1)}).join(''),e=n.e;
+      if(!n.ext)shown++;
+      var nm=pn(n.ext?n.name:e.name);
+      var meta=n.ext?'<span class="tmeta">not in the employee list</span>':'<span class="tmeta">'+esc([e.id,e.location].filter(Boolean).join(' · '))+'</span>'+(e.active?'':'<span class="pill" style="--pc:var(--c-cancelled)">Left '+esc(eDate(e.dol)||'')+'</span>');
+      var cnt=n.kids.length?'<span class="tcount num">'+n.kids.length+' direct · '+n.size+' in team</span>':'';
+      var cls='tn'+(n.ext?' ext':'')+(!n.ext&&!e.active?' gone':'');
+      if(!kids)return '<li class="'+cls+'"><div class="leaf"><span class="sp"></span><span class="tnm">'+esc(nm)+'</span>'+meta+cnt+'</div></li>';
+      return '<li class="'+cls+'"><details'+(depth<2||q?' open':'')+'><summary>'+CHEV+'<span class="tnm">'+esc(nm)+'</span>'+meta+cnt+'</summary><ul>'+kids+'</ul></details></li>';
+    }
+    var h=roots.map(function(r){return html(r,0)}).join('');
+    $('etree').innerHTML=h||'<li class="empty">Nobody matches.</li>';
+    $('tCount').textContent=shown.toLocaleString('en-IN')+' people shown. A person sits under the employee named in their "Current manager" column.';
+  }
+  function flatTree(){
+    var roots=buildTree(treeRows()),out=[],seen=[];
+    function go(n,path,lvl){
+      if(seen.indexOf(n)>-1)return;seen.push(n);
+      var p=path.slice();
+      if(!n.ext){var e=n.e;out.push([lvl,e.id,e.name,e.username,e.location,e.active?'Working':'Left',e.manager||'',path.join(' > '),n.kids.length,n.size])}
+      n.kids.forEach(function(k){go(k,n.ext?path:path.concat(n.e.name),n.ext?lvl:lvl+1)});
+    }
+    roots.forEach(function(r){go(r,r.ext?[r.name]:[],1)});
+    return out;
+  }
+  function saveXlsx(base,head,data,types){
+    var blob=new Blob([xlsx(head,data,types)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(base+'_'+new Date().toISOString().slice(0,10)).replace(/[^A-Za-z0-9_-]+/g,'-')+'.xlsx';document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);
+  }
+  $('eRefresh').addEventListener('click',loadEmps);
+  $('empTabs').addEventListener('click',function(e){var b=e.target.closest('button[data-t]');if(!b)return;eTab=b.getAttribute('data-t');renderEmp()});
+  ['eq','es','el'].forEach(function(id){$(id).addEventListener(id==='eq'?'input':'change',function(){if(emps)renderEList()})});
+  ['tq','tLeft'].forEach(function(id){$(id).addEventListener(id==='tq'?'input':'change',function(){if(emps)renderETree()})});
+  $('tOpen').addEventListener('click',function(){$('etree').querySelectorAll('details').forEach(function(d){d.open=true})});
+  $('tShut').addEventListener('click',function(){$('etree').querySelectorAll('details').forEach(function(d){d.open=false})});
+  $('eXls').addEventListener('click',function(){
+    if(!emps||!vis('dl_excel')||!vis('dl_emp'))return;
+    var cols=eCols(),list=eFiltered();
+    saveXlsx('Employees',cols.map(function(c){return c[2]}),list.map(function(e){return cols.map(function(c){var v=c[6](e);return c[0]==='changes'&&v!==''?v:v})}),cols.map(function(c){return c[0]==='changes'?'n':'s'}));
+  });
+  $('tXls').addEventListener('click',function(){
+    if(!emps||!vis('dl_excel')||!vis('dl_tree'))return;
+    saveXlsx('Hierarchy',['Level','Emp ID','Name','Username','Location','Status','Reports to','Reporting line (top to this person)','Direct reports','People in team'],flatTree(),['n','s','s','s','s','s','s','s','n','n']);
+  });
+
+  /* ---------- DSR: daily sales report form with approval ---------- */
+  var dsr={form:null,byId:{},tab:'',rows:[],open:'',mode:'',stages:[],deep:(new URLSearchParams(location.search)).get('dsr')||''};
+  function dsrTabs(){
+    var t=[];
+    if(isAdmin||vis('dsr_new'))t.push(['new','New DSR']);
+    if(isAdmin||vis('dsr_mine'))t.push(['mine','My DSRs']);
+    if(isAdmin||vis('dsr_appr'))t.push(['approve','Approvals']);
+    return t;
+  }
+  function dsrOK(){return mode==='live'&&(isAdmin||vis('p_dsr'))&&dsrTabs().length>0}
+  function dMsg(t,kind){
+    var b=$('dsrMsg');b.hidden=!t;b.className='banner'+(kind==='err'?' err':kind==='ok'?' ok':'');
+    b.innerHTML=t?'<b>'+(kind==='err'?'Problem':kind==='ok'?'Done':'Working')+'</b><span>'+esc(t)+'</span>':'';
+  }
+  function dCall(body){
+    return post(Object.assign({token:token},body)).then(function(j){
+      if(j&&j.error==='unauthorized'){sessionEnded();throw new Error('')}
+      return j||{};
+    });
+  }
+  function dFail(e){if(e&&e.message)dMsg('Could not reach the server. '+e.message,'err')}
+  function dVar(st){return {Approved:'--c-confirmed',Rejected:'--c-cancelled',Pending:'--c-resale'}[st]||'--c-other'}
+  function dPill(st){return '<span class="pill" style="--pc:var('+dVar(st)+')">'+esc(st)+'</span>'}
+  function dsrEnter(){
+    var tabs=dsrTabs();if(!tabs.length)return;
+    if(dsr.deep)dsr.tab=tabs.some(function(t){return t[0]==='approve'})?'approve':'mine';
+    if(!tabs.some(function(t){return t[0]===dsr.tab}))dsr.tab=tabs[0][0];
+    dsrShow();
+  }
+  function dsrShow(){
+    var tabs=dsrTabs();
+    $('dsrTabs').innerHTML=tabs.map(function(t){return '<button type="button" class="btn" data-d="'+t[0]+'" aria-pressed="'+(t[0]===dsr.tab)+'">'+t[1]+'</button>'}).join('');
+    $('dsrTabs').hidden=tabs.length<2;
+    $('dsrNew').hidden=dsr.tab!=='new';$('dsrList').hidden=dsr.tab==='new';$('dsrDetail').hidden=true;
+    dMsg('');
+    if(dsr.tab==='new')dsrLoadForm();else dsrLoadList();
+  }
+  function dsrLoadForm(){
+    if(dsr.form)return;
+    dMsg('Loading the form…');
+    dCall({action:'dsrForm'}).then(function(j){
+      if(j.error){dMsg(j.error,'err');return}
+      dsr.form=j.fields;dsr.mode=j.mode;dsr.stages=j.stages||[];dsr.byId={};
+      j.fields.forEach(function(f){if(!f.section)dsr.byId[f.id]=f});
+      dsrDraw();dMsg('');
+    }).catch(dFail);
+  }
+  function dsrField(f){
+    var id='df-'+f.id,t=f.type,inp;
+    var lab='<label for="'+id+'">'+esc(f.label)+(f.req?' <span class="rq" aria-hidden="true">*</span>':'')+'</label>'+(f.hint?'<small class="fh">'+esc(f.hint)+'</small>':'');
+    if(t==='self')inp='<input id="'+id+'" type="email" value="'+esc(userEmail)+'" readonly>';
+    else if(t==='date')inp='<input id="'+id+'" type="date">';
+    else if(t==='select')inp='<select id="'+id+'"><option value="">Choose</option>'+f.options.map(function(o){return '<option>'+esc(o)+'</option>'}).join('')+'</select>';
+    else if(t==='radio'||t==='radio_other')inp='<div class="seg" id="'+id+'" role="radiogroup">'+f.options.map(function(o){return '<label><input type="radio" name="'+id+'" value="'+esc(o)+'"> '+esc(o)+'</label>'}).join('')+(t==='radio_other'?'<label><input type="radio" name="'+id+'" value="__other"> Other:</label><input class="oth" id="'+id+'-o" type="text" placeholder="Type here" hidden>':'')+'</div>';
+    else if(t==='textarea')inp='<textarea id="'+id+'" rows="3" maxlength="500"></textarea>';
+    else inp='<input id="'+id+'" type="'+(t==='email'?'email':'text')+'"'+(t==='mobile'||t==='digits'?' inputmode="numeric"':t==='num'?' inputmode="decimal"':'')+(t==='upper'?' style="text-transform:uppercase"':'')+' maxlength="500">';
+    return '<div class="f dsrf" data-id="'+f.id+'"'+(f.wide?' style="grid-column:1/-1"':'')+'>'+lab+inp+'<small class="fe" id="er-'+f.id+'" role="alert"></small></div>';
+  }
+  function dsrDraw(){
+    var how=dsr.mode==='ALL_AT_ONCE'?'All approvers are emailed at once and all of them must approve.':'The approvers are emailed one after the other: '+dsr.stages.join(', then ')+'.';
+    var h='<p class="hint" style="margin:0 0 6px">Questions marked <span class="rq">*</span> are required. '+esc(how)+' A copy of your answers is emailed to you.</p>',open=false;
+    dsr.form.forEach(function(f){
+      if(f.section){if(open)h+='</div></fieldset>';h+='<fieldset class="dim" style="margin-top:16px"><legend>'+esc(f.section)+'</legend><div class="fgrid2">';open=true;return}
+      h+=dsrField(f);
+    });
+    if(open)h+='</div></fieldset>';
+    $('dsrForm').innerHTML=h+'<div class="abtns"><button class="go sm" id="dsrSubmit" type="submit">Submit</button><button class="btn" id="dsrClear" type="button">Clear form</button></div>';
+  }
+  function dsrCollect(){
+    var v={};
+    Object.keys(dsr.byId).forEach(function(k){
+      var f=dsr.byId[k],id='df-'+k,val='';
+      if(f.type==='self')return;
+      if(f.type==='radio'||f.type==='radio_other'){
+        var c=document.querySelector('input[name="'+id+'"]:checked');val=c?c.value:'';
+        if(val==='__other')val='Other: '+($(id+'-o').value||'').trim();
+      }else val=($(id).value||'').trim();
+      v[k]=val;
+    });
+    return v;
+  }
+  function dsrCheck(v){
+    var errs={};
+    Object.keys(dsr.byId).forEach(function(k){
+      var f=dsr.byId[k];if(f.type==='self')return;
+      var x=(v[k]||'').trim(),need=f.req;
+      if(f.cond)need=(v[f.cond.id]||'').toUpperCase()===f.cond.eq;
+      if(!x){if(need)errs[k]='This is a required question.';return}
+      if(f.type==='mobile'&&!/^\d{10,15}$/.test(x))errs[k]='Enter 10 to 15 digits, numbers only.';
+      else if(f.type==='digits'&&!/^\d{1,15}$/.test(x))errs[k]='Numbers only.';
+      else if(f.type==='num'&&!/^\d+(\.\d+)?$/.test(x.replace(/[,\s]/g,'')))errs[k]='Numbers only.';
+      else if(f.type==='email'&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x))errs[k]='Enter a valid email address.';
+      else if(f.type==='radio_other'&&/^other:\s*$/i.test(x))errs[k]='Write your answer next to Other.';
+    });
+    return errs;
+  }
+  function dsrReset(){
+    $('dsrForm').reset();
+    document.querySelectorAll('#dsrForm .oth').forEach(function(el){el.hidden=true});
+    document.querySelectorAll('#dsrForm .fe').forEach(function(el){el.textContent=''});
+  }
+  function dsrSubmit(){
+    var v=dsrCollect(),errs=dsrCheck(v),ids=Object.keys(errs);
+    document.querySelectorAll('#dsrForm .fe').forEach(function(el){el.textContent=''});
+    if(ids.length){
+      ids.forEach(function(k){$('er-'+k).textContent=errs[k]});
+      dMsg('Please fix '+ids.length+' marked question'+(ids.length>1?'s':'')+'.','err');
+      var el=document.querySelector('.dsrf[data-id="'+ids[0]+'"]');if(el)el.scrollIntoView({block:'center'});
+      return;
+    }
+    var b=$('dsrSubmit');b.disabled=true;dMsg('Submitting…');
+    dCall({action:'dsrSubmit',values:v}).then(function(j){
+      b.disabled=false;
+      if(j.fields)Object.keys(j.fields).forEach(function(k){$('er-'+k).textContent=j.fields[k]});
+      if(j.error){dMsg(j.error,'err');return}
+      dsrReset();
+      var msg='Submitted. Your DSR number is '+j.id+'.'+((j.mailed||[]).length?' An approval email was sent to '+j.mailed.join(', ')+'.':'')+((j.mailErrors||[]).length?' Email problem: '+j.mailErrors[0]:'');
+      if(dsrTabs().some(function(t){return t[0]==='mine'})){dsr.tab='mine';dsrShow()}
+      dMsg(msg,(j.mailErrors||[]).length?'err':'ok');
+      window.scrollTo(0,0);
+    }).catch(function(e){b.disabled=false;dFail(e)});
+  }
+  function dsrLoadList(){
+    $('dsrRows').innerHTML='<div class="empty">Loading…</div>';
+    dCall({action:'dsrList',scope:dsr.tab==='approve'?'approve':'mine'}).then(function(j){
+      if(j.error){dMsg(j.error,'err');$('dsrRows').innerHTML='';return}
+      dsr.rows=j.rows||[];dsrDrawList();
+      if(dsr.deep){var id=dsr.deep;dsr.deep='';try{history.replaceState(null,'',location.pathname)}catch(e){}dsrOpen(id)}
+    }).catch(dFail);
+  }
+  function dsrDrawList(){
+    var gt='grid-template-columns:96px 112px minmax(140px,1.2fr) minmax(130px,1fr) 90px 120px minmax(160px,1.3fr)';
+    if(!dsr.rows.length){$('dsrRows').innerHTML='<div class="empty">'+(dsr.tab==='approve'?'Nothing is waiting for you.':'You have not submitted a DSR yet.')+'</div>';return}
+    var h='<div class="tr th" style="'+gt+'"><span>DSR no.</span><span>Booked on</span><span>Client</span><span>Project</span><span>Unit</span><span>Status</span><span>Waiting for / reason</span></div>';
+    dsr.rows.forEach(function(r){
+      var note=r.status==='Rejected'?r.reason:r.status==='Pending'?(r.myTurn?'Your turn · ':'')+'waiting for '+r.waitingFor:'Approved'+(r.decidedAt?' · '+r.decidedAt:'');
+      h+='<div class="tr dsrrow" role="button" tabindex="0" data-id="'+esc(r.id)+'" style="'+gt+'"><span class="num">'+esc(r.id)+'</span><span class="num muted">'+esc(r.booked)+'</span><span class="nmx">'+esc(r.client)+'</span><span>'+esc(r.project)+'</span><span class="num">'+esc(r.unit)+'</span>'+dPill(r.status)+'<span class="muted">'+esc(note)+'</span></div>';
+    });
+    $('dsrRows').innerHTML=h;
+  }
+  function dsrOpen(id){
+    dsr.open=id;$('dsrDetail').hidden=false;$('dsrDetail').innerHTML='<div class="empty">Loading…</div>';
+    dCall({action:'dsrGet',id:id}).then(function(j){
+      if(j.error){$('dsrDetail').innerHTML='<div class="empty">'+esc(j.error)+'</div>';return}
+      dsrDrawDetail(j);$('dsrDetail').scrollIntoView({behavior:'smooth',block:'start'});
+    }).catch(dFail);
+  }
+  function dsrDrawDetail(j){
+    var s=j.summary;
+    var h='<div class="dsr-head"><h2>'+esc(s.id)+'</h2>'+dPill(s.status)+'<button class="btn" id="dsrClose" type="button">Close</button></div><p class="muted" style="margin:6px 0 0">Submitted by '+esc(s.by)+' on '+esc(s.at)+'</p>';
+    if(s.status==='Rejected')h+='<div class="banner err" style="margin-top:14px"><b>Rejected</b><span>'+esc(s.reason)+' (by '+esc(s.decidedBy)+')</span></div>';
+    h+='<ol class="stages">'+j.stages.map(function(t){return '<li>'+dPill(t.status)+'<div><b>'+esc(t.role)+'</b><small>'+esc(t.email)+(t.at?' · '+esc(t.at):'')+'</small>'+(t.reason?'<small>“'+esc(t.reason)+'”</small>':'')+'</div></li>'}).join('')+'</ol>';
+    if(s.myTurn&&s.status==='Pending'&&(isAdmin||vis('dsr_appr')))h+='<div class="dsr-act"><label for="dsrWhy">Comment (required when you reject)</label><textarea id="dsrWhy" rows="2" maxlength="500"></textarea><div class="abtns" style="margin:0"><button class="go sm" id="dsrAppr" type="button">Approve</button><button class="btn danger" id="dsrRej" type="button">Reject</button></div></div>';
+    h+='<div class="dsr-kv">'+j.fields.map(function(f){return '<div><small>'+esc(f.label)+'</small><span>'+(esc(f.value)||'—')+'</span></div>'}).join('')+'</div>';
+    $('dsrDetail').innerHTML=h;
+  }
+  function dsrDecide(dec){
+    var why=($('dsrWhy').value||'').trim(),id=dsr.open;
+    if(dec==='REJECT'&&why.length<3){dMsg('Please write the reason for rejecting.','err');$('dsrWhy').focus();return}
+    $('dsrAppr').disabled=true;$('dsrRej').disabled=true;dMsg('Saving…');
+    dCall({action:'dsrDecide',id:id,decision:dec,reason:why}).then(function(j){
+      if(j.error){dMsg(j.error,'err');dsrOpen(id);return}
+      dMsg(dec==='APPROVE'?(j.status==='Approved'?'Approved. All approvals are done.':'Approved. It has moved to the next approver.'):'Rejected. The person who submitted it will get an email with your reason.',(j.mailErrors||[]).length?'err':'ok');
+      dsrLoadList();dsrOpen(id);
+    }).catch(dFail);
+  }
+  $('dsrTabs').addEventListener('click',function(e){var b=e.target.closest('button[data-d]');if(!b)return;dsr.tab=b.getAttribute('data-d');dsrShow()});
+  $('dsrForm').addEventListener('submit',function(e){e.preventDefault();dsrSubmit()});
+  $('dsrForm').addEventListener('click',function(e){if(e.target.id==='dsrClear'){dsrReset();dMsg('')}});
+  $('dsrForm').addEventListener('input',function(e){
+    var t=e.target,f=dsr.byId[(t.id||'').replace(/^df-/,'')];if(!f)return;
+    if(f.type==='upper'){var p=t.selectionStart;t.value=t.value.toUpperCase();try{t.setSelectionRange(p,p)}catch(x){}}
+    else if(f.type==='mobile'||f.type==='digits')t.value=t.value.replace(/\D/g,'');
+    else if(f.type==='num')t.value=t.value.replace(/[^\d.,]/g,'');
+    $('er-'+f.id).textContent='';
+  });
+  $('dsrForm').addEventListener('change',function(e){
+    var t=e.target;
+    if(t.type==='radio'&&/^df-/.test(t.name)){var o=$(t.name+'-o');if(o)o.hidden=t.value!=='__other'}
+    var f=dsr.byId[(t.id||t.name||'').replace(/^df-/,'')];if(f)$('er-'+f.id).textContent='';
+  });
+  $('dsrRows').addEventListener('click',function(e){var r=e.target.closest('.dsrrow');if(r)dsrOpen(r.getAttribute('data-id'))});
+  $('dsrRows').addEventListener('keydown',function(e){var r=e.target.closest('.dsrrow');if(r&&(e.key==='Enter'||e.key===' ')){e.preventDefault();dsrOpen(r.getAttribute('data-id'))}});
+  $('dsrDetail').addEventListener('click',function(e){
+    var id=e.target.id;
+    if(id==='dsrClose')$('dsrDetail').hidden=true;
+    else if(id==='dsrAppr')dsrDecide('APPROVE');
+    else if(id==='dsrRej')dsrDecide('REJECT');
+  });
+
+  /* ---------- home: a city that builds itself, drawn over a live data network ---------- */
+  var HA={cv:null,x:null,raf:0,on:false,w:0,h:0,g:0,t:0,last:0,fr:0,light:false,b:[],nd:[],pk:[],cr:[]};
+  function rnd(a,b){return a+Math.random()*(b-a)}
+  function homeSetup(){
+    var cv=$('homeCv'),r=cv.parentNode.getBoundingClientRect();
+    if(!cv.getContext||r.width<50||r.height<50)return false;
+    var d=Math.min(window.devicePixelRatio||1,2);
+    HA.cv=cv;HA.x=cv.getContext('2d');HA.w=r.width;HA.h=r.height;
+    cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);HA.x.setTransform(d,0,0,d,0,0);
+    var W=HA.w,H=HA.h,n=Math.max(6,Math.min(16,Math.round(W/90))),bw=(W*.94-W*.01*(n-1))/n,i;
+    HA.g=H*.86;HA.b=[];HA.nd=[];HA.pk=[];
+    for(i=0;i<n;i++){var w=bw*rnd(.8,1.15);HA.b.push({x:W*.03+i*(bw+W*.01)+(bw-w)/2,w:w,fh:Math.max(9,H/44),build:rnd(7,11),hold:rnd(6,10),off:-rnd(0,24),ci:-99,seed:Math.floor(rnd(0,99)),fl:10,k:i%3});}
+    for(i=0,n=Math.min(70,Math.round(W*H/20000));i<n;i++)HA.nd.push({x:rnd(0,W),y:rnd(0,HA.g*.9),vx:rnd(-.12,.12),vy:rnd(-.08,.08)});
+    HA.cr=[{x:W*.27,s:0},{x:W*.73,s:2}].map(function(c){c.hx=c.x;c.hy=HA.g*.4;return c});
+    return true;
+  }
+  function bState(b){
+    var cyc=b.build+b.hold+1.4,u=HA.t-b.off,ci=Math.floor(u/cyc),bt=u-ci*cyc;
+    if(ci!==b.ci){b.ci=ci;b.fl=Math.max(5,Math.round(HA.h*rnd(.2,.62)/b.fh))}
+    return {p:bt<b.build?1-Math.pow(1-bt/b.build,2.2):1,a:bt>b.build+b.hold?1-(bt-b.build-b.hold)/1.4:1,building:bt<b.build};
+  }
+  function homeDraw(dt){
+    var c=HA.x,W=HA.w,H=HA.h,g=HA.g,t=HA.t,i,j;
+    if(HA.fr++%30===0){var th=document.documentElement.getAttribute('data-theme');HA.light=th?th==='light':window.matchMedia('(prefers-color-scheme: light)').matches}
+    var L=HA.light,A=L?'8,121,110':'94,234,212',B=L?'69,83,214':'124,140,255',Y=L?'183,121,31':'252,211,77',K=L?'16,23,51':'238,242,255';
+    var scanX=((t*.07)%1.25-.12)*W;
+    c.clearRect(0,0,W,H);
+    var gr=c.createRadialGradient(W*.5,g,10,W*.5,g,W*.7);gr.addColorStop(0,'rgba('+A+','+(L?.14:.2)+')');gr.addColorStop(1,'rgba('+A+',0)');c.fillStyle=gr;c.fillRect(0,0,W,H);
+    /* data network */
+    HA.nd.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>g*.9)p.vy*=-1});
+    c.lineWidth=1;
+    for(i=0;i<HA.nd.length;i++)for(j=i+1;j<HA.nd.length;j++){
+      var dx=HA.nd[i].x-HA.nd[j].x,dy=HA.nd[i].y-HA.nd[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<140){c.strokeStyle='rgba('+B+','+((1-d/140)*(L?.3:.28)).toFixed(3)+')';c.beginPath();c.moveTo(HA.nd[i].x,HA.nd[i].y);c.lineTo(HA.nd[j].x,HA.nd[j].y);c.stroke();if(Math.random()<.0012*dt*60&&HA.pk.length<14)HA.pk.push({a:HA.nd[i],b:HA.nd[j],u:0})}
+    }
+    HA.nd.forEach(function(p,k){c.fillStyle='rgba('+A+','+(.35+.3*Math.sin(t*1.5+k)).toFixed(2)+')';c.beginPath();c.arc(p.x,p.y,1.8,0,6.283);c.fill()});
+    HA.pk=HA.pk.filter(function(k){k.u+=dt*.9;if(k.u>=1)return false;c.fillStyle='rgba('+Y+',.95)';c.beginPath();c.arc(k.a.x+(k.b.x-k.a.x)*k.u,k.a.y+(k.b.y-k.a.y)*k.u,2.4,0,6.283);c.fill();return true});
+    /* buildings */
+    HA.b.forEach(function(b){
+      var s=bState(b),fh=b.fh,tot=b.fl*fh,bh=tot*s.p,top=g-bh,bf=Math.floor(bh/fh),ac=b.k===1?B:A;
+      c.globalAlpha=s.a;
+      if(s.building){c.strokeStyle='rgba('+B+','+(L?.4:.45)+')';c.setLineDash([4,5]);c.strokeRect(b.x+.5,g-tot+.5,b.w,tot);c.setLineDash([])}
+      var bg=c.createLinearGradient(0,top,0,g);bg.addColorStop(0,'rgba('+ac+','+(L?.24:.28)+')');bg.addColorStop(1,'rgba('+K+','+(L?.05:.04)+')');
+      c.fillStyle=bg;c.fillRect(b.x,top,b.w,bh);c.strokeStyle='rgba('+ac+',.6)';c.strokeRect(b.x+.5,top+.5,b.w-1,Math.max(0,bh-1));
+      var cols=Math.max(2,Math.floor(b.w/14)),cw=b.w/cols;
+      for(var f=0;f<bf;f++)for(var q=0;q<cols;q++){
+        var hs=(f*31+q*17+b.seed*7)%11;if(hs>6)continue;
+        var fl=.35+.35*Math.sin(t*1.3+hs+f);if(Math.abs(b.x+q*cw-scanX)<46)fl=.95;
+        c.fillStyle='rgba('+(hs<2?Y:A)+','+(fl*(L?.75:.9)).toFixed(2)+')';
+        c.fillRect(b.x+q*cw+cw*.2,g-(f+1)*fh+fh*.25,cw*.6,fh*.5);
+      }
+      if(s.building){
+        c.fillStyle='rgba('+Y+',.95)';c.fillRect(b.x,top-1,b.w,2);
+        for(i=0;i<3;i++)c.fillRect(b.x+Math.random()*b.w,top-Math.random()*6,1.6,1.6);
+        c.strokeStyle='rgba('+K+',.35)';c.beginPath();c.moveTo(b.x-2,g);c.lineTo(b.x-2,top-fh*2);c.moveTo(b.x+b.w+2,g);c.lineTo(b.x+b.w+2,top-fh*2);
+        for(var z=top;z<g&&z<top+fh*5;z+=fh){c.moveTo(b.x-2,z);c.lineTo(b.x+b.w+2,z+fh)}c.stroke();
+      }else{
+        c.strokeStyle='rgba('+K+',.5)';c.beginPath();c.moveTo(b.x+b.w/2,top);c.lineTo(b.x+b.w/2,top-fh*1.6);c.stroke();
+        if(Math.floor(t*1.6+b.seed)%2){c.fillStyle='rgba('+Y+',1)';c.beginPath();c.arc(b.x+b.w/2,top-fh*1.6,2.2,0,6.283);c.fill()}
+      }
+      c.globalAlpha=1;
+    });
+    /* cranes */
+    HA.cr.forEach(function(k,n){
+      var mx=k.x,mh=H*.66,top=g-mh,jl=W*.17,tg=null,bd=1e9;
+      HA.b.forEach(function(b){var s=bState(b);if(s.building){var d=Math.abs(b.x+b.w/2-mx);if(d<bd&&d<W*.3){bd=d;tg={x:b.x+b.w/2,y:g-b.fl*b.fh*s.p-20}}}});
+      var tx=tg?tg.x:mx+Math.sin(t*.4+n)*jl*.5,ty=tg?tg.y:g-H*.22;
+      k.hx+=(tx-k.hx)*.03;k.hy+=(ty-k.hy)*.03;
+      var hx=Math.max(mx-jl*.38+8,Math.min(mx+jl-4,k.hx))+Math.sin(t*1.6+n)*4;
+      c.strokeStyle='rgba('+K+',.55)';c.lineWidth=1.2;c.beginPath();
+      c.moveTo(mx-5,g);c.lineTo(mx-5,top);c.moveTo(mx+5,g);c.lineTo(mx+5,top);
+      for(var y=g;y>top+12;y-=16){c.moveTo(mx-5,y);c.lineTo(mx+5,y-16)}
+      c.moveTo(mx-jl*.38,top);c.lineTo(mx+jl,top);c.moveTo(mx-jl*.38,top+7);c.lineTo(mx+jl,top);c.moveTo(mx,top-16);c.lineTo(mx-jl*.38,top);c.moveTo(mx,top-16);c.lineTo(mx+jl,top);c.stroke();
+      c.fillStyle='rgba('+K+',.4)';c.fillRect(mx-jl*.38-4,top,12,14);c.fillRect(mx-7,top-4,14,10);
+      c.strokeStyle='rgba('+Y+',.9)';c.beginPath();c.moveTo(hx,top+2);c.lineTo(hx,k.hy);c.stroke();
+      c.fillStyle='rgba('+Y+',.95)';c.fillRect(hx-8,k.hy,16,9);c.fillStyle='rgba('+K+',.5)';c.fillRect(hx-3,top,6,4);
+      c.lineWidth=1;
+    });
+    /* scan beam, ground */
+    var sg=c.createLinearGradient(scanX-70,0,scanX,0);sg.addColorStop(0,'rgba('+A+',0)');sg.addColorStop(1,'rgba('+A+','+(L?.14:.18)+')');c.fillStyle=sg;c.fillRect(scanX-70,0,70,g);
+    c.fillStyle='rgba('+A+',.7)';c.fillRect(scanX,0,1.5,g);
+    c.fillStyle='rgba('+K+',.18)';c.fillRect(0,g,W,1.5);
+    for(i=-(t*30%44);i<W;i+=44)c.fillRect(i,g+16,20,2);
+  }
+  function homeLoop(ts){
+    if(!HA.on)return;
+    HA.raf=requestAnimationFrame(homeLoop);
+    var dt=Math.min(.05,(ts-HA.last)/1000||.016);HA.last=ts;HA.t+=dt;homeDraw(dt);
+  }
+  function homeAnim(on){
+    if(!on){HA.on=false;cancelAnimationFrame(HA.raf);return}
+    if(HA.on)return;
+    if(!homeSetup())return;
+    HA.on=true;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){HA.t=40;homeDraw(0);return}
+    HA.last=performance.now();HA.raf=requestAnimationFrame(homeLoop);
+  }
+  window.addEventListener('resize',function(){if(HA.on){HA.on=false;cancelAnimationFrame(HA.raf);homeAnim(true)}});
+
+  if(CONFIG.AUTO_REFRESH_SECONDS>0)setInterval(function(){if(token&&(view==='report'||view==='home'))load()},CONFIG.AUTO_REFRESH_SECONDS*1000);
   load();
 })();
 </script>
