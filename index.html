@@ -326,6 +326,23 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 .dsr-act{margin-top:18px;padding:16px;border-radius:18px;border:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
 .dsr-head{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 .dsr-head .btn{margin-left:auto}
+.fb-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.fb-bar .sp{flex:1}
+.fbl{display:grid;gap:10px}
+.fbi{border:1px solid var(--line);border-radius:18px;background:var(--row);padding:10px 12px}
+.fbi.off{opacity:.62}
+.fbi.fbs{background:transparent;border-style:dashed}
+.fbh{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.fbn{font-weight:650;flex:1 1 220px;min-width:0;overflow-wrap:anywhere}
+.fbc{display:flex;gap:6px;margin-left:auto}
+.fbc .btn{min-width:44px;min-height:44px;padding:0 12px}
+.fbs input[data-p=section]{flex:1 1 200px;min-width:0;min-height:44px;padding:0 14px;border-radius:16px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:inherit}
+.fbb{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 18px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.fbb .f{margin:0}.fbb .wide{grid-column:1/-1}
+.fbb input[type=text],.fbb select,.fbb textarea{width:100%}
+.fbk{display:flex;flex-wrap:wrap;gap:8px 22px;grid-column:1/-1}
+.fbk label{display:flex;align-items:center;gap:8px;min-height:44px;font-weight:600;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink)}
+.fbnote{grid-column:1/-1;margin:0;font-size:12.5px;color:var(--muted)}
 .dsrrow{cursor:pointer}.dsrrow:hover{border-color:var(--accent)}
 </style>
 </head>
@@ -502,6 +519,7 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
     <div class="banner" id="dsrMsg" role="status" hidden></div>
     <div class="tabs" id="dsrTabs"></div>
     <div class="panel glass" id="dsrNew" hidden style="padding:24px"><form id="dsrForm" novalidate autocomplete="off"></form></div>
+    <div class="panel glass" id="dsrEdit" hidden style="padding:24px"></div>
     <div class="panel glass" id="dsrList" hidden style="padding:18px"><div class="scrollx"><div class="tbl" id="dsrRows" style="min-width:980px"></div></div></div>
     <div class="panel glass" id="dsrDetail" hidden style="padding:24px"></div>
   </section>
@@ -526,8 +544,8 @@ footer{padding:8px 4px 0;color:var(--faint);font-size:13px}
 <script>
 /* ============ SETTINGS: edit these ============ */
 var CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbwmusincaSJbilHkV74pe8VZaA3Zl9ftwyj_NhN4VRAhZ2GTi_gcnpuuXdA1KSw8JE6/exec',               // Paste your Apps Script Web app URL here (ends with /exec). Empty = sample data, no login.
-  EMP_API_URL: 'https://script.google.com/macros/s/AKfycbzCWXHQA7CqoTv10Qj5_IBdWjIsH3rflnXBQj3pca1SGvdYzHZ2t6fdfItQcaqmvH4/exec',           // Only if the employee list is in a SECOND Google Sheet: paste that script's /exec link here. Empty = same sheet as above.
+  API_URL: 'https://script.google.com/macros/s/AKfycbwjGOmarIBVNx4XXWVCCt3A33B2tEfGT5KsPp0qW6xO9swnnDtd70BD6DSliIjmYfPg/exec',               // Paste your Apps Script Web app URL here (ends with /exec). Empty = sample data, no login.
+  EMP_API_URL: 'https://script.google.com/macros/s/AKfycbwJNGG7ix-eePUWMw5Ldg2LqSqNJpc2b0_cLvhKJ11hx9KSLXijbQv7GJAF1Utcl1m7/exec',           // Only if the employee list is in a SECOND Google Sheet: paste that script's /exec link here. Empty = same sheet as above.
   AUTO_REFRESH_SECONDS: 0,   // 0 = off. Example: 300 reloads the data every 5 minutes.
   MAX_TABLE_ROWS: 200
 };
@@ -660,7 +678,7 @@ var CONFIG = {
   function showLogin(msg){
     data=[];
     isAdmin=false;limited=false;view='home';adm.draft=null;adm.users=[];empAcc=[];emps=null;eTab='list';['eq','tq'].forEach(function(id){$(id).value=''});$('es').value='';
-    $('home').hidden=true;homeAnim(false);dsr.form=null;dsr.rows=[];dsr.tab='';$('dsrForm').innerHTML='';$('app').hidden=true;$('admin').hidden=true;$('emp').hidden=true;$('navApp').hidden=true;$('login').hidden=false;
+    $('home').hidden=true;homeAnim(false);dsr.form=null;dsr.rows=[];dsr.tab='';$('dsrForm').innerHTML='';if(typeof fb==='object'&&fb){fb.items=null;fb.dirty=false;fb.open={}}$('dsrEdit').innerHTML='';$('app').hidden=true;$('admin').hidden=true;$('emp').hidden=true;$('navApp').hidden=true;$('login').hidden=false;
     ['rows','tbl','detail','fgrid','etbl','etree','empKpis'].forEach(function(id){$(id).innerHTML=''});
     $('loginMsg').textContent=msg||'';
     $('pw').value='';
@@ -1084,24 +1102,26 @@ var CONFIG = {
       '@escope',
       ['Downloads',[['dl_emp','Download Excel of the employee list'],['dl_tree','Download Excel of the hierarchy']]]]],
     ['DSR page','Opens from DSR in the top bar. The server checks these rights too, so they cannot be skipped.',[
-      ['DSR tabs',[['p_dsr','Show the DSR page'],['dsr_new','New DSR form'],['dsr_mine','My DSRs (the ones this person submitted)'],['dsr_appr','Approvals (needed by approvers; Admins can approve any DSR)']]]]],
+      ['DSR tabs',[['p_dsr','Show the DSR page'],['dsr_new','New DSR form'],['dsr_mine','My DSRs (the ones this person submitted)'],['dsr_appr','Approvals (needed by approvers; Admins can approve any DSR)']]],
+      ['Change the form',[['g_dsr_edit','Form settings tab: change the questions (text, required or optional, dropdown choices, order, add or hide). Off unless you tick it. Admins always can.']]]]],
     ['Admin page','Opens from Admin in the top bar.',['@admin']]
   ];
   var ALLP=['Every page',[['dl_excel','Allow Excel downloads (master switch, the download ticks on each page work only when this is on)']]];
   var GROUPS=[ALLP];
   PAGES.forEach(function(p){p[2].forEach(function(b){if(typeof b!=='string')GROUPS.push(b)})});
   function isX(k){return k.indexOf('x_')===0}
+  function isG(k){return k.indexOf('g_')===0}
   function isRep(k){return REPORTS.some(function(r){return r[0]===k})}
   function initVis(u){
     var o={},hh=(u&&u.hidden)||[];
     GROUPS.forEach(function(g){g[1].forEach(function(it){var k=it[0];
-      o[k]=isX(k)?!!(u&&u.empAccess&&u.empAccess.indexOf(k.slice(2))>-1):k==='credit'?(!u||u.credit!==false):isRep(k)?(!u||!u.reports||u.reports.indexOf(k)>-1):hh.indexOf(k)<0})});
+      o[k]=isG(k)?hh.indexOf(k)>-1:isX(k)?!!(u&&u.empAccess&&u.empAccess.indexOf(k.slice(2))>-1):k==='credit'?(!u||u.credit!==false):isRep(k)?(!u||!u.reports||u.reports.indexOf(k)>-1):hh.indexOf(k)<0})});
     return o;
   }
   function syncVis(d){
     d.reports=REPORTS.map(function(r){return r[0]}).filter(function(k){return d.vis[k]});
     d.credit=!!d.vis.credit;d.hidden=[];d.empAccess=['list','tree'].filter(function(t){return d.vis['x_'+t]});
-    GROUPS.forEach(function(g){g[1].forEach(function(it){var k=it[0];if(!d.vis[k]&&k!=='credit'&&!isRep(k)&&!isX(k))d.hidden.push(k)})});
+    GROUPS.forEach(function(g){g[1].forEach(function(it){var k=it[0];if(isG(k)){if(d.vis[k])d.hidden.push(k)}else if(!d.vis[k]&&k!=='credit'&&!isRep(k)&&!isX(k))d.hidden.push(k)})});
   }
 
   function admMsg(t,kind){
@@ -1125,7 +1145,7 @@ var CONFIG = {
   function scopeSummary(u){
     var p=[];
     DIMS.forEach(function(d){var s=u.scopes[d[0]];if(s!==null&&s!==undefined)p.push(d[1]+' '+s.length)});
-    if(u.reports&&u.reports.length<REPORTS.length)p.push('Reports '+u.reports.length);if(u.credit===false)p.push('No credit note');if(u.hidden&&u.hidden.length)p.push(u.hidden.length+' boxes hidden');if(u.level)p.push('Team report: '+u.level+(u.emp?' · '+u.emp:''));
+    if(u.reports&&u.reports.length<REPORTS.length)p.push('Reports '+u.reports.length);if(u.credit===false)p.push('No credit note');var hn=(u.hidden||[]).filter(function(k){return !isG(k)}).length;if(hn)p.push(hn+' boxes hidden');if((u.hidden||[]).indexOf('g_dsr_edit')>-1)p.push('Can change the DSR form');if(u.level)p.push('Team report: '+u.level+(u.emp?' · '+u.emp:''));
     if(u.empAccess&&u.empAccess.length)p.push('Employees: '+u.empAccess.map(function(t){return t==='tree'?'hierarchy':t}).join(', ')+(u.empScope==='TEAM'?' (own team)':''));
     return p.length?'Limited: '+p.join(' · '):'Sees all data';
   }
@@ -1254,7 +1274,7 @@ var CONFIG = {
     if(!d.active){s.textContent='This person is blocked and sees nothing.';return}
     var p=[];
     DIMS.forEach(function(x){var v=d.scopes[x[0]];if(v!==null)p.push(x[1]+': '+(v.length?v.length+' selected':'none selected'))});
-    if(d.reports.length<REPORTS.length)p.push('Reports: '+d.reports.length+' of '+REPORTS.length);if(!d.credit)p.push('No credit note');if(d.hidden.length)p.push(d.hidden.length+' boxes hidden');if(d.level)p.push('Team report: '+d.level+(d.emp?' · '+d.emp:''));if(d.empAccess.length)p.push('Employees: '+d.empAccess.join(' + ')+(d.empScope==='TEAM'?' (own team)':''));
+    if(d.reports.length<REPORTS.length)p.push('Reports: '+d.reports.length+' of '+REPORTS.length);if(!d.credit)p.push('No credit note');var hn=d.hidden.filter(function(k){return !isG(k)}).length;if(hn)p.push(hn+' boxes hidden');if(d.hidden.indexOf('g_dsr_edit')>-1)p.push('Can change the DSR form');if(d.level)p.push('Team report: '+d.level+(d.emp?' · '+d.emp:''));if(d.empAccess.length)p.push('Employees: '+d.empAccess.join(' + ')+(d.empScope==='TEAM'?' (own team)':''));
     s.textContent=p.length?'Rows must match every limit. '+p.join(' · ')+'.':'This person sees all data.';
   }
 
@@ -1510,8 +1530,10 @@ var CONFIG = {
     if(isAdmin||vis('dsr_new'))t.push(['new','New DSR']);
     if(isAdmin||vis('dsr_mine'))t.push(['mine','My DSRs']);
     if(isAdmin||vis('dsr_appr'))t.push(['approve','Approvals']);
+    if(fbCan())t.push(['edit','Form settings']);
     return t;
   }
+  function fbCan(){return isAdmin||hid.indexOf('g_dsr_edit')>-1}
   function dsrOK(){return mode==='live'&&(isAdmin||vis('p_dsr'))&&dsrTabs().length>0}
   function dMsg(t,kind){
     var b=$('dsrMsg');b.hidden=!t;b.className='banner'+(kind==='err'?' err':kind==='ok'?' ok':'');
@@ -1536,9 +1558,9 @@ var CONFIG = {
     var tabs=dsrTabs();
     $('dsrTabs').innerHTML=tabs.map(function(t){return '<button type="button" class="btn" data-d="'+t[0]+'" aria-pressed="'+(t[0]===dsr.tab)+'">'+t[1]+'</button>'}).join('');
     $('dsrTabs').hidden=tabs.length<2;
-    $('dsrNew').hidden=dsr.tab!=='new';$('dsrList').hidden=dsr.tab==='new';$('dsrDetail').hidden=true;
+    $('dsrNew').hidden=dsr.tab!=='new';$('dsrEdit').hidden=dsr.tab!=='edit';$('dsrList').hidden=dsr.tab==='new'||dsr.tab==='edit';$('dsrDetail').hidden=true;
     dMsg('');
-    if(dsr.tab==='new')dsrLoadForm();else dsrLoadList();
+    if(dsr.tab==='new')dsrLoadForm();else if(dsr.tab==='edit')fbLoad();else dsrLoadList();
   }
   function dsrLoadForm(){
     if(dsr.form)return;
@@ -1669,6 +1691,115 @@ var CONFIG = {
       dsrLoadList();dsrOpen(id);
     }).catch(dFail);
   }
+
+  /* ---------- DSR form settings: change the questions ---------- */
+  var fb={items:null,open:{},locked:[],rows:0,custom:false,dirty:false};
+  var FBT=[['text','Short text'],['textarea','Long text'],['num','Number'],['digits','Digits only'],['upper','Capital letters'],['email','Email address'],['mobile','Mobile number'],['date','Date'],['select','Dropdown list'],['radio','Choose one (buttons)'],['radio_other','Choose one, with an Other box']];
+  function fbTypeName(t){if(t==='self')return 'Your email (automatic)';for(var i=0;i<FBT.length;i++)if(FBT[i][0]===t)return FBT[i][1];return t}
+  function fbChoice(t){return t==='select'||t==='radio'||t==='radio_other'}
+  function fbLoad(){
+    if(fb.items&&fb.dirty){fbDraw();return}
+    dMsg('Loading the form…');$('dsrEdit').innerHTML='';
+    dCall({action:'dsrFormGet'}).then(function(j){
+      if(j.error){dMsg(j.error,'err');return}
+      fb.items=j.items;fb.locked=j.locked||[];fb.rows=j.rows||0;fb.custom=!!j.custom;fb.dirty=false;fb.open={};dMsg('');fbDraw();
+    }).catch(dFail);
+  }
+  function fbItem(it,i){
+    var n=fb.items.length;
+    var mv='<button type="button" class="btn" data-a="up" aria-label="Move up"'+(i===0?' disabled':'')+'>↑</button><button type="button" class="btn" data-a="down" aria-label="Move down"'+(i===n-1?' disabled':'')+'>↓</button>';
+    if(it.section!==undefined)return '<div class="fbi fbs" data-i="'+i+'"><div class="fbh"><b class="muted">Heading</b><input type="text" data-p="section" maxlength="60" aria-label="Heading name" value="'+esc(it.section)+'"><span class="fbc">'+mv+'<button type="button" class="btn danger" data-a="delsec" aria-label="Delete this heading">Delete</button></span></div></div>';
+    var locked=fb.locked.indexOf(it.id)>-1,open=!!fb.open[it.id],id='fb'+i;
+    var pills='<span class="pill" style="--pc:var(--c-other)">'+esc(fbTypeName(it.type))+'</span>'+(it.off?'<span class="pill" style="--pc:var(--c-cancelled)">Hidden</span>':it.cond?'<span class="pill" style="--pc:var(--c-resale)">Sometimes required</span>':it.req?'<span class="pill" style="--pc:var(--c-confirmed)">Required</span>':'<span class="pill" style="--pc:var(--c-other)">Optional</span>');
+    var h='<div class="fbi'+(it.off?' off':'')+'" data-i="'+i+'"><div class="fbh"><span class="fbn">'+esc(it.label||'(no text yet)')+'</span>'+pills+'<span class="fbc">'+mv+'<button type="button" class="btn" data-a="edit" aria-expanded="'+open+'">'+(open?'Close':'Edit')+'</button></span></div>';
+    if(open){
+      h+='<div class="fbb"><div class="f wide"><label for="'+id+'l">Question text</label><input type="text" id="'+id+'l" data-p="label" maxlength="120" value="'+esc(it.label)+'"></div>'+
+        '<div class="f wide"><label for="'+id+'h">Help text under the question (optional)</label><input type="text" id="'+id+'h" data-p="hint" maxlength="150" value="'+esc(it.hint||'')+'"></div>';
+      if(!locked&&it.type!=='self')h+='<div class="f"><label for="'+id+'t">Kind of answer</label><select id="'+id+'t" data-p="type">'+FBT.map(function(t){return '<option value="'+t[0]+'"'+(t[0]===it.type?' selected':'')+'>'+t[1]+'</option>'}).join('')+'</select></div>';
+      if(fbChoice(it.type))h+='<div class="f"><label for="'+id+'o">Choices, one on each line</label><textarea id="'+id+'o" data-p="options" rows="5">'+esc((it.options||[]).join('\n'))+'</textarea></div>';
+      h+='<div class="fbk"><label><input type="checkbox" data-p="req"'+((it.req||locked||it.cond)?' checked':'')+((locked||it.cond||it.type==='self')?' disabled':'')+'> Required</label><label><input type="checkbox" data-p="on"'+(it.off?'':' checked')+((locked||it.type==='self')?' disabled':'')+'> Show on the form</label></div>';
+      if(locked||it.type==='self')h+='<p class="fbnote">The emails, lists and approvals depend on this question, so it always stays on and required. You can still change its text.</p>';
+      else if(it.cond)h+='<p class="fbnote">This question is required only when the project status is EOI. That rule stays.</p>';
+      h+='</div>';
+    }
+    return h+'</div>';
+  }
+  function fbDraw(){
+    var h='<p class="hint" style="margin:0">You are changing the form that everyone fills in.'+(fb.rows?' '+fb.rows+' DSR'+(fb.rows>1?'s are':' is')+' already in the sheet. Their answers are kept when you rename, hide or reorder a question.':'')+' A hidden question is not deleted, so it can be shown again. Changes reach everyone as soon as you save.</p>'+
+      '<div class="fb-bar"><button type="button" class="btn" data-a="addq">+ Add question</button><button type="button" class="btn" data-a="adds">+ Add heading</button><span class="sp"></span>'+(fb.dirty?'<span class="muted" role="status">Unsaved changes</span>':'')+
+      '<button type="button" class="btn" data-a="discard"'+(fb.dirty?'':' disabled')+'>Discard changes</button><button type="button" class="go sm" data-a="save"'+(fb.dirty?'':' disabled')+'>Save changes</button></div>'+
+      '<div class="fbl">'+fb.items.map(fbItem).join('')+'</div>'+
+      '<div class="fb-bar"><button type="button" class="btn danger" data-a="reset"'+(fb.custom?'':' disabled')+'>Reset to the original form</button></div>';
+    $('dsrEdit').innerHTML=h;
+  }
+  function fbRedraw(focus){
+    var y=window.scrollY;fbDraw();window.scrollTo(0,y);
+    if(focus){var el=$('dsrEdit').querySelector(focus);if(el)el.focus()}
+  }
+  function fbDirty(){if(!fb.dirty){fb.dirty=true;var b=$('dsrEdit').querySelector('[data-a=save]'),d=$('dsrEdit').querySelector('[data-a=discard]');if(b)b.disabled=false;if(d)d.disabled=false}}
+  function fbCheck(){
+    for(var i=0;i<fb.items.length;i++){
+      var f=fb.items[i];
+      if(f.section!==undefined){if(!String(f.section).trim())return 'A heading has no name. Give it a name or delete it.';continue}
+      if(!String(f.label||'').trim())return 'A question has no text. Write the question or hide it.';
+      if(fbChoice(f.type)&&!f.off&&!(f.options||[]).length)return '“'+f.label+'” needs at least one choice, or hide it.';
+    }
+    return '';
+  }
+  function fbSave(){
+    var e=fbCheck();if(e){dMsg(e,'err');return}
+    dMsg('Saving…');
+    dCall({action:'dsrFormSave',items:fb.items}).then(function(j){
+      if(j.error){dMsg(j.error,'err');return}
+      fb.items=j.items;fb.dirty=false;fb.custom=true;dsr.form=null;fbDraw();
+      dMsg('Saved. The New DSR form now shows your changes.','ok');
+    }).catch(dFail);
+  }
+  function fbMove(i,d){var j=i+d;if(j<0||j>=fb.items.length)return;var t=fb.items[i];fb.items[i]=fb.items[j];fb.items[j]=t;fbDirty();fbRedraw('[data-i="'+j+'"] [data-a="'+(d<0?'up':'down')+'"]')}
+  $('dsrEdit').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-a]');if(!b||b.disabled)return;
+    var a=b.getAttribute('data-a'),row=b.closest('[data-i]'),i=row?Number(row.getAttribute('data-i')):-1;
+    if(a==='up')fbMove(i,-1);else if(a==='down')fbMove(i,1);
+    else if(a==='edit'){var it=fb.items[i];fb.open[it.id]=!fb.open[it.id];fbRedraw('[data-i="'+i+'"] [data-a="edit"]')}
+    else if(a==='delsec'){fb.items.splice(i,1);fbDirty();fbRedraw()}
+    else if(a==='addq'||a==='adds'){
+      var q;
+      if(a==='adds')q={section:'New heading'};
+      else{var id='c_'+(Math.random().toString(36).slice(2)+'0000000').slice(0,7);q={id:id,label:'New question',type:'text',req:false,off:false};fb.open[id]=true}
+      fb.items.push(q);fbDirty();fbRedraw();
+      var rows=$('dsrEdit').querySelectorAll('.fbi'),last=rows[rows.length-1];
+      if(last){last.scrollIntoView({block:'center'});var inp=last.querySelector('input[type=text]');if(inp){inp.focus();inp.select()}}
+    }
+    else if(a==='save')fbSave();
+    else if(a==='discard'){if(window.confirm('Throw away your unsaved changes?')){fb.dirty=false;fb.items=null;fbLoad()}}
+    else if(a==='reset'){
+      if(!window.confirm('Go back to the original questions? Your changes to the form will be lost. Answers already in the sheet are kept.'))return;
+      dMsg('Resetting…');
+      dCall({action:'dsrFormReset'}).then(function(j){
+        if(j.error){dMsg(j.error,'err');return}
+        fb.items=j.items;fb.dirty=false;fb.custom=true;fb.open={};dsr.form=null;fbDraw();dMsg('The original form is back.','ok');
+      }).catch(dFail);
+    }
+  });
+  $('dsrEdit').addEventListener('input',function(e){
+    var t=e.target,p=t.getAttribute('data-p'),row=t.closest('[data-i]');if(!p||!row)return;
+    var it=fb.items[Number(row.getAttribute('data-i'))];
+    if(p==='section')it.section=t.value;
+    else if(p==='label'){it.label=t.value;var n=row.querySelector('.fbn');if(n)n.textContent=t.value||'(no text yet)'}
+    else if(p==='hint')it.hint=t.value;
+    else if(p==='options')it.options=t.value.split('\n').map(function(x){return x.trim()}).filter(Boolean);
+    else return;
+    fbDirty();
+  });
+  $('dsrEdit').addEventListener('change',function(e){
+    var t=e.target,p=t.getAttribute('data-p'),row=t.closest('[data-i]');if(!p||!row)return;
+    var i=Number(row.getAttribute('data-i')),it=fb.items[i];
+    if(p==='type'){it.type=t.value;if(fbChoice(it.type)&&!it.options)it.options=[]}
+    else if(p==='req')it.req=t.checked;
+    else if(p==='on')it.off=!t.checked;
+    else return;
+    fbDirty();fbRedraw('[data-i="'+i+'"] [data-p="'+p+'"]');
+  });
   $('dsrTabs').addEventListener('click',function(e){var b=e.target.closest('button[data-d]');if(!b)return;dsr.tab=b.getAttribute('data-d');dsrShow()});
   $('dsrForm').addEventListener('submit',function(e){e.preventDefault();dsrSubmit()});
   $('dsrForm').addEventListener('click',function(e){if(e.target.id==='dsrClear'){dsrReset();dMsg('')}});
