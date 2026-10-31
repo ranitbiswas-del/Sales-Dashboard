@@ -515,6 +515,175 @@ h1,h2,h3{font-weight:700}
 .layout.fhide .side{display:none}
 #fShow .badge{margin-left:6px}
 @media (max-width:980px){#fHide,#fShow{display:none!important}}
+
+/* ===== KPI mini charts ===== */
+.kpi,.band .cell{position:relative}
+.chart.line{position:relative;height:40px;margin-top:10px}
+.chart.line svg{display:block;width:100%;height:100%;overflow:visible}
+.chart .ln{fill:none;stroke:var(--fg);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;opacity:.75}
+.chart .af{fill:var(--fg);opacity:.08;stroke:none}
+.chart .dot{position:absolute;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--fg)}
+.band .chart .ln{stroke:#E3C58F;opacity:1}.band .chart .af{fill:#E3C58F;opacity:.14}.band .chart .dot{background:#E3C58F}
+.band .chart.line{height:30px;margin-top:8px}
+.chart.pie{position:absolute;right:16px;bottom:14px;width:52px;height:52px}
+.chart.pie svg{width:100%;height:100%}
+.chart[hidden]{display:none}
+.clink{background:none;border:0;padding:0;min-height:0;font:inherit;font-weight:600;color:var(--accent);text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.clink:hover{filter:brightness(1.15)}
+.cbk{border:1px solid var(--line);border-radius:16px;margin-top:10px;background:var(--row)}
+.cbs{display:grid;grid-template-columns:104px minmax(120px,1.4fr) 110px 140px minmax(90px,.8fr);gap:12px;align-items:center;padding:12px 16px;list-style:none}
+details.cbk>.cbs{cursor:pointer}
+details.cbk[open]>.cbs{border-bottom:1px solid var(--line)}
+.cbs::-webkit-details-marker{display:none}
+.cbk>.dsr-kv{padding:6px 16px 16px;margin-top:10px}
+.cbs .r{text-align:right}
+#custpage .panel{padding:22px;margin-top:14px}
+.nochart .chart{display:none!important}
+.nogrowth .gr{display:none!important}
+.nofhide #fHide,.nofhide #fShow{display:none!important}
+@media (max-width:700px){.cbs{grid-template-columns:1fr 1fr}}
+
+/* ===== Layout v9: flat sidebar, top bar, KPI cards, big charts (colours unchanged) ===== */
+.glass{backdrop-filter:none;-webkit-backdrop-filter:none}
+.wrap{gap:18px;max-width:1680px}
+.panel,.admlist,.admedit,.filters,.home{border-radius:12px;box-shadow:none;border:1px solid var(--line);background:var(--card)}
+.panel.raised{box-shadow:none}
+.btn,.go{border-radius:8px}
+.tr,.fbi,.dim,.sum,.stages li,.fr,.lg{border-radius:10px}
+.sec-head h2,.ovh,.detail h3,.et{font-family:var(--font-body);font-weight:700;font-size:17px;letter-spacing:-.01em}
+.tabrow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:10px;background:var(--card);width:max-content;max-width:100%;flex-wrap:wrap}
+.tabs .btn{min-height:32px;padding:0 14px;border:0;background:transparent;border-radius:7px;font-size:13px;font-weight:600;color:var(--muted)}
+.tabs .btn[aria-pressed="true"]{background:var(--pill-on-bg);color:var(--pill-on-fg)}
+.scope{font-size:13px;font-weight:600}
+/* top bar */
+.topbar{display:flex;align-items:center;gap:12px;justify-content:flex-start;padding:10px 0}
+.tbsp{flex:1}
+.tsearch{display:flex;align-items:center;gap:10px;flex:0 1 460px;min-width:0;height:40px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--muted)}
+.tsearch:focus-within{border-color:var(--accent)}
+.tsearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--fg);font:inherit;font-size:14px;height:100%;padding:0}
+.tsearch input::-webkit-search-cancel-button{display:none}
+#fShow{min-height:40px;display:inline-flex;align-items:center;gap:8px;padding:0 14px;font-weight:600}
+#fShow[aria-pressed="true"]{border-color:var(--accent)}
+.usr{box-shadow:none;border:0;background:transparent;padding:0 0 0 4px;gap:10px}
+body:not([data-view="report"]) .tb-report{display:none}
+body:not([data-view="report"]) .tbsp{display:block}
+/* KPI cards */
+.kstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(188px,1fr));gap:12px}
+.kc{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-width:0;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.kc .kb{position:relative;padding:14px 16px 12px;min-height:104px}
+.kc .label{font-size:12px;letter-spacing:.04em;text-transform:none;font-weight:600;color:var(--muted)}
+.kc .big{font-family:var(--font-body);font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1.1;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.kc #kTop{font-size:18px;white-space:normal;line-height:1.25}
+.kc .sub{margin-top:6px;color:var(--muted);font-size:12px}
+.kc .kf{display:flex;align-items:center;gap:8px;padding:8px 16px;border-top:1px solid var(--line);font-size:12px;min-height:38px;color:var(--muted)}
+.kc.t1 .kf{background:var(--t1)}.kc.t2 .kf{background:var(--t2)}.kc.t3 .kf{background:var(--t3)}.kc.t4 .kf{background:var(--t4)}
+.kc .gr{padding:2px 8px}
+.gr[hidden]+.kfn{display:none}
+.kc .chart.line{position:absolute;right:16px;top:8px;width:40%;height:28px;margin:0}
+.kc .chart.pie{right:16px;bottom:12px;top:auto;width:50px;height:50px}
+.kc .chart .ln{stroke:var(--accent);opacity:1}.kc .chart .af{fill:var(--accent);opacity:.1}.kc .chart .dot{background:var(--accent)}
+/* big charts */
+.bigrow{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:12px}
+.bc{padding:18px 18px 8px}
+.bch{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.bct{font-size:12px;font-weight:600;color:var(--muted)}
+.bcv{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+.bcr{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.bcr select{height:30px;min-height:30px;padding:0 8px;border-radius:8px;font-size:12px;border:1px solid var(--line-strong);background:var(--field);color:var(--fg)}
+.lgd{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.lgd i,.bctip i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px}
+.l1{background:var(--accent)}.l2{background:var(--faint);opacity:.6}
+.bcb{position:relative;margin-top:6px;min-height:250px}
+.bcb svg{display:block;max-width:100%;height:auto}
+.bcb .gl{stroke:var(--line);stroke-dasharray:3 4}
+.bcb .ax{fill:var(--muted);font-size:11px;font-family:var(--font-body)}
+.bcb .lc{fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.bcb .la{fill:var(--accent);opacity:.08}
+.bcb .lp{fill:none;stroke:var(--faint);stroke-width:1.6;opacity:.7;stroke-linejoin:round}
+.bcb .ld{fill:var(--accent);stroke:var(--card);stroke-width:2}
+.bcb .avl{stroke:var(--muted);stroke-dasharray:2 3;opacity:.7}
+.bcb .bc2{fill:var(--accent)}.bcb .bp{fill:var(--faint);opacity:.45}
+.bcb .xh{stroke:var(--accent);stroke-width:1}
+.bctip{position:absolute;z-index:3;pointer-events:none;background:var(--card-2);border:1px solid var(--line-strong);border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.5;white-space:nowrap;box-shadow:var(--shadow-card)}
+.bctip i{margin:0 6px 0 0}
+.bctip .l1,.bctip .l2{display:inline-block}
+/* lower row */
+.ovrow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:12px;align-items:start}
+.ovsplit,.ovfos{flex:none}
+.ovrow>.panel[hidden]{display:none}
+.fr.fh,.fr.ft{background:var(--card);box-shadow:none}
+.fr{background:transparent;border-bottom:1px solid var(--line);border-radius:0;padding:10px 4px}
+.fbar{height:6px;border-radius:3px}.fbar i{border-radius:3px;background:var(--accent)}
+.layout{gap:12px}
+.filters{padding:16px}
+@media (max-width:1100px){.bigrow,.ovrow{grid-template-columns:minmax(0,1fr)}}
+/* sidebar */
+@media (min-width:900px) and (min-height:620px){
+  .wrap{padding-left:244px;padding-right:20px}
+  .nav.glass{left:0;top:0;bottom:0;width:224px;border-radius:0;align-items:stretch;padding:18px 12px;gap:16px;box-shadow:none;border-right:1px solid var(--line)}
+  .nav .brand{display:flex;align-items:center;gap:10px;padding:0 6px;width:100%;color:#fff}
+  .nav .brand i{width:34px;height:34px;border-radius:10px;font-size:17px;flex:none}
+  .nav .brand span{display:block;font:800 12px/1.25 var(--font-body);letter-spacing:.05em;text-transform:uppercase;text-align:left;white-space:normal}
+  .navapp #navLinks .btn{flex-direction:row;justify-content:flex-start;gap:12px;min-height:40px;padding:0 12px;border-radius:8px;font-size:14px;font-weight:600;color:#E5EFEB}
+  .navapp #navLinks .btn svg{width:18px;height:18px;flex:none}
+  .navapp #navLinks .btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .navapp #navLinks .btn:hover{background:rgba(255,255,255,.07)}
+  .navapp #navLinks .btn[aria-pressed="true"]{background:#1B5A4C;color:#E3C58F}
+  .nav .navapp>.btn,.nav #themeBtn{display:flex;align-items:center;justify-content:flex-start;border:0;min-height:38px;padding:0 12px;font-size:13px;border-radius:8px;color:#B7CCC5}
+  .nav .navapp>.btn:hover,.nav #themeBtn:hover{background:rgba(255,255,255,.07);color:#fff}
+  .nav .links{padding-top:4px}
+  .topbar{position:sticky;top:0;z-index:15;margin:0;background:var(--bg);border-bottom:1px solid var(--line)}
+  .side{top:64px;max-height:calc(100vh - 80px)}
+  .section,.nav{scroll-margin-top:64px}
+}
+@media (min-width:900px) and (min-height:620px) and (max-height:780px){
+  .nav.glass{gap:10px;padding:14px 12px}
+  .navapp #navLinks .btn{min-height:38px}
+  .nav .navapp>.btn,.nav #themeBtn{min-height:34px}
+}
+@media (max-width:899px),(max-height:619px){
+  .topbar{flex-wrap:wrap}
+  .tsearch{flex:1 1 220px}
+  .nav.glass{border-radius:14px}
+  .kc .kb{min-height:100px}
+}
+@media (max-width:640px){
+  .kstrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kc .kb{padding:14px}.kc .kf{padding:8px 14px}
+  .kc .big{font-size:21px}
+  .kc .chart.line{display:none}
+  .kc:has(.chart.line) .big{max-width:100%}
+  .tabs{width:100%}
+}
+@media (max-width:420px){.kstrip{grid-template-columns:minmax(0,1fr)}}
+.nochart .chart{display:none!important}
+
+/* customer details in its own browser tab */
+.solohint{display:none;align-self:center;font-size:13px}
+body.solo .solohint{display:inline}
+body.solo .nav.glass,body.solo .tabrow,body.solo .side,body.solo .tb-report{display:none!important}
+body.solo .wrap{padding-left:20px}
+body.solo .layout{grid-template-columns:minmax(0,1fr)}
+
+/* customer page laid out like a profile / about page */
+#custpage{display:flex;flex-direction:column;gap:14px}
+.cprof{display:flex;align-items:center;gap:20px;padding:24px;flex-wrap:wrap}
+.cav{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:var(--rail);color:#E3C58F;font:800 26px var(--font-body);flex:none}
+.cpi{flex:1;min-width:220px}
+.cpi h2{font-size:26px;margin:2px 0 2px;overflow-wrap:anywhere}
+.cpi p{margin:0;color:var(--muted)}
+.cpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.cpa{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.cgrid{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:14px;align-items:start}
+.cside,.cmain{display:flex;flex-direction:column;gap:14px;min-width:0}
+#custpage .panel{padding:20px;margin-top:0}
+.cside .dsr-kv{display:flex;flex-direction:column;gap:0;padding:0}
+.cside .dsr-kv>div{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.cside .dsr-kv>div:last-child{border-bottom:0}
+.cside .dsr-kv small{text-transform:none;letter-spacing:0;font-size:13px;color:var(--muted)}
+.cside .dsr-kv span{font-weight:700;text-align:right;overflow-wrap:anywhere}
+@media (max-width:860px){.cgrid{grid-template-columns:minmax(0,1fr)}.cpa{align-items:flex-start;width:100%}}
 </style>
 </head>
 <body>
@@ -543,7 +712,7 @@ h1,h2,h3{font-weight:700}
     </div>
   </nav>
 
-  <div class="topbar" id="topbar" hidden><div class="usr" id="usrChip"><span class="av" id="usrAv" aria-hidden="true"></span><span class="ut2"><b id="usrName"></b><small id="usrRole"></small></span></div></div>
+  <div class="topbar" id="topbar" hidden><label class="tsearch tb-report" for="gq"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="gq" type="search" placeholder="Search customer, unit, status or request no" autocomplete="off"></label><span class="tbsp"></span><button class="btn tb-report" id="fShow" type="button" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filters <span class="badge num" id="fShowN" hidden></span></button><div class="usr" id="usrChip"><span class="av" id="usrAv" aria-hidden="true"></span><span class="ut2"><b id="usrName"></b><small id="usrRole"></small></span></div></div>
 
   <section class="login" id="login" hidden aria-labelledby="loginTitle">
     <div class="card glass raised">
@@ -565,31 +734,36 @@ h1,h2,h3{font-weight:700}
 
   <div id="app" hidden>
   <div id="banner" class="banner" role="status">Loading data…</div>
-  <div class="tabrow"><div class="tabs" id="salesTabs"></div><button class="btn" id="fShow" type="button" hidden>Show filters <span class="badge num" id="fShowN" hidden></span></button></div>
+  <div class="tabrow"><div class="tabs" id="salesTabs"></div><div class="scope muted" id="scope">All data</div></div>
 
   <div class="layout" id="layout"><div class="main">
   <header class="hero" id="overview">
     <h1 class="sr">Sales overview</h1>
-    <div class="band">
-      <svg class="sky" aria-hidden="true" width="100%" height="150" viewBox="0 0 1200 150" preserveAspectRatio="xMaxYMax slice"><g fill="none" stroke="#E3C58F" stroke-width="1.5"><path d="M700 150V75h50v75M760 150V38h60v112M830 150V85h40v65M880 150V28h70v122M960 150V62h50v88M1020 150V46h60v104M1090 150V88h60v62"/></g></svg>
-      <div class="eyebrow" id="scope">All data</div>
-      <div class="bandrow">
-        <div class="cell bigno"><div class="lrow"><div class="label">Total sales</div><span class="gr" id="gSales" hidden></span></div><div class="big num" id="kSales"></div><div class="sub num" id="kSalesSub"></div></div>
-        <div class="bandstats">
-          <div class="cell"><div class="lrow"><div class="label">FOS revenue</div><span class="gr" id="gRev" hidden></span></div><div class="big num" id="kRev"></div><div class="sub num" id="kRevSub"></div></div>
-          <div class="cell"><div class="lrow"><div class="label">Gross value</div><span class="gr" id="gGross" hidden></span></div><div class="big num" id="kGross"></div><div class="sub num" id="kGrossSub"></div></div>
-          <div class="cell"><div class="lrow"><div class="label">Top project</div><span class="gr" id="gTop" hidden></span></div><div class="big" id="kTop">None</div><div class="sub num" id="kTopSub"></div></div>
-        </div>
-      </div>
+    <div class="kstrip">
+      <div class="kc t1"><div class="kb"><div class="label">Total sales</div><div class="big num" id="kSales"></div><div class="sub num" id="kSalesSub"></div></div><div class="kf"><span class="gr" id="gSales" hidden></span><span class="kfn" id="gSalesN"></span></div></div>
+      <div class="kc t2"><div class="kb"><div class="label">FOS revenue</div><div class="big num" id="kRev"></div><div class="sub num" id="kRevSub"></div></div><div class="kf"><span class="gr" id="gRev" hidden></span><span class="kfn" id="gRevN"></span></div></div>
+      <div class="kc t3"><div class="kb"><div class="label">Gross value</div><div class="big num" id="kGross"></div><div class="sub num" id="kGrossSub"></div></div><div class="kf"><span class="gr" id="gGross" hidden></span><span class="kfn" id="gGrossN"></span></div></div>
+      <div class="kc t4"><div class="kb"><div class="label">Top project</div><div class="big num" id="kTop"></div><div class="sub num" id="kTopSub"></div></div><div class="kf"><span class="gr" id="gTop" hidden></span><span class="kfn" id="gTopN"></span></div></div>
+      <div class="kc t1"><div class="kb"><div class="label">Confirmed sales</div><div class="big num" id="kConf"></div><div class="sub num" id="kConfSub"></div></div><div class="kf"><span class="gr" id="gConf" hidden></span><span class="kfn" id="gConfN"></span></div></div>
+      <div class="kc t2"><div class="kb"><div class="label">Cancelled sales</div><div class="big num" id="kCanc"></div><div class="sub num" id="kCancSub"></div></div><div class="kf"><span class="gr" id="gCanc" hidden></span><span class="kfn" id="gCancN"></span></div></div>
+      <div class="kc t3"><div class="kb"><div class="label">Total BSP</div><div class="big num" id="kTbsp"></div><div class="sub num" id="kTbspSub"></div></div><div class="kf"><span class="gr" id="gTbsp" hidden></span><span class="kfn" id="gTbspN"></span></div></div>
+      <div class="kc t4"><div class="kb"><div class="label">Average BSP</div><div class="big num" id="kBsp"></div><div class="sub num" id="kBspSub"></div></div><div class="kf"><span class="gr" id="gBsp" hidden></span><span class="kfn" id="gBspN"></span></div></div>
+      <div class="kc t1"><div class="kb"><div class="label">Total area</div><div class="big num" id="kArea"></div><div class="sub num" id="kAreaSub"></div></div><div class="kf"><span class="gr" id="gArea" hidden></span><span class="kfn" id="gAreaN"></span></div></div>
+      <div class="kc t2" id="kCredBox"><div class="kb"><div class="label">Credit note</div><div class="big num" id="kCred"></div><div class="sub num" id="kCredSub"></div></div><div class="kf"><span class="gr" id="gCred" hidden></span><span class="kfn" id="gCredN"></span></div></div>
     </div>
 
-    <div class="kpis">
-      <div class="kpi t1"><div class="lrow"><div class="label">Confirmed sales</div><span class="gr" id="gConf" hidden></span></div><div class="big num" id="kConf"></div><div class="sub num" id="kConfSub"></div></div>
-      <div class="kpi t2"><div class="lrow"><div class="label">Cancelled sales</div><span class="gr" id="gCanc" hidden></span></div><div class="big num" id="kCanc"></div><div class="sub num" id="kCancSub"></div></div>
-      <div class="kpi t3"><div class="lrow"><div class="label">Total BSP</div><span class="gr" id="gTbsp" hidden></span></div><div class="big num" id="kTbsp"></div><div class="sub num" id="kTbspSub"></div></div>
-      <div class="kpi t4"><div class="lrow"><div class="label">Average BSP</div><span class="gr" id="gBsp" hidden></span></div><div class="big num" id="kBsp"></div><div class="sub num" id="kBspSub"></div></div>
-      <div class="kpi t1"><div class="lrow"><div class="label">Total area</div><span class="gr" id="gArea" hidden></span></div><div class="big num" id="kArea"></div><div class="sub num" id="kAreaSub"></div></div>
-      <div class="kpi t2" id="kCredBox"><div class="lrow"><div class="label">Credit note</div><span class="gr" id="gCred" hidden></span></div><div class="big num" id="kCred"></div><div class="sub num" id="kCredSub"></div></div>
+    <div class="bigrow chart" id="bigRow">
+      <div class="panel bc" id="bcLine">
+        <div class="bch"><div><div class="bct" id="bcLt">FOS revenue</div><div class="bcv num" id="bcLv"></div></div>
+          <div class="bcr"><label class="sr" for="bcMetric">Chart value</label><select id="bcMetric"><option value="revenue">FOS revenue</option><option value="gross">Gross value</option><option value="bsp">Total BSP</option><option value="area">Total area</option></select>
+          <div class="lgd"><i class="l1"></i><span class="num" id="bcY1"></span><i class="l2"></i><span class="num" id="bcY2"></span></div></div></div>
+        <div class="bcb" id="bcLineSvg"></div>
+      </div>
+      <div class="panel bc" id="bcBar">
+        <div class="bch"><div><div class="bct">Number of sales</div><div class="bcv num" id="bcBv"></div></div>
+          <div class="bcr"><div class="lgd"><i class="l1"></i><span class="num" id="bcY1b"></span><i class="l2"></i><span class="num" id="bcY2b"></span></div></div></div>
+        <div class="bcb" id="bcBarSvg"></div>
+      </div>
     </div>
 
     <div class="ovrow" id="ovRow">
@@ -661,6 +835,22 @@ h1,h2,h3{font-weight:700}
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="bkBack" type="button">← Back to team report</button><button class="btn" id="bkXls" type="button">Download Excel</button></div>
     <div class="panel glass tm"><div class="scrollx"><div class="tbl" id="bkTbl" role="table" aria-label="Booking details"></div></div></div>
+  </section>
+  <section id="custpage" hidden aria-labelledby="custName">
+    <div class="panel cprof">
+      <span class="cav" id="custAv" aria-hidden="true"></span>
+      <div class="cpi">
+        <div class="eyebrow">Customer profile</div>
+        <h2 id="custName"></h2>
+        <p id="custSub"></p>
+        <div class="cpills" id="custPills"></div>
+      </div>
+      <div class="cpa"><button class="btn" id="custBack" type="button">← Back</button><span class="muted solohint">Opened in a new tab. Close this tab when you are done.</span></div>
+    </div>
+    <div class="cgrid">
+      <div class="cside"><div class="panel" id="custContact"></div><div class="panel" id="custSum"></div></div>
+      <div class="cmain"><div class="panel" id="custBooks"></div><div class="panel" id="custPay"></div></div>
+    </div>
   </section>
   <footer id="foot"></footer>
   </div>
@@ -791,7 +981,7 @@ var CONFIG = {
   }
   function normStatus(v){
     var s=String(v||'').trim(),l=s.toLowerCase();
-    if(!l)return 'Other';
+    if(!l||l==='null'||l==='undefined'||l==='n/a'||l==='na'||l==='-'||l==='--')return 'Status not available';
     if(l.indexOf('dup')>-1)return 'Duplicate DSR';
     if(l.indexOf('cancel')>-1)return 'Cancelled';
     if(l.indexOf('resale')>-1)return 'Resale';
@@ -822,7 +1012,8 @@ var CONFIG = {
       month:normMonth(g('month')||(d?MONTHS[d.getMonth()]:'')),
       quarter:normQuarter(g('quarter')||(d?'Q'+(Math.floor(d.getMonth()/3)+1):'')),
       hod:String(g('hod')).trim(),am:String(g('am')).trim(),tl:String(g('tl')).trim(),
-      fos:String(g('fos')).trim(),type:String(g('type')).trim()
+      fos:String(g('fos')).trim(),type:String(g('type')).trim(),
+      raw:raw
     };
   }
 
@@ -850,9 +1041,15 @@ var CONFIG = {
 
   /* ---------- loading ---------- */
   /* ---------- sign-in session (kept only until this tab is closed) ---------- */
-  var isAdmin=false,limited=false,view='home',sTab='overview',reports=null,creditOK=true,hid=[],teamLevel='',teamOn=false,bk=null,empAcc=[];
+  var isAdmin=false,limited=false,view='home',sTab='overview',reports=null,creditOK=true,hid=[],teamLevel='',teamOn=false,bk=null,cust=null,custBack=null,empAcc=[];
   var adm={users:[],options:{},draft:null};
   var token='',userEmail='';
+  var custDeep='';
+  try{var hm=/^#cust=(.+)$/.exec(location.hash);if(hm)custDeep=decodeURIComponent(hm[1])}catch(e){}
+  try{
+    var ho=localStorage.getItem('bsb-handoff');
+    if(ho){localStorage.removeItem('bsb-handoff');var hj=JSON.parse(ho);if(hj&&hj.t&&Date.now()-hj.ts<60000&&!sessionStorage.getItem('bsb-token')){sessionStorage.setItem('bsb-token',hj.t);sessionStorage.setItem('bsb-email',hj.e||'')}}
+  }catch(e){}
   try{token=sessionStorage.getItem('bsb-token')||'';userEmail=sessionStorage.getItem('bsb-email')||''}catch(e){}
   function saveSession(t,em){
     token=t;userEmail=em;
@@ -887,20 +1084,21 @@ var CONFIG = {
     if(!viewOK(view))view=['home','report','emp','dsr','admin'].filter(viewOK)[0]||'home';
     $('home').hidden=view!=='home';$('app').hidden=view!=='report';$('emp').hidden=view!=='emp';$('dsr').hidden=view!=='dsr';$('admin').hidden=view!=='admin';
     document.querySelectorAll('#navLinks [data-v]').forEach(function(b){var v=b.getAttribute('data-v');b.hidden=!viewOK(v);b.setAttribute('aria-pressed',v===view)});
-    homeAnim(view==='home');
+    homeAnim(view==='home');document.body.setAttribute('data-view',view);
+    if(view==='report'&&data.length)renderBig();
   }
   function showApp(){
     $('login').hidden=true;$('navApp').hidden=false;
     $('who').textContent=userEmail;$('who').title=userEmail;
     $('usrAv').textContent=(userEmail||'?').charAt(0).toUpperCase();$('usrName').textContent=userEmail;$('usrChip').title='Signed in as '+userEmail;
     $('usrRole').textContent=isAdmin?'Admin':(teamLevel&&teamLevel!=='ADMIN'?teamLevel+' · Viewer':'Viewer');
-    $('topbar').hidden=!userEmail;
+    $('topbar').hidden=false;$('usrChip').hidden=!userEmail;
     applyView();
     if(view==='emp')loadEmps();
   }
   function load(){
     if(!CONFIG.API_URL){
-      showApp();$('who').hidden=true;$('signoutBtn').hidden=true;$('topbar').hidden=true;
+      showApp();$('who').hidden=true;$('signoutBtn').hidden=true;$('usrChip').hidden=true;
       data=demoRows().map(clean);mode='demo';teamLevel='ADMIN';start();return;
     }
     if(!token){showLogin();return}
@@ -913,7 +1111,8 @@ var CONFIG = {
       data=arr.map(clean).filter(function(r){return r.project});
       updated=(j&&j.updated)?new Date(j.updated).toLocaleString():new Date().toLocaleString();
       isAdmin=(j.role==='ADMIN');empAcc=Array.isArray(j.empAccess)?j.empAccess:[];limited=!!j.limited;reports=Array.isArray(j.reports)?j.reports:null;creditOK=j.credit!==false;hid=Array.isArray(j.hidden)?j.hidden:[];teamLevel=j.level||(j.role==='ADMIN'?'ADMIN':'');
-      mode='live';if(reports&&!reports.length&&empAcc.length)view='emp';if(dsr.deep&&dsrOK())view='dsr';showApp();start();if(view==='dsr'&&dsr.deep)dsrEnter();
+      mode='live';if(reports&&!reports.length&&empAcc.length)view='emp';if(dsr.deep&&dsrOK())view='dsr';if(custDeep)view='report';showApp();start();if(view==='dsr'&&dsr.deep)dsrEnter();
+      if(custDeep&&view==='report'){document.body.classList.add('solo');if(vis('cust_open'))custOpen(custDeep);document.title=custDeep+' · Customer details'}
     }).catch(function(e){
       errMsg=e.message||String(e);mode='error';showApp();start();
     });
@@ -996,7 +1195,7 @@ var CONFIG = {
       var v=isMulti(f[0])?fText(f[0]):state.f[f[0]];
       if(v){any=true;h+='<button type="button" class="chip" data-k="'+f[0]+'" aria-label="Remove filter '+esc(f[1])+' '+esc(v)+'"><b>'+esc(f[1])+'</b> '+esc(v)+'<span aria-hidden="true">\u00d7</span></button>'}
     });
-    $('fchips').innerHTML=h;$('fchips').hidden=!h;
+    $('fchips').innerHTML=h;$('fchips').hidden=!h||!vis('f_chips');
     $('resetBtn').hidden=!any;
   }
   function drawQuick(){
@@ -1008,7 +1207,7 @@ var CONFIG = {
       var on=state.f.year===q[1]&&(state.f.month||'')===q[2]&&!state.f.quarter;
       h+='<button type="button" class="qbtn" data-q="'+i+'" aria-pressed="'+on+'">'+q[0]+'</button>';
     });
-    $('fquick').innerHTML=h;$('fquick').hidden=!h||!vis('f_year');
+    $('fquick').innerHTML=h;$('fquick').hidden=!h||!vis('f_year')||!vis('f_quick');
   }
   /* ---------- growth or loss against the previous year ---------- */
   function met(rs){
@@ -1021,8 +1220,9 @@ var CONFIG = {
     for(var i=0;i<FILTERS.length;i++){var k=FILTERS[i][0],v=state.f[k];if(skipYear&&k==='year')continue;if(Array.isArray(v)){if(v.length&&v.indexOf(r[k])<0)return false}else if(v&&r[k]!==v)return false}
     return true;
   }
+  var grPY='';
   function setGr(id,cur,prev,inv,note){
-    var el=$(id);if(!el)return;
+    var el=$(id);if(!el)return;var fn=$(id+'N');if(fn)fn.textContent=grPY?'vs '+grPY:'';
     if(note===null||(!cur&&!prev)){el.hidden=true;return}
     var up,txt;
     if(!prev){up=true;txt='New'}
@@ -1036,7 +1236,7 @@ var CONFIG = {
     if(!by){rows.forEach(function(r){var y=parseInt(r.year,10);if(y&&(!by||y>+by))by=String(y)})}
     var ids=['gSales','gRev','gGross','gTop','gConf','gCanc','gTbsp','gBsp','gArea','gCred'];
     if(!by){ids.forEach(function(i){$(i).hidden=true});return}
-    var py=String(parseInt(by,10)-1),note=by+' compared with '+py+', same filters';
+    var py=String(parseInt(by,10)-1);grPY=py;var note=by+' compared with '+py+', same filters';
     var cur=state.f.year?rows:rows.filter(function(r){return r.year===by}),prv=data.filter(function(r){return r.year===py&&matchF(r,true)});
     var a=met(cur),b=met(prv);
     setGr('gSales',a.sales,b.sales,false,note);setGr('gRev',a.rev,b.rev,false,note);setGr('gGross',a.gross,b.gross,false,note);
@@ -1047,6 +1247,119 @@ var CONFIG = {
       setGr('gTop',ca,cb,false,topName+': sales in '+by+' compared with '+py);
     }else $('gTop').hidden=true;
   }
+  /* ---------- mini charts inside the KPI tiles ---------- */
+  var MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var SPARK={kSales:['Sales',function(s){return s.length}],kRev:['Revenue',function(s){return s.reduce(function(a,r){return a+r.revenue},0)}],kGross:['Gross value',function(s){return s.reduce(function(a,r){return a+r.gross},0)}],kTbsp:['BSP',function(s){return s.reduce(function(a,r){return a+r.bsp},0)}],kBsp:['Average BSP',function(s){var n=s.filter(function(r){return r.bsp>0});return n.length?n.reduce(function(a,r){return a+r.bsp},0)/n.length:0}],kArea:['Area',function(s){return s.reduce(function(a,r){return a+r.area},0)}],kCred:['Credit note',function(s){return s.reduce(function(a,r){return a+r.credit},0)}]};
+  function cardOf(id){return $(id).closest('.kc')}
+  function chartBox(id,cls){
+    var t=$(id).closest('.kb'),c=t.querySelector('.chart');
+    if(!c){c=document.createElement('div');t.appendChild(c)}
+    c.className='chart '+cls;return c;
+  }
+  function spark(id,name,fn,sales){
+    var by={};
+    sales.forEach(function(r){if(!r.date||isNaN(r.date))return;var k=r.date.getFullYear()*12+r.date.getMonth();(by[k]||(by[k]=[])).push(r)});
+    var ks=Object.keys(by).map(Number).sort(function(a,b){return a-b}).slice(-12),c=chartBox(id,'line');
+    if(ks.length<2){c.innerHTML='';c.hidden=true;return}
+    c.hidden=false;
+    var v=ks.map(function(k){return fn(by[k])}),mx=Math.max.apply(null,v),mn=Math.min.apply(null,v),W=200,H=40,rg=(mx-mn)||1;
+    var pts=v.map(function(y,i){return [i*W/(ks.length-1),H-4-(y-mn)/rg*(H-10)]});
+    var d=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)}).join('');
+    var last=pts[pts.length-1],f=ks[0],l=ks[ks.length-1];
+    var lab=function(k){return MN[k%12]+' '+Math.floor(k/12)};
+    c.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="'+name+' by month, '+lab(f)+' to '+lab(l)+'"><title>'+name+' by month, '+lab(f)+' to '+lab(l)+'</title><path d="'+d+'L'+W+' '+H+'L0 '+H+'Z" class="af"/><path d="'+d+'" class="ln" vector-effect="non-scaling-stroke"/></svg><i class="dot" style="left:'+(last[0]/W*100)+'%;top:'+(last[1]/H*100)+'%"></i>';
+  }
+  function pie(id,rows,mine){
+    var c=chartBox(id,'pie'),n=rows.length,cn=0,cc=0,ot=0;
+    rows.forEach(function(r){if(r.status==='Confirmed')cn++;else if(r.status==='Cancelled')cc++;else ot++});
+    if(!n){c.hidden=true;return}c.hidden=false;
+    var parts=[[cn,'--c-confirmed','Confirmed'],[cc,'--c-cancelled','Cancelled'],[ot,'--c-other','Other / not available']],a=0,R=15.9,C=2*Math.PI*R,h='';
+    parts.forEach(function(p){if(!p[0])return;var L=p[0]/n*C;h+='<circle r="'+R+'" cx="20" cy="20" fill="none" stroke="var('+p[1]+')" stroke-width="'+(p[2]===mine?7:4.5)+'" stroke-dasharray="'+L.toFixed(2)+' '+(C-L).toFixed(2)+'" stroke-dashoffset="'+(-a).toFixed(2)+'" transform="rotate(-90 20 20)"/>';a+=L});
+    var t=parts.map(function(p){return p[2]+' '+p[0]}).join(', ');
+    c.innerHTML='<svg viewBox="0 0 40 40" role="img" aria-label="Booking status share: '+t+'"><title>'+t+'</title>'+h+'</svg>';
+  }
+  function renderCharts(rows){
+    var sales=rows.filter(isSale);
+    Object.keys(SPARK).forEach(function(id){spark(id,SPARK[id][0],SPARK[id][1],sales)});
+    pie('kConf',rows,'Confirmed');pie('kCanc',rows,'Cancelled');
+  }
+  /* ---------- the two big charts: this year against last year ---------- */
+  var bcM='revenue';
+  function bcShort(v,m){
+    if(m==='area'||m==='count')return Math.round(v).toLocaleString('en-IN');
+    if(v>=1e7)return '₹'+(v/1e7).toFixed(v>=1e8?0:1)+' Cr';
+    if(v>=1e5)return '₹'+(v/1e5).toFixed(0)+' L';
+    return '₹'+Math.round(v).toLocaleString('en-IN');
+  }
+  function bcFull(v,m){return m==='area'?v.toLocaleString('en-IN',{maximumFractionDigits:0})+' sq ft':m==='count'?String(Math.round(v)):inr(v)}
+  function bcNice(mx){if(mx<=0)return 1;var e=Math.pow(10,Math.floor(Math.log(mx)/Math.LN10)),f=mx/e;return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*e}
+  function bcSeries(by,py,fn){
+    var cur=[],prv=[],i,last=-1,src=data.filter(function(r){return isSale(r)&&matchF(r,true)&&r.date&&!isNaN(r.date)});
+    for(i=0;i<12;i++){cur.push([]);prv.push([])}
+    src.forEach(function(r){var y=String(r.date.getFullYear()),m=r.date.getMonth();if(y===by){cur[m].push(r);if(m>last)last=m}else if(y===py)prv[m].push(r)});
+    return {cur:cur.map(function(a,i){return i>last?null:fn(a)}),prv:prv.map(function(a){return fn(a)}),last:last};
+  }
+  function bcTip(box,html,x,y,W){
+    var t=box.querySelector('.bctip');if(!t)return;
+    if(!html){t.hidden=true;return}
+    t.hidden=false;t.innerHTML=html;var w=t.offsetWidth;t.style.left=Math.max(4,Math.min(W-w-4,x-w/2))+'px';t.style.top=Math.max(0,y)+'px';
+  }
+  function bcDraw(box,kind,S,m,by,py){
+    var W=Math.max(300,box.clientWidth),H=250,L=10,R=52,T=14,B=26,pw=W-L-R,ph=H-T-B,i;
+    var mx=0;S.cur.concat(S.prv).forEach(function(v){if(v!=null&&v>mx)mx=v});
+    var top=bcNice(mx*1.05),X=function(i){return kind==='bar'?L+pw*(i+.5)/12:L+pw*i/11},Y=function(v){return T+ph-(v/top)*ph};
+    var g='';
+    for(i=0;i<=4;i++){var gy=T+ph*i/4;g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+gy+'" y2="'+gy+'" class="gl"/><text x="'+(W-R+8)+'" y="'+(gy+4)+'" class="ax">'+bcShort(top*(1-i/4),m)+'</text>'}
+    var step=W<520?2:1;
+    for(i=0;i<12;i+=step)g+='<text x="'+X(i)+'" y="'+(H-8)+'" class="ax" text-anchor="middle">'+MN[i]+'</text>';
+    if(kind==='line'){
+      var pp=S.prv.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)}).join('');
+      g+='<path d="'+pp+'" class="lp"/>';
+      var pts=[];S.cur.forEach(function(v,i){if(v!=null)pts.push([X(i),Y(v)])});
+      if(pts.length){
+        var cd=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)}).join('');
+        g+='<path d="'+cd+'L'+pts[pts.length-1][0].toFixed(1)+' '+(T+ph)+'L'+pts[0][0].toFixed(1)+' '+(T+ph)+'Z" class="la"/><path d="'+cd+'" class="lc"/>';
+        var lp=pts[pts.length-1];g+='<circle cx="'+lp[0].toFixed(1)+'" cy="'+lp[1].toFixed(1)+'" r="4" class="ld"/>';
+        var vals=S.cur.filter(function(v){return v!=null}),av=vals.reduce(function(a,b){return a+b},0)/vals.length;
+        g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(av).toFixed(1)+'" y2="'+Y(av).toFixed(1)+'" class="avl"/><text x="'+(L+2)+'" y="'+(Y(av)-5).toFixed(1)+'" class="ax">Average '+bcShort(av,m)+'</text>';
+      }
+    }else{
+      var bw=Math.min(18,pw/12/2.6);
+      for(i=0;i<12;i++){
+        var p=S.prv[i],c=S.cur[i];
+        if(p)g+='<rect x="'+(X(i)+1).toFixed(1)+'" y="'+Y(p).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(T+ph-Y(p)).toFixed(1)+'" rx="2" class="bp"/>';
+        if(c)g+='<rect x="'+(X(i)-bw-1).toFixed(1)+'" y="'+Y(c).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+(T+ph-Y(c)).toFixed(1)+'" rx="2" class="bc2"/>';
+      }
+    }
+    g+='<line class="xh" x1="0" x2="0" y1="'+T+'" y2="'+(T+ph)+'" hidden/><rect class="ov" x="'+L+'" y="0" width="'+pw+'" height="'+H+'" fill="transparent"/>';
+    var tot=S.cur.reduce(function(a,v){return a+(v||0)},0);
+    var sum=(kind==='bar'?'Number of sales by month':'Value by month')+', '+by+' against '+py+'. Total '+by+': '+bcFull(tot,m)+'.';
+    box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+sum+'"><title>'+sum+'</title>'+g+'</svg><div class="bctip" hidden></div>';
+    var svg=box.querySelector('svg'),xh=svg.querySelector('.xh'),ov=svg.querySelector('.ov');
+    function move(e){
+      var rc=svg.getBoundingClientRect(),px=(e.clientX-rc.left)*(W/rc.width);
+      var idx=kind==='bar'?Math.floor((px-L)/pw*12):Math.round((px-L)/pw*11);idx=Math.max(0,Math.min(11,idx));
+      xh.hidden=false;xh.setAttribute('x1',X(idx));xh.setAttribute('x2',X(idx));
+      var c=S.cur[idx],p=S.prv[idx],hh='<b>'+MN[idx]+'</b><br><i class="l1"></i>'+by+': '+(c==null?'No data':bcFull(c,m))+'<br><i class="l2"></i>'+py+': '+bcFull(p||0,m);
+      bcTip(box,hh,X(idx),Y(Math.max(c||0,p||0))-70,W);
+    }
+    ov.addEventListener('pointermove',move);ov.addEventListener('pointerdown',move);
+    ov.addEventListener('pointerleave',function(){xh.hidden=true;bcTip(box,'')});
+    return tot;
+  }
+  function renderBig(rows){
+    var by=state.f.year||'';
+    if(!by){data.forEach(function(r){var y=r.date&&!isNaN(r.date)?r.date.getFullYear():parseInt(r.year,10);if(y&&(!by||y>+by))by=String(y)})}
+    var bg=$('bigRow');if(!by||!bg||$('overview').hidden||$('app').hidden){return}
+    var py=String(parseInt(by,10)-1),m=bcM,fnM=function(a){return a.reduce(function(s,r){return s+r[m]},0)};
+    var S1=bcSeries(by,py,fnM),S2=bcSeries(by,py,function(a){return a.length});
+    $('bcLt').textContent=$('bcMetric').options[$('bcMetric').selectedIndex].text;
+    ['bcY1','bcY1b'].forEach(function(i){$(i).textContent=by});['bcY2','bcY2b'].forEach(function(i){$(i).textContent=py});
+    var t1=bcDraw($('bcLineSvg'),'line',S1,m,by,py),t2=bcDraw($('bcBarSvg'),'bar',S2,'count',by,py);
+    $('bcLv').textContent=bcFull(t1,m);$('bcBv').textContent=String(Math.round(t2));
+  }
+  $('bcMetric').addEventListener('change',function(){bcM=this.value;renderBig()});
+  var bcT=0;window.addEventListener('resize',function(){clearTimeout(bcT);bcT=setTimeout(function(){if(!$('app').hidden)renderBig()},150)});
   function filtered(){
     return data.filter(function(r){
       for(var i=0;i<FILTERS.length;i++){var k=FILTERS[i][0],v=state.f[k];if(Array.isArray(v)){if(v.length&&v.indexOf(r[k])<0)return false}else if(v&&r[k]!==v)return false}
@@ -1066,7 +1379,7 @@ var CONFIG = {
     var rev=tot('revenue'),bsp=tot('bsp'),area=tot('area'),gross=tot('gross'),credit=tot('credit');
 
     var scope=[];FILTERS.forEach(function(f){var s2=isMulti(f[0])?fsel(f[0]):[],t=isMulti(f[0])?(s2.length>2?f[1]+': '+s2.length+' selected':s2.join(', ')):state.f[f[0]];if(t)scope.push(t)});
-    $('scope').textContent=scope.length?scope.join(' · '):'All data';
+    $('scope').textContent=scope.length?scope.join(' · '):'All data';if($('gq').value!==state.q)$('gq').value=state.q;
     drawChips();drawQuick();
     var fc=scope.length+(state.q.trim()?0:0);$('fCount').textContent=fc;$('fCount').hidden=!fc;$('fShowN').textContent=fc;$('fShowN').hidden=!fc;$('fToggle').setAttribute('aria-label','Filters, '+fc+' active');
 
@@ -1092,7 +1405,7 @@ var CONFIG = {
       $('kTop').textContent=list[0].n;$('kTop').title=list[0].n;
       $('kTopSub').textContent=list[0].c+' sales · '+Math.round(list[0].c/sales.length*1000)/10+'% of total';
     }else{$('kTop').textContent='None';$('kTopSub').textContent='No sales for these filters'}
-    renderGrowth(rows,list.length?list[0].n:'');
+    renderGrowth(rows,list.length?list[0].n:'');renderCharts(rows);renderBig();
 
     state.names=list.map(function(p){return p.n});
     var had=state.sel.length;
@@ -1272,7 +1585,7 @@ var CONFIG = {
   var CELL={
     t_project:function(r){return '<span class="nmx">'+esc(r.project||'—')+'</span>'},
     t_date:function(r){return '<span class="num muted">'+fmtDate(r.date)+'</span>'},
-    t_customer:function(r){return '<span class="nmx">'+esc(r.customer||'—')+'</span>'},
+    t_customer:function(r){return r.customer&&vis('cust_open')?'<button type="button" class="clink nmx" data-cust="'+esc(r.customer)+'" title="Open all details of this customer">'+esc(r.customer)+'</button>':'<span class="nmx">'+esc(r.customer||'—')+'</span>'},
     t_unit:function(r){return '<span class="num">'+esc(r.unit||'—')+'</span>'},
     t_developer:function(r){return '<span class="muted">'+esc(r.developer||'—')+'</span>'},
     t_status:function(r){return '<span class="pill" style="--pc:var('+statusVar(r.status)+')">'+esc(r.status)+'</span>'},
@@ -1308,12 +1621,15 @@ var CONFIG = {
     if(sTab!=='team')bk=null;
     $('salesTabs').innerHTML=tabs.map(function(t){return '<button type="button" class="btn" data-s="'+t[0]+'" aria-pressed="'+(t[0]===sTab)+'">'+t[1]+'</button>'}).join('');
     $('salesTabs').hidden=tabs.length<2;
-    ['overview','projects','bookings'].forEach(function(k){$(k).hidden=sTab!==k});
-    $('team').hidden=!(sTab==='team'&&!bk);$('bkpage').hidden=!(sTab==='team'&&bk);
+    var onC=!!cust;
+    ['overview','projects','bookings'].forEach(function(k){$(k).hidden=onC||sTab!==k});
+    $('team').hidden=onC||!(sTab==='team'&&!bk);$('bkpage').hidden=onC||!(sTab==='team'&&bk);$('custpage').hidden=!onC;
     var CARDS={c_sales:'kSales',c_rev:'kRev',c_top:'kTop',c_bsp:'kBsp',c_area:'kArea',c_gross:'kGross',c_conf:'kConf',c_cancel:'kCanc',c_tbsp:'kTbsp'};
-    Object.keys(CARDS).forEach(function(k){$(CARDS[k]).parentNode.hidden=!vis(k)});
+    Object.keys(CARDS).forEach(function(k){cardOf(CARDS[k]).hidden=!vis(k)});
+    document.body.classList.toggle('nochart',!vis('o_charts'));document.body.classList.toggle('nogrowth',!vis('o_growth'));document.body.classList.toggle('nofhide',!vis('f_hide'));
+    $('selAll').parentNode.hidden=!vis('p_select');
     $('ovSplit').hidden=!vis('o_split');$('ovFos').hidden=!vis('o_fos');$('ovRow').hidden=!vis('o_split')&&!vis('o_fos');
-    ($('q').closest('.f')||$('q').parentNode).hidden=!vis('search');
+    ($('q').closest('.f')||$('q').parentNode).hidden=!vis('search');$('gq').parentNode.hidden=!vis('search');
     ($('pq').closest('.field')||$('pq').parentNode).hidden=!vis('p_search');
     applyView();
   }
@@ -1333,12 +1649,12 @@ var CONFIG = {
   var fOff=false;
   try{fOff=localStorage.getItem('bsb-fhide')==='1'}catch(e){}
   function setFHide(off){
-    fOff=off;$('layout').classList.toggle('fhide',off);$('fShow').hidden=!off;
+    fOff=off;$('layout').classList.toggle('fhide',off);$('fShow').setAttribute('aria-pressed',String(!off));
     try{localStorage.setItem('bsb-fhide',off?'1':'0')}catch(e){}
   }
   setFHide(fOff);
   $('fHide').addEventListener('click',function(){setFHide(true);$('fShow').focus()});
-  $('fShow').addEventListener('click',function(){setFHide(false);$('fHide').focus()});
+  $('fShow').addEventListener('click',function(){setFHide(!fOff)});
   $('fToggle').addEventListener('click',function(){if(mq.matches)setFilters(this.getAttribute('aria-expanded')!=='true')});
   $('fchips').addEventListener('click',function(e){
     var b=e.target.closest('.chip');if(!b)return;
@@ -1380,7 +1696,7 @@ var CONFIG = {
     msCloseAll();box.querySelector('.msbtn').focus();
   });
   document.addEventListener('click',function(e){if(!e.target.closest('.ms'))msCloseAll()});
-  $('resetBtn').addEventListener('click',function(){state.f={};state.q='';$('q').value='';buildFilters();render()});
+  $('resetBtn').addEventListener('click',function(){state.f={};state.q='';$('q').value='';$('gq').value='';buildFilters();render()});
   $('rows').addEventListener('click',function(e){
     var b=e.target.closest('.prow');if(!b)return;
     var n=b.getAttribute('data-p'),i=state.sel.indexOf(n);
@@ -1401,7 +1717,7 @@ var CONFIG = {
   });
   $('salesTabs').addEventListener('click',function(e){
     var b=e.target.closest('button[data-s]');if(!b)return;
-    sTab=b.getAttribute('data-s');bk=null;applySections();render();window.scrollTo(0,0);
+    sTab=b.getAttribute('data-s');bk=null;cust=null;applySections();render();window.scrollTo(0,0);
   });
   $('tmRows').addEventListener('click',function(e){
     var b=e.target.closest('button.cnt');if(!b||b.disabled)return;
@@ -1418,6 +1734,11 @@ var CONFIG = {
   $('pq').addEventListener('input',function(){state.pq=this.value.trim().toLowerCase();render()});
   $('selNone').addEventListener('click',function(){state.sel=state.sel.filter(function(n){return !pm(n)});render()});
   $('q').addEventListener('input',function(e){state.q=e.target.value;render()});
+  $('gq').addEventListener('input',function(e){
+    state.q=e.target.value;
+    if(state.q.trim()&&sTab!=='bookings'&&salesTabs().some(function(t){return t[0]==='bookings'})){sTab='bookings';bk=null;cust=null;applySections()}
+    render();
+  });
   $('refreshBtn').addEventListener('click',load);
 
   var root=document.documentElement;
@@ -1454,7 +1775,7 @@ var CONFIG = {
   });
   $('signoutBtn').addEventListener('click',function(){
     var t=token;
-    saveSession('','');state.f={};state.q='';state.sel=[];state.initSel=false;state.pq='';$('pq').value='';$('q').value='';
+    saveSession('','');state.f={};state.q='';state.sel=[];state.initSel=false;state.pq='';$('pq').value='';$('q').value='';$('gq').value='';
     if(t&&CONFIG.API_URL)post({action:'logout',token:t}).catch(function(){});
     showLogin('You are signed out.');
   });
@@ -1471,11 +1792,13 @@ var CONFIG = {
     ['Sales page','Opens from Sales in the top bar. Each tab is one tab of the page.',[
       ['Tabs',[['overview','Overview tab'],['projects','Projects tab'],['bookings','Bookings tab'],['team','Team report tab']]],
       ['Overview boxes',[['c_sales','Total sales'],['c_rev','FOS revenue'],['c_top','Top project'],['c_bsp','Average BSP'],['c_area','Total area'],['c_gross','Gross value'],['c_conf','Confirmed sales'],['c_cancel','Cancelled sales'],['c_tbsp','Total BSP'],['credit','Credit note (box, booking column, totals and data)'],['o_fos','Sales count and revenue by FOS card (Overview, left side)'],['o_split','Status split card (Overview, right side)']]],
-      ['Projects tab',[['p_search','Project search box'],['p_rev','Revenue beside each project'],['d_split','Status split chart'],['d_rev','FOS revenue total'],['d_bsp','Total BSP'],['d_area','Area'],['d_gross','Gross value']]],
+      ['Overview extras',[['o_growth','Growth badges (up or down against last year)'],['o_charts','Mini charts inside the boxes']]],
+      ['Projects tab',[['p_search','Project search box'],['p_select','Select all and Clear buttons'],['p_rev','Revenue beside each project'],['d_split','Status split chart'],['d_rev','FOS revenue total'],['d_bsp','Total BSP'],['d_area','Area'],['d_gross','Gross value']]],
       ['Bookings tab',[['search','Booking search box'],['t_date','Date'],['t_project','Project (when several are picked)'],['t_customer','Customer'],['t_unit','Unit'],['t_developer','Developer'],['t_status','Status'],['t_area','Area'],['t_bsp','Total BSP'],['t_gross','Gross value'],['t_revenue','Revenue']]],
+      ['Customer details (opens from a customer name)',[['cust_open','Open customer details from a name'],['cust_contact','Contact (mobile, email)'],['cust_sum','Summary numbers'],['cust_books','List of all bookings'],['cust_all','Every column of each booking'],['cust_pay','Payment details (needs the Payment Details sheet)']]],
       ['Team report tab',[['tm_total','Total Sales column'],['tm_confirm','Confirm Sales column'],['tm_cancel','Cancel Sales column'],['tm_details','Open booking details when a number is clicked']]],
       '@team',
-      ['Filters on the right',FILTERS.map(function(f){return ['f_'+f[0],f[1]+' filter']})],
+      ['Filters on the right',FILTERS.map(function(f){return ['f_'+f[0],f[1]+' filter']}).concat([['f_quick','Quick period buttons'],['f_chips','Chips showing the chosen filters'],['f_hide','Hide and Show filters button']])],
       ['Downloads',[['dl_book','Download Excel of booking details']]],
       '@limits']],
     ['Employees page','Opens from Employees in the top bar.',[
@@ -1905,6 +2228,97 @@ var CONFIG = {
   $('tXls').addEventListener('click',function(){
     if(!emps||!vis('dl_excel')||!vis('dl_tree'))return;
     saveXlsx('Hierarchy',['Level','Emp ID','Name','Username','Location','Status','Reports to','Reporting line (top to this person)','Direct reports','People in team'],flatTree(),['n','s','s','s','s','s','s','s','n','n']);
+  });
+
+  /* ---------- customer details: opens from a customer name ---------- */
+  function custKey(x){return String(x||'').toUpperCase().replace(/\s+/g,' ').trim()}
+  var CUST_RIGHT={revenue:'t_revenue',bsp:'t_bsp',gross:'t_gross',area:'t_area',credit:'credit',customer:'t_customer',unit:'t_unit',date:'t_date',developer:'t_developer',status:'t_status'};
+  var C_MOBILE=['mobile','mobileno','mobilenumber','phone','phoneno','phonenumber','contact','contactno','clientmobile','clientmobileno'];
+  var C_MAIL=['email','emailid','mailid','clientmail','clientmailid','clientemail','customeremail','customermail'];
+  function colAllowed(h){
+    var n=norm(h);
+    for(var f in CUST_RIGHT){if(ALIASES[f]&&ALIASES[f].indexOf(n)>-1){var k=CUST_RIGHT[f];return k==='credit'?creditOK:vis(k)}}
+    return true;
+  }
+  function fmtRaw(h,v){return typeof v==='number'&&/(revenue|bsp|price|amount|value|discount|credit|incentive|slab|gross|net)/i.test(h)?inr(v):String(v)}
+  function custRows(){return data.filter(function(r){return custKey(r.customer)===cust}).sort(function(a,b){return (b.date||0)-(a.date||0)})}
+  function kvHtml(list){return '<div class="dsr-kv">'+list.map(function(c){return '<div><small>'+esc(c[0])+'</small><span>'+esc(String(c[1]))+'</span></div>'}).join('')+'</div>'}
+  function renderCust(){
+    var rows=custRows(),name=rows.length?rows[0].customer:cust;
+    $('custName').textContent=name||'Customer';$('custAv').textContent=(String(name||'?').replace(/[^A-Za-z0-9 ]/g,'').trim().split(/\s+/).slice(0,2).map(function(w){return w.charAt(0)}).join('')||'?').toUpperCase();$('custPills').innerHTML='';
+    if(!rows.length){$('custSub').textContent='No bookings found for this customer.';['custSum','custContact','custBooks','custPay'].forEach(function(i){$(i).hidden=true});return}
+    var sales=rows.filter(isSale),sum=function(k){return sales.reduce(function(a,r){return a+r[k]},0)};
+    $('custSub').textContent=rows.length+' booking'+(rows.length>1?'s':'')+' in the Bookings sheet'+(limited?' that you can see':'');
+    var cells=[['Bookings',rows.length],['Sales',sales.length],['Confirmed',rows.filter(function(r){return r.status==='Confirmed'}).length],['Cancelled',rows.filter(function(r){return r.status==='Cancelled'}).length]];
+    if(vis('t_revenue'))cells.push(['FOS revenue',inr(sum('revenue'))]);
+    if(vis('t_bsp'))cells.push(['Total BSP',inr(sum('bsp'))]);
+    if(vis('t_gross'))cells.push(['Gross value',inr(sum('gross'))]);
+    if(vis('t_area'))cells.push(['Area',sum('area').toLocaleString('en-IN',{maximumFractionDigits:2})]);
+    if(creditOK)cells.push(['Credit note',inr(sum('credit'))]);
+    var stc={};rows.forEach(function(r){stc[r.status]=(stc[r.status]||0)+1});
+    $('custPills').innerHTML=Object.keys(stc).map(function(k){return '<span class="pill" style="--pc:var('+statusVar(k)+')">'+esc(k)+' · '+stc[k]+'</span>'}).join('');
+    $('custSum').hidden=!vis('cust_sum');
+    $('custSum').innerHTML='<h3 class="ovh">At a glance</h3>'+kvHtml(cells)+'<p class="hint">Cancelled and Duplicate DSR bookings are not counted as sales.</p>';
+    var mob={},mail={};
+    rows.forEach(function(r){Object.keys(r.raw||{}).forEach(function(h){
+      var n=norm(h),v=String(r.raw[h]===null||r.raw[h]===undefined?'':r.raw[h]).trim();if(!v)return;
+      if(C_MOBILE.indexOf(n)>-1)mob[v]=1;else if(C_MAIL.indexOf(n)>-1)mail[v.toLowerCase()]=1;
+    })});
+    var cp=[];if(Object.keys(mob).length)cp.push(['Mobile',Object.keys(mob).join(', ')]);if(Object.keys(mail).length)cp.push(['Email',Object.keys(mail).join(', ')]);
+    $('custContact').hidden=!vis('cust_contact');
+    $('custContact').innerHTML='<h3 class="ovh">About</h3>'+(cp.length?kvHtml(cp):'<p class="hint">The Bookings sheet has no mobile or email column for this customer yet.</p>');
+    var full=vis('cust_all');
+    $('custBooks').hidden=!vis('cust_books');
+    $('custBooks').innerHTML='<h3 class="ovh">Bookings</h3>'+(full?'<p class="hint" style="margin-top:0">Open a booking to see every column of the sheet. Empty columns are not shown.</p>':'')+rows.slice(0,200).map(function(r){
+      var head='<span class="num muted">'+esc(fmtDate(r.date))+'</span><span class="nmx">'+esc(r.project||'—')+'</span><span class="num">'+esc(r.unit||'—')+'</span><span class="pill" style="--pc:var('+statusVar(r.status)+')">'+esc(r.status)+'</span>'+(vis('t_revenue')?'<span class="num r">'+(r.revenue?inr(r.revenue):'—')+'</span>':'<span></span>');
+      if(!full)return '<div class="cbk"><div class="cbs">'+head+'</div></div>';
+      var kv=Object.keys(r.raw||{}).filter(function(h){var v=r.raw[h];return h&&v!==''&&v!==null&&v!==undefined&&colAllowed(h)}).map(function(h){return [h,fmtRaw(h,r.raw[h])]});
+      return '<details class="cbk"'+(rows.length===1?' open':'')+'><summary class="cbs">'+head+'</summary>'+kvHtml(kv)+'</details>';
+    }).join('')+(rows.length>200?'<p class="hint">The first 200 bookings are shown.</p>':'');
+  }
+  function payHtml(j){
+    var h='<h3 class="ovh">Payment details</h3>';
+    if(j.error)return h+'<p class="hint">'+esc(j.error)+'</p>';
+    if(!j.available)return h+'<p class="hint">Payment details are not connected yet. They will show here when a sheet called <b>Payment Details</b> is added to the bookings Google Sheet.</p>';
+    if(!j.rows.length)return h+'<p class="hint">'+esc(j.note||'No payments found for this customer yet.')+'</p>';
+    var ai=j.amountIdx,gt='grid-template-columns:repeat('+j.headers.length+',minmax(110px,1fr))';
+    var num=function(v){var n=Number(String(v).replace(/,/g,''));return v!==''&&isFinite(n)?n:null};
+    h+='<p class="muted" style="margin:0 0 12px">'+j.count+' payment'+(j.count>1?'s':'')+(ai>-1?' · total '+inr(j.total):'')+'</p>';
+    h+='<div class="scrollx"><div class="tbl" style="min-width:'+(j.headers.length*120)+'px"><div class="tr th" style="'+gt+'">'+j.headers.map(function(x,i){return '<span'+(i===ai?' class="r"':'')+'>'+esc(x)+'</span>'}).join('')+'</div>'+
+      j.rows.map(function(r){return '<div class="tr" style="'+gt+'">'+r.map(function(v,i){var n=i===ai?num(v):null;return '<span class="'+(i===ai?'num r':'')+'">'+esc(n!==null?inr(n):String(v))+'</span>'}).join('')+'</div>'}).join('')+'</div></div>';
+    if(j.count>j.rows.length)h+='<p class="hint">The first '+j.rows.length+' payments are shown.</p>';
+    return h;
+  }
+  function custLoadPay(){
+    var box=$('custPay');box.hidden=!vis('cust_pay');if(box.hidden)return;
+    var rows=custRows();if(!rows.length)return;
+    var key=cust,top='<h3 class="ovh">Payment details</h3>';
+    if(mode!=='live'){box.innerHTML=top+'<p class="hint">Payment details show here once the website is connected to your Google Sheet.</p>';return}
+    box.innerHTML=top+'<p class="hint">Loading…</p>';
+    dCall({action:'payments',customer:rows[0].customer}).then(function(j){if(cust===key)box.innerHTML=payHtml(j)})
+      .catch(function(e){if(cust===key)box.innerHTML=top+'<p class="hint">'+esc(e&&e.message?'Could not load the payments. '+e.message:'')+'</p>'});
+  }
+  function custOpen(name){
+    if(!name||!vis('cust_open'))return;
+    custBack={s:sTab,bk:bk};cust=custKey(name);
+    applySections();renderCust();custLoadPay();window.scrollTo(0,0);
+  }
+  function custClose(){
+    var b=custBack||{s:'bookings',bk:null};cust=null;custBack=null;sTab=b.s;bk=b.bk;
+    applySections();render();window.scrollTo(0,0);
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.clink');if(!b)return;
+    e.preventDefault();var nm=b.getAttribute('data-cust'),w=null;
+    if(token&&!document.body.classList.contains('solo')){
+      try{localStorage.setItem('bsb-handoff',JSON.stringify({t:token,e:userEmail,ts:Date.now()}))}catch(x){}
+      w=window.open(location.pathname+location.search+'#cust='+encodeURIComponent(nm),'_blank');
+    }
+    if(!w)custOpen(nm);
+  });
+  $('custBack').addEventListener('click',function(){
+    if(document.body.classList.contains('solo')){window.close();setTimeout(function(){document.body.classList.remove('solo');try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}custClose()},250);return}
+    custClose();
   });
 
   /* ---------- DSR: daily sales report form with approval ---------- */
