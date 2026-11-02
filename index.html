@@ -566,6 +566,41 @@ details.cbk[open]>.cbs{border-bottom:1px solid var(--line)}
 .tsearch input::-webkit-search-cancel-button{display:none}
 #fShow{min-height:40px;display:inline-flex;align-items:center;gap:8px;padding:0 14px;font-weight:600}
 #fShow[aria-pressed="true"]{border-color:var(--accent)}
+.tb-ic{width:40px;min-height:40px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.tb-ic[hidden]{display:none!important}
+.cmask{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.cmask[hidden]{display:none}
+.cbox{width:min(860px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--card);color:var(--fg);border:1px solid var(--line-strong);border-radius:16px;box-shadow:var(--shadow-card);padding:20px}
+.cbox h2{margin:0;font-size:18px}
+.chead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
+.cgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.cgrid label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted)}
+.cgrid input,.cgrid select{height:40px;border:1px solid var(--line);border-radius:10px;background:var(--field);color:var(--fg);padding:0 12px;font:inherit;font-size:14px;min-width:0}
+.cgrid input:focus,.cgrid select:focus{outline:0;border-color:var(--accent)}
+.cres{margin-top:16px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cres div{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;font-size:14px;border-top:1px solid var(--line)}
+.cres div:first-child{border-top:0}
+.cres .ct{background:var(--sel-bg);font-weight:700;font-size:16px}
+.cact{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.ceh{margin:18px 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.cer{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cer input:not([type=checkbox]){height:36px;border:1px solid var(--line);border-radius:8px;background:var(--field);color:var(--fg);padding:0 10px;font:inherit;font-size:13px;min-width:0}
+.cer select{flex:0 1 230px;min-width:0;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--field);color:var(--fg);padding:0 8px;font:inherit;font-size:13px}
+.cgrid.c3{grid-template-columns:repeat(4,minmax(0,1fr))}
+.csh{margin-top:16px;border:1px solid var(--line-strong);border-radius:4px;overflow:hidden;font-size:13px}
+.cs-t{text-align:center;font-weight:800;font-size:16px;padding:12px;border-bottom:1px solid var(--line-strong);letter-spacing:.02em}
+.cs-s{text-align:center;font-weight:700;font-size:12px;padding:6px;background:var(--row);border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line);letter-spacing:.06em}
+.cs-r{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1.2fr) minmax(0,1fr) minmax(0,1.1fr);gap:8px;padding:7px 12px;border-top:1px dashed var(--line)}
+.cs-r span{min-width:0;overflow-wrap:anywhere}.cs-r .r{text-align:right}
+.cs-hdr{font-weight:700;font-size:11px;color:var(--muted);letter-spacing:.04em}
+.cs-tot{font-weight:700;background:var(--sel-bg)}
+.cin{margin-left:22px}
+.ctype{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:12px;background:var(--row)}
+.cin2{margin-top:6px}
+@media (max-width:640px){.cgrid.c3{grid-template-columns:1fr 1fr}.cs-r{grid-template-columns:1.4fr 1fr 1fr;font-size:12px}.cs-r span:nth-child(3){display:none}}
+.cmsg{margin:8px 0 0;font-size:13px;font-weight:600;color:var(--accent-2)}
+.cnote{margin:10px 0 0;font-size:12px;color:var(--muted)}
+@media (max-width:560px){.cgrid{grid-template-columns:1fr}}
 .usr{box-shadow:none;border:0;background:transparent;padding:0 0 0 4px;gap:10px}
 body:not([data-view="report"]) .tb-report{display:none}
 body:not([data-view="report"]) .tbsp{display:block}
@@ -765,6 +800,20 @@ body:not([data-view="report"]) #fShow{display:none!important}
   .atab{padding:0 12px}
   .mxh,.mxr{grid-template-columns:minmax(0,1.3fr) 90px 90px;padding:0 10px}
 }
+#brk .tr input{height:40px;padding:0 10px;border-radius:12px;border:1px solid var(--line-strong);background:var(--field);color:var(--fg);font:inherit;font-size:14px;width:100%;min-width:0}
+#brk .tr .btn.sm{min-height:40px;padding:0 10px}
+#brk .tr.btot{font-weight:700;border-color:var(--line-strong)}
+#brk .panel{margin-top:14px}
+.bbars{display:flex;flex-direction:column;gap:12px}
+.bbr{display:grid;grid-template-columns:minmax(90px,1fr) 1.6fr 112px;gap:12px;align-items:center;font-size:14px}.bbr .num{text-align:right}
+.bbr .bt{display:block;height:10px;border-radius:6px;background:var(--line);overflow:hidden}
+.bbr .bt i{display:block;height:100%;border-radius:6px;background:var(--accent)}
+.bfm{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.bfm .wide{grid-column:1/-1}.bfm .wide2{grid-column:span 2}
+.bprev{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.bprev>div{padding:10px 12px;border-radius:12px;background:var(--row);border:1px solid var(--line)}
+.bprev small{display:block;color:var(--muted);font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px}
+.clist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -783,6 +832,7 @@ body:not([data-view="report"]) #fShow{display:none!important}
           <button class="btn" type="button" data-v="report" aria-pressed="false"><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Sales</span></button>
           <button class="btn" type="button" data-v="emp" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6M17 5a3.5 3.5 0 010 7M22 20c0-3-1.5-4.8-4-5.6"/></svg><span>Employees</span></button>
           <button class="btn" type="button" data-v="dsr" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"/></svg><span>DSR</span></button>
+          <button class="btn" type="button" data-v="brk" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2M3 13h18"/></svg><span>Brokerage</span></button>
           <button class="btn" type="button" data-v="admin" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><span>Admin</span></button>
         </span>
         <button class="btn" id="refreshBtn" type="button">Refresh</button>
@@ -793,7 +843,7 @@ body:not([data-view="report"]) #fShow{display:none!important}
     </div>
   </nav>
 
-  <div class="topbar" id="topbar" hidden><label class="tsearch tb-report" for="gq"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="gq" type="search" placeholder="Search anything: customer, project, unit, status, team, request no" autocomplete="off"></label><span class="tbsp"></span><button class="btn tb-report" id="fShow" type="button" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filters <span class="badge num" id="fShowN" hidden></span></button><div class="usr" id="usrChip"><span class="av" id="usrAv" aria-hidden="true"></span><span class="ut2"><b id="usrName"></b><small id="usrRole"></small></span></div></div>
+  <div class="topbar" id="topbar" hidden><label class="tsearch tb-report" for="gq"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="gq" type="search" placeholder="Search anything: customer, project, unit, status, team, request no" autocomplete="off"></label><span class="tbsp"></span><button class="btn tb-report" id="fShow" type="button" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filters <span class="badge num" id="fShowN" hidden></span></button><button class="btn tb-report tb-ic" id="calcBtn" type="button" aria-label="Property cost calculator" title="Property cost calculator" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 7h7"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></button><div class="usr" id="usrChip"><span class="av" id="usrAv" aria-hidden="true"></span><span class="ut2"><b id="usrName"></b><small id="usrRole"></small></span></div></div>
 
   <section class="login" id="login" hidden aria-labelledby="loginTitle">
     <div class="card glass raised">
@@ -927,7 +977,7 @@ body:not([data-view="report"]) #fShow{display:none!important}
         <p id="custSub"></p>
         <div class="cpills" id="custPills"></div>
       </div>
-      <div class="cpa"><button class="btn" id="custBack" type="button">← Back</button><span class="muted solohint">Opened in a new tab. Close this tab when you are done.</span></div>
+      <div class="cpa"><button class="btn" id="custBack" type="button">← Back</button><span class="muted solohint">Opened in a pop-up window. Close this window when you are done.</span></div>
     </div>
     <div class="cgrid">
       <div class="cside"><div class="panel" id="custContact"></div><div class="panel" id="custSum"></div></div>
@@ -988,6 +1038,17 @@ body:not([data-view="report"]) #fShow{display:none!important}
     <div class="panel glass" id="dsrDetail" hidden style="padding:24px"></div>
   </section>
 
+  <section class="adm" id="brk" hidden aria-labelledby="brkTitle">
+    <div>
+      <div class="eyebrow">Private</div>
+      <h1 id="brkTitle">Brokerage</h1>
+      <p class="lead">Brokerage overview, booking details and the rules behind every figure. The data is kept in a separate private Google Sheet.</p>
+    </div>
+    <div class="banner" id="brkMsg" role="status" hidden></div>
+    <div class="tabs" id="brkTabs"></div>
+    <div id="brkBody"></div>
+  </section>
+
   <section class="adm" id="admin" hidden aria-labelledby="admTitle">
     <h1 class="sr" id="admTitle">Who can see what</h1>
     <div class="banner" id="admMsg" role="status" hidden></div>
@@ -1014,11 +1075,13 @@ body:not([data-view="report"]) #fShow{display:none!important}
   </section>
 </div>
 
+<div class="cmask" id="calcMask" hidden><div class="cbox" role="dialog" aria-modal="true" aria-labelledby="calcT"><div class="chead"><h2 id="calcT">Property cost calculator</h2><button class="btn" id="calcX" type="button" aria-label="Close">Close</button></div><div id="calcBody"></div></div></div>
 <script>
 /* ============ SETTINGS: edit these ============ */
 var CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbwjGOmarIBVNx4XXWVCCt3A33B2tEfGT5KsPp0qW6xO9swnnDtd70BD6DSliIjmYfPg/exec',               // Paste your Apps Script Web app URL here (ends with /exec). Empty = sample data, no login.
-  EMP_API_URL: 'https://script.google.com/macros/s/AKfycbwJNGG7ix-eePUWMw5Ldg2LqSqNJpc2b0_cLvhKJ11hx9KSLXijbQv7GJAF1Utcl1m7/exec',           // Only if the employee list is in a SECOND Google Sheet: paste that script's /exec link here. Empty = same sheet as above.
+  API_URL: 'https://script.google.com/macros/s/AKfycbwJ3lDkaWdYd4QE_O4vCd8Wk91HANPmKWXM1WkE6KYgiuFo98n6XKOLHCj-3T1qzBqd/exec',               // Paste your Apps Script Web app URL here (ends with /exec). Empty = sample data, no login.
+  EMP_API_URL: 'https://script.google.com/macros/s/AKfycbzbW-viA_BuQVJVDUGpLF_Es4sEii1xfgIp2Z8pdL-6T7fZFInI9sXoJmZkZFWL_0C9/exec',           // Only if the employee list is in a SECOND Google Sheet: paste that script's /exec link here. Empty = same sheet as above.
+  BRK_API_URL: 'https://script.google.com/macros/s/AKfycbzFqp2bQ-7VCWVAbw3fG70BZ9E_yNuAh1pr38_e2oML-C3ohpwolbtIj2kmnza403gU/exec',           // Brokerage: paste the /exec link of the separate Brokerage script here (its own private Google Sheet). Empty = no Brokerage page.
   AUTO_REFRESH_SECONDS: 0,   // 0 = off. Example: 300 reloads the data every 5 minutes.
   MAX_TABLE_ROWS: 200
 };
@@ -1158,7 +1221,7 @@ var CONFIG = {
   function showLogin(msg){
     data=[];
     isAdmin=false;limited=false;view='home';adm.draft=null;adm.users=[];empAcc=[];emps=null;eTab='list';['eq','tq'].forEach(function(id){$(id).value=''});$('es').value='';
-    $('home').hidden=true;homeAnim(false);dsr.form=null;dsr.rows=[];dsr.tab='';$('dsrForm').innerHTML='';if(typeof fb==='object'&&fb){fb.items=null;fb.dirty=false;fb.open={}}$('dsrEdit').innerHTML='';$('app').hidden=true;$('admin').hidden=true;$('emp').hidden=true;$('navApp').hidden=true;$('topbar').hidden=true;$('login').hidden=false;
+    $('home').hidden=true;homeAnim(false);dsr.form=null;dsr.rows=[];dsr.tab='';$('dsrForm').innerHTML='';if(typeof fb==='object'&&fb){fb.items=null;fb.dirty=false;fb.open={}}$('dsrEdit').innerHTML='';$('app').hidden=true;$('admin').hidden=true;$('emp').hidden=true;$('brk').hidden=true;brkReset();$('navApp').hidden=true;$('topbar').hidden=true;$('login').hidden=false;
     ['rows','tbl','detail','fgrid','etbl','etree','empKpis'].forEach(function(id){$(id).innerHTML=''});
     $('loginMsg').textContent=msg||'';
     $('pw').value='';
@@ -1170,10 +1233,10 @@ var CONFIG = {
     if(teamLevels().length>0&&vis('team'))t.push(['team','Team report']);
     return t;
   }
-  function viewOK(v){return (v==='home'&&vis('p_home'))||(v==='report'&&vis('p_sales')&&salesTabs().length>0)||(v==='emp'&&vis('p_emp')&&empOK())||(v==='admin'&&isAdmin)||(v==='dsr'&&dsrOK())}
+  function viewOK(v){return (v==='home'&&vis('p_home'))||(v==='report'&&vis('p_sales')&&salesTabs().length>0)||(v==='emp'&&vis('p_emp')&&empOK())||(v==='admin'&&isAdmin)||(v==='dsr'&&dsrOK())||(v==='brk'&&brkOK())}
   function applyView(){
-    if(!viewOK(view))view=['home','report','emp','dsr','admin'].filter(viewOK)[0]||'home';
-    $('home').hidden=view!=='home';$('app').hidden=view!=='report';$('emp').hidden=view!=='emp';$('dsr').hidden=view!=='dsr';$('admin').hidden=view!=='admin';
+    if(!viewOK(view))view=['home','report','emp','dsr','brk','admin'].filter(viewOK)[0]||'home';
+    $('home').hidden=view!=='home';$('app').hidden=view!=='report';$('emp').hidden=view!=='emp';$('dsr').hidden=view!=='dsr';$('brk').hidden=view!=='brk';$('admin').hidden=view!=='admin';
     document.querySelectorAll('#navLinks [data-v]').forEach(function(b){var v=b.getAttribute('data-v');b.hidden=!viewOK(v);b.setAttribute('aria-pressed',v===view)});
     homeAnim(view==='home');document.body.setAttribute('data-view',view);
     if(view==='report'&&data.length)renderBig();
@@ -1202,7 +1265,7 @@ var CONFIG = {
       data=arr.map(clean).filter(function(r){return r.project});
       updated=(j&&j.updated)?new Date(j.updated).toLocaleString():new Date().toLocaleString();
       isAdmin=(j.role==='ADMIN');empAcc=Array.isArray(j.empAccess)?j.empAccess:[];limited=!!j.limited;reports=Array.isArray(j.reports)?j.reports:null;creditOK=j.credit!==false;hid=Array.isArray(j.hidden)?j.hidden:[];teamLevel=j.level||(j.role==='ADMIN'?'ADMIN':'');
-      mode='live';if(reports&&!reports.length&&empAcc.length)view='emp';if(dsr.deep&&dsrOK())view='dsr';if(custDeep)view='report';showApp();start();if(view==='dsr'&&dsr.deep)dsrEnter();
+      mode='live';if(reports&&!reports.length&&empAcc.length)view='emp';if(dsr.deep&&dsrOK())view='dsr';if(custDeep)view='report';showApp();start();brkCheck();if(view==='dsr'&&dsr.deep)dsrEnter();
       if(custDeep&&view==='report'){document.body.classList.add('solo');if(vis('cust_open'))custOpen(custDeep);document.title=custDeep+' · Customer details'}
     }).catch(function(e){
       errMsg=e.message||String(e);mode='error';showApp();start();
@@ -1821,7 +1884,7 @@ var CONFIG = {
     $('team').hidden=onC||!(sTab==='team'&&!bk);$('bkpage').hidden=onC||!(sTab==='team'&&bk);$('custpage').hidden=!onC;
     var CARDS={c_sales:'kSales',c_rev:'kRev',c_top:'kTop',c_bsp:'kBsp',c_area:'kArea',c_gross:'kGross',c_conf:'kConf',c_cancel:'kCanc',c_tbsp:'kTbsp'};
     Object.keys(CARDS).forEach(function(k){cardOf(CARDS[k]).hidden=!vis(k)});cardOf('kComm').hidden=!cm('c_comm');
-    document.body.classList.toggle('nochart',!vis('o_charts'));document.body.classList.toggle('nogrowth',!vis('o_growth'));document.body.classList.toggle('nofhide',!vis('f_hide'));
+    document.body.classList.toggle('nochart',!vis('o_charts'));document.body.classList.toggle('nogrowth',!vis('o_growth'));document.body.classList.toggle('nofhide',!vis('f_hide'));$('calcBtn').hidden=!gr('g_calc');
     $('selAll').parentNode.hidden=!vis('p_select');
     $('ovSplit').hidden=!vis('o_split');$('ovFos').hidden=!vis('o_fos');$('ovRow').hidden=!vis('o_split')&&!vis('o_fos');
     ($('q').closest('.f')||$('q').parentNode).hidden=!vis('search');$('gq').parentNode.hidden=!vis('search');
@@ -1924,6 +1987,7 @@ var CONFIG = {
     var b=e.target.closest('[data-v]');if(!b)return;
     view=b.getAttribute('data-v');applyView();window.scrollTo(0,0);
     if(view==='emp')loadEmps();
+    if(view==='brk')brkEnter();
     if(view==='admin')admLoad();
     if(view==='dsr')dsrEnter();
     if(view==='report'&&mode!=='live'&&mode!=='demo')load();
@@ -2011,6 +2075,7 @@ var CONFIG = {
       ['Projects tab',[['p_search','Project search box'],['p_select','Select all and Clear buttons'],['p_rev','Net Revenue beside each project'],['p_comm','Overall Revenue beside each project'],['d_split','Status split chart'],['d_rev','Net Revenue total'],['d_comm','Overall Revenue total'],['d_bsp','Total BSP'],['d_area','Area'],['d_gross','Gross value']]],
       ['Bookings tab',[['search','Booking search box'],['t_date','Date'],['t_project','Project (when several are picked)'],['t_customer','Customer'],['t_unit','Unit'],['t_developer','Developer'],['t_status','Status'],['t_area','Area'],['t_bsp','Total BSP'],['t_gross','Gross value'],['t_revenue','Net Revenue'],['t_comm','Overall Revenue']]],
       ['Customer details (opens from a customer name)',[['cust_open','Open customer details from a name'],['cust_contact','Contact (mobile, email)'],['cust_sum','Summary numbers'],['cust_books','List of all bookings'],['cust_all','Every column of each booking'],['cust_pay','Payment details (needs the Payment Details sheet)']]],
+      ['Property cost calculator (off unless you tick them)',[['g_calc','Calculator button (calculator icon next to Filters)'],['g_calc_dl','PDF, Excel and Print buttons in the calculator'],['g_calc_edit','Can edit the calculator (floors, property types, rates, charges, payment plans)']]],
       ['Team report tab',[['tm_total','Total Sales column'],['tm_s_conf','Status column: Confirmed'],['tm_s_notc','Status column: Not confirmed'],['tm_s_resale','Status column: Resale'],['tm_s_canc','Status column: Cancelled'],['tm_s_dup','Status column: Duplicate DSR'],['tm_s_na','Status column: Status not available'],['tm_s_other','Status column: any other status'],['tm_details','Open booking details when a number is clicked']]],
       '@team',
       ['Filters on the right',FILTERS.map(function(f){return ['f_'+f[0],f[1]+' filter']}).concat([['f_ptype','Period type buttons (Year and month / Financial year / Date range). Untick to hide them and keep only Year, Month and Quarter'],['f_quick','Quick period buttons'],['f_chips','Chips showing the chosen filters'],['f_hide','Hide and Show filters button']])],
@@ -2027,7 +2092,9 @@ var CONFIG = {
     ['DSR page','Opens from DSR in the top bar. The server checks these rights too, so they cannot be skipped.',[
       ['DSR tabs',[['p_dsr','Show the DSR page (the DSR link in the top bar)'],['dsr_new','New DSR form'],['dsr_mine','My DSRs (the ones this person submitted)'],['dsr_appr','Approvals (needed by approvers; Admins can approve any DSR)']]],
       ['Change the form',[['g_dsr_edit','Form settings tab: change the questions (text, required or optional, dropdown choices, order, add or hide). Off unless you tick it. Admins always can.']]]]],
-    ['Admin page','Opens from Admin in the top bar.',['@admin']]
+    ['Admin page','Opens from Admin in the top bar.',['@admin']],
+    ['Brokerage page','Brokerage access is given in the private Brokerage Google Sheet: add the person on its Access tab and the Brokerage link appears for them. This tick is only needed if the Brokerage script has REQUIRE_ADMIN_TICK = true (an optional extra lock). The Admin role never opens Brokerage by itself.',[
+      ['Page',[['g_brokerage','Brokerage page: extra lock (only used when REQUIRE_ADMIN_TICK is true in the Brokerage script)']]]]]
   ];
   var ALLP=['Every page',[['dl_excel','Allow Excel downloads (master switch, the download ticks on each page work only when this is on)']]];
   var GROUPS=[ALLP];
@@ -2141,7 +2208,7 @@ var CONFIG = {
     var d=adm.draft;
     return '<fieldset class="dim" data-r="1" style="margin-top:12px"><legend>'+g[0]+'</legend><div class="seg">'+g[1].map(function(it){return '<label><input type="checkbox" name="vis" value="'+it[0]+'"'+(d.vis[it[0]]?' checked':'')+'> '+it[1]+'</label>'}).join('')+'</div></fieldset>';
   }
-  var TABS=[['login','Login'],['home','Home'],['sales','Sales'],['emp','Employees'],['dsr','DSR'],['rows','Data rows'],['extras','Extras']];
+  var TABS=[['login','Login'],['home','Home'],['sales','Sales'],['emp','Employees'],['dsr','DSR'],['brk','Brokerage'],['rows','Data rows'],['extras','Extras']];
   var MATRIX=[['Overview box','c_rev','c_comm'],['Projects list and FOS card','p_rev','p_comm'],['Project total','d_rev','d_comm'],['Bookings table and Excel','t_revenue','t_comm']];
   var MKEYS=[];MATRIX.forEach(function(m){MKEYS.push(m[1],m[2])});
   var MASTER=['p_home','p_sales','p_emp','p_dsr'];
@@ -2188,6 +2255,7 @@ var CONFIG = {
     body.sales=pageTab('sales',1,{skip:MKEYS,top:'<h4 class="mxt">Revenue figures</h4>'+matrixHtml()});
     body.emp=pageTab('emp',2);
     body.dsr=pageTab('dsr',3);
+    body.brk=pageTab('brk',5);
     body.rows='<p class="hint"><b>Rows this person can see on the Sales page.</b> Leave on All to show everything. Rows must match every limit.</p><div class="scopes">'+DIMS.map(dimHtml).join('')+'</div>';
     body.extras='<div class="gcards">'+gcard(ALLP,[])+'</div><div class="allbar" role="group" aria-label="Tick or untick every right"><button type="button" class="btn sm" data-all="pages">Give access to all pages</button><button type="button" class="btn sm" data-all="everything">Tick everything (also extra features)</button><button type="button" class="btn sm" data-all="none">Untick everything</button></div><p class="hint"><b>All pages</b> ticks every page, tab, box, column and download, and leaves the extra features as they are. The Admin page opens only for people whose Role is Admin. Only Credit note, the Employee pages and the Employee columns are also withheld by the server; use Data rows to restrict the rows themselves.</p>';
     return TABS.map(function(t){return '<div class="tabp" role="tabpanel" id="tp-'+t[0]+'" data-tp="'+t[0]+'"'+(adm.tab===t[0]?'':' hidden')+'>'+body[t[0]]+'</div>'}).join('');
@@ -2395,7 +2463,7 @@ var CONFIG = {
       boxes.forEach(function(c){
         if(gp)c.checked=gp==='on';
         else if(ga==='none')c.checked=false;
-        else if(ga==='everything')c.checked=true;
+        else if(ga==='everything'){if(c.value!=='g_brokerage')c.checked=true}
         else if(!isG(c.value))c.checked=true;
       });
       ed.querySelectorAll('input[name="vis"]').forEach(function(c){d0.vis[c.value]=c.checked});
@@ -2648,7 +2716,8 @@ var CONFIG = {
     e.preventDefault();var nm=b.getAttribute('data-cust'),w=null;
     if(token&&!document.body.classList.contains('solo')){
       try{localStorage.setItem('bsb-handoff',JSON.stringify({t:token,e:userEmail,ts:Date.now()}))}catch(x){}
-      w=window.open(location.pathname+location.search+'#cust='+encodeURIComponent(nm),'_blank');
+      var ww=Math.min(1180,screen.availWidth-80),wh=Math.min(860,screen.availHeight-80);
+      w=window.open(location.pathname+location.search+'#cust='+encodeURIComponent(nm),'_blank','popup=yes,width='+ww+',height='+wh+',left='+Math.round((screen.availWidth-ww)/2)+',top='+Math.round((screen.availHeight-wh)/2)+',scrollbars=yes,resizable=yes');
     }
     if(!w)custOpen(nm);
   });
@@ -2656,6 +2725,246 @@ var CONFIG = {
     if(document.body.classList.contains('solo')){window.close();setTimeout(function(){document.body.classList.remove('solo');try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}custClose()},250);return}
     custClose();
   });
+
+
+  /* ---------- Property costing sheet (set up by the Admin: projects, floor rates, possession charges, payment plans) ---------- */
+  (function(){
+    var DEF={sheets:[{
+      t:'MIGSUN DELTA STREET COSTING',
+      floors:[{n:'LGF'},{n:'GF'},{n:'1ST'},{n:'2ND'},{n:'5TH'}],
+      types:[{n:'STANDARD',oc:1500,gst:12,rates:[20990,29490,18490,17490,17490],
+        poss:[
+          {l:'POWER BACKUP IN KVA',m:'slab',rate:40000,slabs:[{u:200,q:2},{u:400,q:3},{u:600,q:4},{u:800,q:5},{u:1000,q:6}]},
+          {l:'ELECTRIC METER IN KW',m:'slab',rate:25000,slabs:[{u:200,q:3},{u:400,q:4},{u:600,q:5},{u:800,q:6},{u:1000,q:7}]},
+          {l:'LEASE RENT',m:'sqft',rate:1250,slabs:[]}
+        ],pgst:12}],
+      plans:[
+        {n:'20:40:40',rows:[{p:'ON BOOKING',pc:10},{p:'WITHIN 30 DAYS OF BOOKING',pc:10},{p:'ON COMPLETION OF FAÇADE',pc:40},{p:'ON OFFER OF POSSESSION',pc:0,rest:1}]},
+        {n:'40:30:30',rows:[{p:'ON BOOKING',pc:10},{p:'WITHIN 30 DAYS OF BOOKING',pc:30},{p:'ON COMMENCEMENT OF SUPERSTRUCTURE',pc:30},{p:'ON OFFER OF POSSESSION',pc:0,rest:1}]}
+      ]
+    }]};
+    var conf=clone(DEF),V={sh:0,client:'',floor:0,type:0,unit:'',area:390},mode='calc',draft=null,ei=0,msg='',lastLines=[],loaded=false;
+    function clone(o){return JSON.parse(JSON.stringify(o))}
+    var el=function(i){return $(i)};
+    var inr=function(v){return '₹ '+Math.round(v).toLocaleString('en-IN')};
+    function nz(v){v=parseFloat(v);return isFinite(v)&&v>0?v:0}
+    function S(v,n){return String(v==null?'':v).slice(0,n)}
+    function normPoss(list){var out=[];
+      (Array.isArray(list)?list:[]).slice(0,12).forEach(function(p){var m=p.m==='slab'||p.m==='fixed'?p.m:'sqft',sl=[];
+        if(m==='slab')(Array.isArray(p.slabs)?p.slabs:[]).slice(0,12).forEach(function(s){sl.push({u:nz(s.u),q:nz(s.q)})});
+        sl.sort(function(a,b){return a.u-b.u});out.push({l:S(p.l,50)||'CHARGE',m:m,rate:nz(p.rate),slabs:sl})});
+      return out}
+    function normSheet(x,d){
+      var o={t:S(x.t,60)||d.t,floors:[],types:[],plans:[]};
+      (Array.isArray(x.floors)?x.floors:[]).slice(0,40).forEach(function(f){o.floors.push({n:S(f.n,20)||'Floor'})});
+      if(!o.floors.length)o.floors=clone(d.floors);
+      var T=Array.isArray(x.types)?x.types:null;
+      if(!T)T=[{n:'STANDARD',oc:x.oc,gst:x.gst,poss:x.poss,pgst:x.pgst,rates:(Array.isArray(x.floors)?x.floors:[]).map(function(f){return f.r})}]; // settings saved before property types existed
+      T.slice(0,20).forEach(function(t){var r=[];for(var i=0;i<o.floors.length;i++)r.push(nz(Array.isArray(t.rates)?t.rates[i]:0));
+        o.types.push({n:S(t.n,30)||'TYPE',oc:nz(t.oc),gst:nz(t.gst),rates:r,poss:normPoss(t.poss),pgst:nz(t.pgst)})});
+      if(!o.types.length)o.types=clone(d.types);
+      (Array.isArray(x.plans)?x.plans:[]).slice(0,6).forEach(function(p){var rows=[];
+        (Array.isArray(p.rows)?p.rows:[]).slice(0,10).forEach(function(r){rows.push({p:S(r.p,50)||'MILESTONE',pc:nz(r.pc),rest:r.rest?1:0})});
+        if(rows.length)o.plans.push({n:S(p.n,30)||'PLAN',rows:rows})});
+      return o;
+    }
+    function norm(c){
+      var o={sheets:[]};
+      if(c&&Array.isArray(c.sheets))c.sheets.slice(0,8).forEach(function(x){if(x&&typeof x==='object')o.sheets.push(normSheet(x,DEF.sheets[0]))});
+      if(!o.sheets.length)return clone(DEF);return o;
+    }
+    function cur(){return conf.sheets[Math.min(V.sh,conf.sheets.length-1)]}
+    function curT(){var s=cur();return s.types[Math.min(V.type,s.types.length-1)]}
+    function build(){ // every figure, line by line: the screen, PDF, Excel and print all use this one list
+      var s=cur(),ty=curT(),fi=Math.min(V.floor,s.floors.length-1),fl={n:s.floors[fi].n,r:ty.rates[fi]||0},area=nz(V.area),L=[],P=function(t,a,b,c,d){L.push({t:t,a:a,b:b==null?'':b,c:c==null?'':c,d:d==null?'':d})};
+      var basic=fl.r*area,oc=ty.oc*area,ex=basic+oc,g=ex*ty.gst/100,tb=ex+g;
+      P('title',s.t);P('hdr','CLIENT NAME',s.types.length>1?'FLOOR / PROPERTY TYPE':'FLOOR','UNIT NO.','AREA');P('row',V.client||'-',fl.n+(s.types.length>1?' / '+ty.n:''),V.unit||'-',area.toLocaleString('en-IN'));
+      P('sec','BASIC');P('row','RATE','',inr(fl.r)+' / sq ft',basic);P('row','OTHER CHARGES','',inr(ty.oc)+' / sq ft',oc);
+      P('tot','TOTAL (BASIC & OTHER CHARGES) EX GST','','',ex);P('row','GST@'+ty.gst+'%','','',g);P('tot','TOTAL BASIC WITH GST','','',tb);
+      var pe=0;
+      if(ty.poss.length){
+        P('sec','POSSESSION CHARGES');
+        ty.poss.forEach(function(p){var q='',a=0,c=inr(p.rate);
+          if(p.m==='slab'){var hit=null;p.slabs.forEach(function(x){if(!hit&&area<=x.u)hit=x});q=hit?hit.q:0;a=q*p.rate}
+          else if(p.m==='sqft'){a=p.rate*area;c=inr(p.rate)+' / sq ft'}else a=p.rate;
+          pe+=a;P('row',p.l,q,c,a)});
+        var pg=pe*ty.pgst/100;P('tot','TOTAL POSSESSION CHARGES EX GST','','',pe);P('row','GST@'+ty.pgst+'%','','',pg);P('tot','TOTAL POSSESSION CHARGES WITH GST','','',pe+pg);pe+=pg;
+      }
+      var tot=tb+pe;P('sec','TOTAL');P('tot','TOTAL COST WITH GST','','',tot);
+      s.plans.forEach(function(pl){
+        P('sec','PAYMENT PLAN '+pl.n);P('hdr','PARTICULARS','DUE %','','DUE AMT');var run=0;
+        pl.rows.forEach(function(r){var a,tx;
+          if(r.rest){a=Math.max(0,tot-run);tx=ty.poss.length?'BALANCE (BASIC, OTHER & POSSESSION CHARGES)':'BALANCE'}
+          else{a=tb*r.pc/100;tx=r.pc+'% OF BASIC & OTHER CHARGES'}
+          run+=a;P('row',r.p,tx,'',a)});
+        P('tot','TOTAL','','',run);
+      });
+      lastLines=L;return L;
+    }
+    function cellD(d){return typeof d==='number'?inr(d):esc(d)}
+    function sheetHtml(){
+      return '<div class="csh">'+build().map(function(l){
+        if(l.t==='title')return '<div class="cs-t">'+esc(l.a)+'</div>';
+        if(l.t==='sec')return '<div class="cs-s">'+esc(l.a)+'</div>';
+        return '<div class="cs-r cs-'+l.t+'"><span>'+esc(l.a)+'</span><span>'+esc(l.b)+'</span><span class="r">'+esc(l.c)+'</span><span class="r num">'+cellD(l.d)+'</span></div>';
+      }).join('')+'</div>';
+    }
+    function opt(a,i,f){return a.map(function(x,k){return '<option value="'+k+'"'+(k===i?' selected':'')+'>'+esc(f(x))+'</option>'}).join('')}
+    function calcView(){
+      var s=cur(),h='<div class="cgrid c3">';
+      if(conf.sheets.length>1)h+='<label>Project<select id="cSh">'+opt(conf.sheets,V.sh,function(x){return x.t})+'</select></label>';
+      h+='<label>Client name<input id="cCl" value="'+esc(V.client)+'" maxlength="60"></label>';
+      h+='<label>Floor<select id="cFl">'+opt(s.floors,V.floor,function(x){return x.n})+'</select></label>';
+      if(s.types.length>1)h+='<label>Property type<select id="cTy">'+opt(s.types,V.type,function(x){return x.n})+'</select></label>';
+      h+='<label>Unit no.<input id="cUn" value="'+esc(V.unit)+'" maxlength="20"></label>';
+      h+='<label>Area (sq ft)<input id="cAr" type="number" min="0" step="any" inputmode="decimal" value="'+V.area+'"></label></div>';
+      h+='<div id="cSheet">'+sheetHtml()+'</div>';
+      h+='<div class="cact">'+(gr('g_calc_dl')?'<button class="btn" id="cPdf" type="button">Download PDF</button><button class="btn" id="cXls" type="button">Download Excel</button><button class="btn" id="cPrt" type="button">Print</button>':'')+(gr('g_calc_edit')?'<button class="btn" id="cEdit" type="button">Edit calculator</button>':'')+'</div>';
+      return h;
+    }
+    /* ---- admin editor: every input carries data-p (its place in the settings) and data-t (its type) ---- */
+    function ip(path,v,t,ph,w,lab){return '<input data-p="'+path+'" data-t="'+t+'" '+(t==='n'?'type="number" min="0" step="any" inputmode="decimal"':'')+' value="'+esc(v)+'" placeholder="'+ph+'" aria-label="'+esc(lab||ph)+'" style="'+(w?'flex:none;width:'+w+'px':'flex:1')+'">'}
+    function del(path){return '<button class="btn" type="button" data-del="'+path+'" aria-label="Remove">✕</button>'}
+    function editView(){
+      var s=draft.sheets[ei],h='<p class="cnote" style="margin-top:0">Set up each project once. Everything here is saved for all users.</p>';
+      h+='<div class="cer"><select id="ceSh" aria-label="Project" style="flex:1">'+opt(draft.sheets,ei,function(x){return x.t})+'</select><button class="btn" type="button" data-act="newsh">+ New project</button>'+(draft.sheets.length>1?'<button class="btn" type="button" data-act="delsh">Delete project</button>':'')+'</div>';
+      h+='<h3 class="ceh">Title</h3><div class="cer">'+ip('t',s.t,'s','Title')+'</div>';
+      h+='<h3 class="ceh">Floors</h3>';
+      s.floors.forEach(function(f,i){h+='<div class="cer">'+ip('floors.'+i+'.n',f.n,'s','Floor')+(s.floors.length>1?del('floors.'+i):'')+'</div>'});
+      h+='<button class="btn" type="button" data-add="floors">+ Add floor</button>';
+      h+='<h3 class="ceh">Property types (each has its own rates and charges)</h3>';
+      s.types.forEach(function(ty,ti){var tb='types.'+ti;
+        h+='<div class="ctype"><div class="cer"><b class="muted" style="flex:none">Type</b>'+ip(tb+'.n',ty.n,'s','Property type')+(s.types.length>1?del(tb):'')+'</div>';
+        h+='<div class="cin2"><div class="cer"><span class="muted">Basic rate per sq ft</span></div>';
+        s.floors.forEach(function(f,fi){h+='<div class="cer"><span class="muted" style="flex:1">'+esc(f.n)+'</span>'+ip(tb+'.rates.'+fi,ty.rates[fi],'n','Rate',120,'Rate for '+f.n)+'</div>'});
+        h+='<div class="cer"><span class="muted">Other charges per sq ft</span>'+ip(tb+'.oc',ty.oc,'n','Rate',110)+'<span class="muted">GST %</span>'+ip(tb+'.gst',ty.gst,'n','GST %',80)+'</div>';
+        h+='<div class="cer"><b class="muted">Possession charges</b></div>';
+        ty.poss.forEach(function(p,i){var b=tb+'.poss.'+i;
+          h+='<div class="cer">'+ip(b+'.l',p.l,'s','Name')+'<select data-p="'+b+'.m" data-t="s" aria-label="How it is worked out"><option value="sqft"'+(p.m==='sqft'?' selected':'')+'>Rate × area</option><option value="slab"'+(p.m==='slab'?' selected':'')+'>Quantity by area slab × rate</option><option value="fixed"'+(p.m==='fixed'?' selected':'')+'>Fixed amount</option></select>'+ip(b+'.rate',p.rate,'n','Rate',100)+del(b)+'</div>';
+          if(p.m==='slab')h+='<div class="cer"><span class="muted" style="flex:none">Slabs (area up to : quantity)</span>'+ip(b+'.slabs',p.slabs.map(function(x){return x.u+':'+x.q}).join(', '),'slab','200:2, 400:3, 600:4')+'</div>';
+        });
+        h+='<button class="btn" type="button" data-add="'+tb+'.poss">+ Add possession charge</button>';
+        h+='<div class="cer" style="margin-top:8px"><span class="muted">GST % on possession charges</span>'+ip(tb+'.pgst',ty.pgst,'n','GST %',80)+'</div></div></div>';
+      });
+      h+='<button class="btn" type="button" data-add="types">+ Add property type (copies the last one)</button>';
+      h+='<h3 class="ceh">Payment plans (percent of Total Basic with GST; tick Balance for the last row)</h3>';
+      s.plans.forEach(function(pl,i){var b='plans.'+i;
+        h+='<div class="cer"><b class="muted" style="flex:none">Plan</b>'+ip(b+'.n',pl.n,'s','Plan name')+del(b)+'</div>';
+        pl.rows.forEach(function(r,k){var c=b+'.rows.'+k;h+='<div class="cer cin"><input type="checkbox" data-p="'+c+'.rest" data-t="c"'+(r.rest?' checked':'')+' aria-label="Balance"><span class="muted" style="flex:none">Bal.</span>'+ip(c+'.p',r.p,'s','Milestone')+(r.rest?'':ip(c+'.pc',r.pc,'n','%',80))+del(c)+'</div>'});
+        h+='<button class="btn cin" type="button" data-add="'+b+'.rows">+ Add milestone</button>';
+      });
+      h+='<div style="margin-top:8px"><button class="btn" type="button" data-add="plans">+ Add payment plan</button></div>';
+      h+='<div class="cact"><button class="btn" id="ceSave" type="button">Save</button><button class="btn" id="ceCancel" type="button">Cancel</button><button class="btn" id="ceReset" type="button">Reset to default</button></div>';
+      return h;
+    }
+    function getP(o,path){path.split('.').forEach(function(k){o=o[k]});return o}
+    function readDraft(){
+      var s=draft.sheets[ei];
+      [].forEach.call(el('calcBody').querySelectorAll('[data-p]'),function(c){
+        var p=c.dataset.p.split('.'),o=s,i;for(i=0;i<p.length-1;i++)o=o[p[i]];var k=p[p.length-1],t=c.dataset.t;
+        if(t==='n')o[k]=nz(c.value);else if(t==='c')o[k]=c.checked?1:0;
+        else if(t==='slab')o[k]=c.value.split(',').map(function(x){var q=x.split(':');return {u:nz(q[0]),q:nz(q[1])}}).filter(function(x){return x.u>0});
+        else o[k]=c.value;
+      });
+    }
+    function paint(keep){
+      el('calcT').textContent=mode==='edit'?'Edit costing sheet':'Property cost calculator';
+      el('calcBody').innerHTML=(msg?'<p class="cmsg" role="status">'+esc(msg)+'</p>':'')+(mode==='edit'?editView():calcView());
+    }
+    function applyConf(c){conf=norm(c);if(V.sh>=conf.sheets.length)V.sh=0;if(V.floor>=cur().floors.length)V.floor=0;if(V.type>=cur().types.length)V.type=0}
+    function load(){
+      if(loaded||!token)return;loaded=true;
+      post({action:'calcGet',token:token}).then(function(j){if(j&&j.conf&&j.conf.sheets){applyConf(j.conf);if(!el('calcMask').hidden&&mode==='calc')paint()}}).catch(function(){});
+    }
+    function stamp(){return new Date().toISOString().slice(0,10)}
+    function save(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
+    function flat(l){return [l.a,l.b,l.c,typeof l.d==='number'?Math.round(l.d):l.d]}
+    function dlXls(){
+      var L=build(),rows=L.slice(1).map(function(l){return l.t==='sec'?[l.a,'','','']:flat(l)});
+      save(new Blob([xlsx([L[0].a,'','',''],rows,['s','s','s','m'])],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),'Costing_'+(V.client||'sheet').replace(/[^A-Za-z0-9_-]+/g,'-')+'_'+stamp()+'.xlsx');
+    }
+    function pdf(L){ // plain PDF with the built-in Helvetica font (no library); long sheets continue on the next page
+      var clean=function(s){return String(s).replace(/₹/g,'Rs.').replace(/×/g,'x').replace(/Ç/g,'C').replace(/[^\x20-\x7e]/g,'?').replace(/([\\()])/g,'\\$1')};
+      var pages=[],c='',y=800;
+      var T=function(f,sz,x,t){c+='BT /'+f+' '+sz+' Tf '+x+' '+y+' Td ('+clean(t)+') Tj ET\n'};
+      var np=function(){if(c)pages.push(c);c='';y=800};
+      L.forEach(function(l){
+        var gap=l.t==='sec'?24:l.t==='title'?30:17;if(y-gap<50)np();
+        var f=(l.t==='row')?'F1':'F2',sz=l.t==='title'?15:9.5;
+        if(l.t==='sec'){y-=6;T('F2',10,50,l.a)}
+        else if(l.t==='title')T('F2',15,50,l.a);
+        else{T(f,sz,50,l.a);if(l.b!=='')T('F1',9,250,l.b);if(l.c!=='')T('F1',9,360,l.c);
+          if(l.d!==''){var t=typeof l.d==='number'?inr(l.d):l.d;T(f,sz,Math.max(400,545-clean(t).length*5.4),t)}}
+        y-=gap;
+      });
+      np();
+      var o=['<< /Type /Catalog /Pages 2 0 R >>','','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>'],kids=[];
+      pages.forEach(function(p){var n=o.length+1;kids.push(n+' 0 R');
+        o.push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+(n+1)+' 0 R >>');
+        o.push('<< /Length '+p.length+' >>\nstream\n'+p+'endstream')});
+      o[1]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+pages.length+' >>';
+      var out='%PDF-1.4\n',off=[];o.forEach(function(b,i){off.push(out.length);out+=(i+1)+' 0 obj\n'+b+'\nendobj\n'});
+      var x=out.length;out+='xref\n0 '+(o.length+1)+'\n0000000000 65535 f \n';off.forEach(function(p){out+=('0000000000'+p).slice(-10)+' 00000 n \n'});
+      out+='trailer\n<< /Size '+(o.length+1)+' /Root 1 0 R >>\nstartxref\n'+x+'\n%%EOF';
+      var u=new Uint8Array(out.length);for(var i=0;i<out.length;i++)u[i]=out.charCodeAt(i)&255;return new Blob([u],{type:'application/pdf'});
+    }
+    function dlPdf(){save(pdf(build()),'Costing_'+(V.client||'sheet').replace(/[^A-Za-z0-9_-]+/g,'-')+'_'+stamp()+'.pdf')}
+    function prt(){
+      var L=build(),h='<!doctype html><meta charset="utf-8"><title>'+esc(L[0].a)+'</title><style>body{font:12px Arial,sans-serif;margin:24px;color:#000}table{border-collapse:collapse;width:100%;margin-bottom:14px}td{border:1px solid #000;padding:5px 8px}td:nth-child(n+3){text-align:right}.t td{text-align:center;font-weight:700;font-size:15px}.s td{text-align:center;font-weight:700;background:#eee}.tot td,.hdr td{font-weight:700}tr{page-break-inside:avoid}</style><table>';
+      L.forEach(function(l){
+        if(l.t==='title')h+='<tr class="t"><td colspan="4">'+esc(l.a)+'</td></tr>';
+        else if(l.t==='sec')h+='<tr class="s"><td colspan="4">'+esc(l.a)+'</td></tr>';
+        else h+='<tr class="'+l.t+'"><td>'+esc(l.a)+'</td><td>'+esc(l.b)+'</td><td>'+esc(l.c)+'</td><td>'+(typeof l.d==='number'?inr(l.d):esc(l.d))+'</td></tr>';
+      });
+      h+='</table>';
+      var f=document.createElement('iframe');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';document.body.appendChild(f);
+      f.contentDocument.open();f.contentDocument.write(h);f.contentDocument.close();
+      setTimeout(function(){try{f.contentWindow.focus();f.contentWindow.print()}catch(e){}setTimeout(function(){f.remove()},2000)},250);
+    }
+    function open(){mode='calc';msg='';el('calcMask').hidden=false;paint();load();var a=el('cCl');if(a)a.focus()}
+    function close(){el('calcMask').hidden=true;el('calcBtn').focus()}
+    el('calcBtn').addEventListener('click',open);el('calcX').addEventListener('click',close);
+    el('calcMask').addEventListener('click',function(e){if(e.target===el('calcMask'))close()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!el('calcMask').hidden)close()});
+    el('calcBody').addEventListener('input',function(e){
+      var id=e.target.id;if(mode!=='calc')return;
+      if(id==='cCl')V.client=e.target.value;else if(id==='cUn')V.unit=e.target.value;else if(id==='cAr')V.area=e.target.value;else return;
+      el('cSheet').innerHTML=sheetHtml();
+    });
+    el('calcBody').addEventListener('change',function(e){
+      var t=e.target;
+      if(mode==='edit'){if(t.id==='ceSh'){readDraft();ei=+t.value;paint()}else if(t.dataset.p&&t.dataset.p.slice(-2)==='.m'||t.dataset.t==='c'){readDraft();paint()}return}
+      if(t.id==='cSh'){V.sh=+t.value;V.floor=0;V.type=0;paint()}else if(t.id==='cTy'){V.type=+t.value;el('cSheet').innerHTML=sheetHtml()}else if(t.id==='cFl'){V.floor=+t.value;el('cSheet').innerHTML=sheetHtml()}
+    });
+    el('calcBody').addEventListener('click',function(e){
+      var b=e.target.closest('button');if(!b)return;
+      if(b.id==='cPdf')return dlPdf();if(b.id==='cXls')return dlXls();if(b.id==='cPrt')return prt();
+      if(b.id==='cEdit'){draft=clone(conf);ei=Math.min(V.sh,draft.sheets.length-1);mode='edit';msg='';paint();return}
+      if(mode!=='edit')return;
+      if(b.id==='ceCancel'){mode='calc';msg='';paint();return}
+      if(b.id==='ceReset'){if(confirm('Go back to the original costing sheet?')){draft=clone(DEF);ei=0;msg='';paint()}return}
+      if(b.id==='ceSave'){
+        readDraft();var c=norm(draft);b.disabled=true;
+        post({action:'calcSave',token:token,conf:c}).then(function(j){
+          if(j&&j.error==='unauthorized'){sessionEnded();return}
+          if(!j||!j.ok){msg=(j&&j.error)||'Could not save. Add the calculator script to your Apps Script first.';b.disabled=false;paint();return}
+          applyConf(c);mode='calc';msg='Saved.';paint();
+        }).catch(function(){msg='Could not reach the server.';b.disabled=false;paint()});
+        return;
+      }
+      readDraft();var s=draft.sheets[ei];
+      if(b.dataset.act==='newsh'){var n=clone(s);n.t='NEW PROJECT COSTING';draft.sheets.push(n);ei=draft.sheets.length-1}
+      else if(b.dataset.act==='delsh'){draft.sheets.splice(ei,1);ei=0}
+      else if(b.dataset.add){var a=b.dataset.add,arr=getP(s,a),last=a.split('.').pop();
+        if(a==='floors')s.types.forEach(function(t){t.rates.push(0)});
+        if(a==='types'){var cp=clone(arr[arr.length-1]);cp.n='NEW TYPE';arr.push(cp)}else
+        arr.push(last==='floors'?{n:'New floor'}:last==='poss'?{l:'NEW CHARGE',m:'fixed',rate:0,slabs:[]}:last==='plans'?{n:'NEW PLAN',rows:[{p:'ON BOOKING',pc:10},{p:'ON OFFER OF POSSESSION',pc:0,rest:1}]}:{p:'NEW MILESTONE',pc:0})}
+      else if(b.dataset.del){var p=b.dataset.del.split('.'),i=+p.pop();getP(s,p.join('.')).splice(i,1);if(p.join('.')==='floors')s.types.forEach(function(t){t.rates.splice(i,1)})}
+      else return;
+      paint();
+    });
+    applyConf(null);
+  })();
 
   /* ---------- DSR: daily sales report form with approval ---------- */
   var dsr={form:null,byId:{},tab:'',rows:[],open:'',mode:'',stages:[],deep:(new URLSearchParams(location.search)).get('dsr')||''};
@@ -3056,6 +3365,335 @@ var CONFIG = {
     HA.last=performance.now();HA.raf=requestAnimationFrame(homeLoop);
   }
   window.addEventListener('resize',function(){if(HA.on){HA.on=false;cancelAnimationFrame(HA.raf);homeAnim(true)}});
+
+  /* ================= Brokerage (separate private sheet; two locks) ================= */
+  function brkNew(){return {allowed:false,cfg:null,dcfg:null,rev:0,rows:[],perms:{},tab:'overview',loaded:false,busy:false,locked:false,form:null,q:'',fp:'',ft:'',fb:'',fs:'',op:'',sp:'',dirty:false}}
+  var brk=brkNew();
+  function brkReset(){brk=brkNew();var e=$('brkBody');if(e)e.innerHTML='';var m=$('brkMsg');if(m)m.hidden=true}
+  /* the link shows only for people the Brokerage sheet lists (asked once after sign-in) */
+  function brkOK(){return mode==='live'&&!!CONFIG.BRK_API_URL&&brk.allowed}
+  function brkCheck(){
+    if(!CONFIG.BRK_API_URL||mode!=='live'||!token)return;
+    post({action:'brkWho',token:token},CONFIG.BRK_API_URL).then(function(j){
+      brk.allowed=!!(j&&j.ok);if(brk.allowed)brk.perms=j.perms||{};
+      applyView();
+    }).catch(function(){});
+  }
+  function brkMsg(t,kind){var b=$('brkMsg');b.hidden=!t;b.className='banner'+(kind==='err'?' err':kind==='ok'?' ok':'');b.innerHTML=t?'<b>'+(kind==='err'?'Problem':kind==='ok'?'Done':'Working')+'</b><span>'+esc(t)+'</span>':''}
+  function brkEnter(){if(brk.loaded||brk.locked){brkRender();return}if(!brk.busy)brkLoad()}
+  function brkLoad(){
+    brk.busy=true;brkMsg('Loading Brokerage…');
+    return post({action:'brkLoad',token:token},CONFIG.BRK_API_URL).then(function(j){
+      brk.busy=false;
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(j&&j.error==='no_access'){brk.locked=true;brk.loaded=false;brkMsg('');brkRender();return}
+      if(j&&j.error){brkMsg(j.error,'err');return}
+      brk.locked=false;brk.cfg=j.cfg;brk.dcfg=JSON.parse(JSON.stringify(j.cfg));brk.rev=j.rev;brk.rows=j.bookings||[];brk.perms=j.perms||{};brk.loaded=true;brk.dirty=false;
+      if(brk.tab==='settings'&&!brk.perms.settings)brk.tab='overview';
+      brkMsg('');brkRender();
+    }).catch(function(e){brk.busy=false;brkMsg('Could not reach the Brokerage server. '+(e.message||''),'err')});
+  }
+  /* ---- the rules, one function ---- */
+  function bProj(name){return (brk.cfg&&brk.cfg.projects[name])||null}
+  function bFloor(unit){var m=String(unit||'').match(/-(\d{3,4})-/);return m?(parseInt(m[1].slice(-2),10)||0):0}
+  function bFloorPlc(unit,P){var f=bFloor(unit);if(!f||!P)return null;var t=P.floors.filter(function(x){return f>=x.from&&f<=x.to})[0];return t?t.plc:null}
+  function bScen(b,P){
+    var best=null;
+    P.scenarios.forEach(function(s){
+      if(b.pmtPct+1e-9>=s.minPmt&&(!s.bba||String(b.bba).toUpperCase()===String(s.bba).toUpperCase())){
+        if(!best||s.minPmt>best.minPmt||(s.minPmt===best.minPmt&&s.brokerage>best.brokerage))best=s;
+      }
+    });
+    return best;
+  }
+  function bCalc(b,Pin){
+    var P=Pin||bProj(b.project)||{slabPct:0,plcPct:0,incentive:0,floors:[],scenarios:[]};
+    var plc=b.floorPlc*P.plcPct,slab=b.rate*P.slabPct,net=slab-b.discount,netB=slab+plc-b.discount,brok=netB*b.area;
+    var s=bScen(b,P),pay=s?(net*b.area)*s.brokerage+(plc*b.area)*s.plc+P.incentive*s.incentive:0,tot=brok+P.incentive;
+    return {plc:plc,slab:slab,net:net,netB:netB,brok:brok,inc:P.incentive,tot:tot,scen:s,pay:pay,bal:tot-pay,due:s?1-s.brokerage:1};
+  }
+  function n2(v){return (Math.round(v*100)/100).toLocaleString('en-IN',{maximumFractionDigits:2})}
+  function pcs(v){return (Math.round(v*10000)/100)+'%'}
+  function bDate(s){if(!s)return '—';var p=s.split('-');return fmtDate(new Date(+p[0],+p[1]-1,+p[2]))}
+  function opts(list,sel,blank){return (blank!==undefined?'<option value="">'+esc(blank)+'</option>':'')+list.map(function(v){return '<option'+(v===sel?' selected':'')+'>'+esc(v)+'</option>'}).join('')}
+  /* ---- tabs ---- */
+  function brkTabsList(){
+    var t=[['overview','Overview'],['bookings','Booking details'],['criteria','Criteria']];
+    if(brk.perms.settings)t.push(['settings','Settings']);
+    return t;
+  }
+  function brkRender(){
+    var body=$('brkBody');
+    if(brk.locked){
+      $('brkTabs').innerHTML='';
+      body.innerHTML='<div class="panel glass" style="padding:28px"><h2 style="margin:0 0 8px">You do not have permission to open Brokerage</h2><p class="lead" style="margin:0">Brokerage data is kept in a separate private Google Sheet. Ask the owner of that sheet to add your name and email to its Access tab. An Admin role alone does not open it.</p><p style="margin:16px 0 0"><button class="btn" type="button" data-b="retry">Check again</button></p></div>';
+      return;
+    }
+    if(!brk.loaded)return;
+    var tabs=brkTabsList();
+    if(!tabs.some(function(t){return t[0]===brk.tab}))brk.tab='overview';
+    $('brkTabs').innerHTML=tabs.map(function(t){return '<button type="button" class="btn" data-bt="'+t[0]+'" aria-pressed="'+(t[0]===brk.tab)+'">'+t[1]+'</button>'}).join('');
+    body.innerHTML=brk.tab==='overview'?brkOverviewHtml():brk.tab==='bookings'?brkBookingsHtml():brk.tab==='criteria'?brkCriteriaTab():brkSettingsHtml();
+    if(brk.tab==='bookings'){brkTable();brkFormShow()}
+  }
+  /* ---- overview ---- */
+  function brkOverviewHtml(){
+    var names=brk.cfg.order,rows=brk.rows.filter(function(b){return !brk.op||b.project===brk.op});
+    var T={area:0,brok:0,inc:0,tot:0,pay:0,bal:0,exec:0},st={},byT={},byP={},mx=0;
+    rows.forEach(function(b){
+      var c=bCalc(b);T.area+=b.area;T.brok+=c.brok;T.inc+=c.inc;T.tot+=c.tot;T.pay+=c.pay;T.bal+=c.bal;if(String(b.bba).toUpperCase()==='EXECUTED')T.exec++;
+      var k=c.scen?c.scen.name:'Not payable yet',s=st[k]||(st[k]={n:0,pay:0,bal:0});s.n++;s.pay+=c.pay;s.bal+=c.bal;
+      var tw=b.tower||'(No tower)',t=byT[tw]||(byT[tw]={n:0,v:0});t.n++;t.v+=c.tot;
+      var p=byP[b.project]||(byP[b.project]={n:0,v:0});p.n++;p.v+=c.tot;
+    });
+    var K=[['Bookings',rows.length.toLocaleString('en-IN'),'in this view'],['Total area',n2(T.area)+' sq ft','all units'],['Brokerage',inr(T.brok),'net brokerage × area'],['Incentive',inr(T.inc),'per unit'],['Total earnable',inr(T.tot),'brokerage + incentive'],['Payable now',inr(T.pay),'payout rules met'],['Balance pending',inr(T.bal),'not yet payable'],['BBA executed',T.exec.toLocaleString('en-IN'),'of '+rows.length]];
+    var h='<div class="etools"><div class="f"><label for="bop">Project</label><select id="bop">'+opts(names,brk.op,'All projects')+'</select></div><div class="grow"><button class="btn" type="button" data-b="refresh">Refresh</button></div></div>';
+    h+='<div class="kpis">'+K.map(function(k){return '<div class="kpi glass"><div class="label">'+k[0]+'</div><div class="big num">'+esc(k[1])+'</div><div class="sub">'+k[2]+'</div></div>'}).join('')+'</div>';
+    function bars(o,title){
+      var ks=Object.keys(o).sort(function(a,b){return o[b].v-o[a].v}),m=ks.length?o[ks[0]].v:0;
+      return '<div class="panel glass" style="padding:20px"><h3 style="margin:0 0 14px;font-size:16px">'+title+'</h3><div class="bbars">'+(ks.length?ks.map(function(k){return '<div class="bbr"><span>'+esc(k)+' <small class="muted">('+o[k].n+')</small></span><span class="bt"><i style="width:'+(m>0?Math.max(2,o[k].v/m*100):2)+'%"></i></span><span class="num">'+inr(o[k].v)+'</span></div>'}).join(''):'<div class="empty">No bookings.</div>')+'</div></div>';
+    }
+    var sk=Object.keys(st).sort(function(a,b){return st[b].pay-st[a].pay});
+    var stage='<div class="panel glass" style="padding:20px"><h3 style="margin:0 0 14px;font-size:16px">Payout stage</h3><div class="scrollx"><div class="tbl" style="min-width:420px">'+'<div class="tr th" style="grid-template-columns:1.6fr .6fr 1fr 1fr"><span>Stage</span><span class="r">Bookings</span><span class="r">Payable now</span><span class="r">Balance</span></div>'+(sk.length?sk.map(function(k){return '<div class="tr" style="grid-template-columns:1.6fr .6fr 1fr 1fr"><span class="nmx">'+esc(k)+'</span><span class="r num">'+st[k].n+'</span><span class="r num">'+inr(st[k].pay)+'</span><span class="r num">'+inr(st[k].bal)+'</span></div>'}).join(''):'<div class="empty">No bookings.</div>')+'</div></div></div>';
+    h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:14px">'+stage+bars(byT,'Total earnable by tower')+(Object.keys(byP).length>1?bars(byP,'Total earnable by project'):'')+'</div>';
+    return h;
+  }
+  /* ---- booking details ---- */
+  var BCOLS=[['sr','Sr.No',56],['project','Project',130],['priority','Priority No.',100],['client','Client Name',230],['tower','Tower',110],['unit','Unit No.',120],['rate','Rate',80,1],['area','Area (Sq.Ft)',96,1],['floorPlc','Floor PLC',86,1],['plc','PLC',70,1],['slab','Slab',70,1],['discount','Discount',84,1],['net','Net',72,1],['netB','Net Brokerage',104,1],['brok','Brokerage Amount',132,1],['plan','Pmt Plan',116],['pmt','PMT %',70,1],['bba','BBA',100],['date','Executed Date',112],['due','Due %',70,1],['inc','Incentive',104,1],['pay','Payable now',124,1],['bal','Balance',124,1]];
+  function bVal(k,b,c){
+    switch(k){
+      case 'sr':return b.sr;case 'project':return b.project;case 'priority':return b.priority;case 'client':return b.client;case 'tower':return b.tower;case 'unit':return b.unit;
+      case 'rate':return n2(b.rate);case 'area':return n2(b.area);case 'floorPlc':return n2(b.floorPlc);case 'plc':return n2(c.plc);case 'slab':return n2(c.slab);case 'discount':return n2(b.discount);
+      case 'net':return n2(c.net);case 'netB':return n2(c.netB);case 'brok':return inr(c.brok);case 'plan':return b.plan;case 'pmt':return pcs(b.pmtPct);case 'bba':return b.bba;
+      case 'date':return bDate(b.execDate);case 'due':return pcs(c.due);case 'inc':return inr(c.inc);case 'pay':return inr(c.pay);case 'bal':return inr(c.bal);
+    }
+    return '';
+  }
+  function brkBookingsHtml(){
+    var towers={};brk.rows.forEach(function(b){if(b.tower)towers[b.tower]=1});
+    var bbas=brk.cfg.lists.bba.slice();brk.rows.forEach(function(b){if(b.bba&&bbas.indexOf(b.bba)<0)bbas.push(b.bba)});
+    var h='<div class="panel glass" id="brkFormBox" hidden style="padding:24px"></div>';
+    h+='<div class="panel glass"><div class="etools"><div class="field"><label for="bq">Search client, unit, priority no., tower, project or payment plan</label><input id="bq" type="search" autocomplete="off" value="'+esc(brk.q)+'"></div>'+
+      '<div class="f"><label for="bfp">Project</label><select id="bfp">'+opts(brk.cfg.order,brk.fp,'All')+'</select></div>'+
+      '<div class="f"><label for="bft">Tower</label><select id="bft">'+opts(Object.keys(towers).sort(),brk.ft,'All')+'</select></div>'+
+      '<div class="f"><label for="bfb">BBA</label><select id="bfb">'+opts(bbas,brk.fb,'All')+'</select></div>'+
+      '<div class="f"><label for="bfs">Payout</label><select id="bfs"><option value="">All</option><option value="now"'+(brk.fs==='now'?' selected':'')+'>Payable now</option><option value="wait"'+(brk.fs==='wait'?' selected':'')+'>Not payable yet</option></select></div>'+
+      '<div class="grow">'+(brk.perms.edit?'<button class="go sm" type="button" data-b="add">Add booking</button>':'')+'<button class="btn" type="button" data-b="refresh">Refresh</button>'+(vis('dl_excel')?'<button class="btn" type="button" data-b="xls">Download Excel</button>':'')+'</div></div>'+
+      '<p class="hint" id="bCount" style="margin:0 0 12px"></p><div class="scrollx" tabindex="0" role="region" aria-label="Brokerage bookings, scrolls sideways"><div class="tbl" id="bTbl" role="table" aria-label="Brokerage bookings"></div></div></div>';
+    return h;
+  }
+  function brkFiltered(){
+    var q=brk.q.trim().toLowerCase().split(/\s+/).filter(String);
+    return brk.rows.map(function(b){return {b:b,c:bCalc(b)}}).filter(function(x){
+      var b=x.b;
+      if(brk.fp&&b.project!==brk.fp)return false;if(brk.ft&&b.tower!==brk.ft)return false;if(brk.fb&&b.bba!==brk.fb)return false;
+      if(brk.fs==='now'&&!(x.c.pay>0))return false;if(brk.fs==='wait'&&x.c.pay>0)return false;
+      if(!q.length)return true;
+      var hay=[b.client,b.unit,b.priority,b.tower,b.project,b.plan,b.bba,b.notes].join(' ').toLowerCase();
+      return q.every(function(t){return hay.indexOf(t)>-1});
+    });
+  }
+  function brkTable(){
+    var list=brkFiltered(),cols=BCOLS.slice(),edit=!!brk.perms.edit;
+    var gt='grid-template-columns:'+cols.map(function(c){return c[2]+'px'}).join(' ')+(edit?' 70px':'');
+    $('bTbl').style.minWidth=(cols.reduce(function(a,c){return a+c[2]},0)+(edit?70:0)+cols.length*12+32)+'px';
+    var T={area:0,brok:0,inc:0,pay:0,bal:0};
+    var h='<div class="tr th" role="row" style="'+gt+'">'+cols.map(function(c){return '<span role="columnheader"'+(c[3]?' class="r"':'')+'>'+c[1]+'</span>'}).join('')+(edit?'<span></span>':'')+'</div>';
+    list.slice(0,400).forEach(function(x){
+      h+='<div class="tr" role="row" style="'+gt+'">'+cols.map(function(c){var v=bVal(c[0],x.b,x.c);return '<span'+(c[3]?' class="r num"':(c[0]==='client'?' class="nmx"':''))+'>'+esc(v===''||v===undefined?'—':v)+'</span>'}).join('')+(edit?'<span><button type="button" class="btn sm" data-b="edit" data-id="'+esc(x.b.id)+'">Edit</button></span>':'')+'</div>';
+    });
+    list.forEach(function(x){T.area+=x.b.area;T.brok+=x.c.brok;T.inc+=x.c.inc;T.pay+=x.c.pay;T.bal+=x.c.bal});
+    if(list.length)h+='<div class="tr btot" role="row" style="'+gt+'">'+cols.map(function(c){var v='';if(c[0]==='client')v='Total ('+list.length+')';else if(c[0]==='area')v=n2(T.area);else if(c[0]==='brok')v=inr(T.brok);else if(c[0]==='inc')v=inr(T.inc);else if(c[0]==='pay')v=inr(T.pay);else if(c[0]==='bal')v=inr(T.bal);return '<span'+(c[3]?' class="r num"':'')+'>'+esc(v)+'</span>'}).join('')+(edit?'<span></span>':'')+'</div>';
+    $('bTbl').innerHTML=list.length?h:'<div class="empty">No bookings match.</div>';
+    $('bCount').textContent=list.length.toLocaleString('en-IN')+' of '+brk.rows.length.toLocaleString('en-IN')+' bookings'+(list.length>400?'. The table shows the first 400; narrow it with the filters.':'');
+  }
+  function brkXls(){
+    var list=brkFiltered(),head=BCOLS.map(function(c){return c[1]}),types=BCOLS.map(function(c){return c[3]||c[0]==='sr'?'m':'s'});
+    var data=list.map(function(x){return BCOLS.map(function(c){
+      var b=x.b,k=c[0];
+      if(k==='rate')return b.rate;if(k==='area')return b.area;if(k==='floorPlc')return b.floorPlc;if(k==='plc')return x.c.plc;if(k==='slab')return x.c.slab;if(k==='discount')return b.discount;if(k==='net')return x.c.net;if(k==='netB')return x.c.netB;
+      if(k==='brok')return Math.round(x.c.brok);if(k==='pmt')return b.pmtPct*100;if(k==='due')return x.c.due*100;if(k==='inc')return x.c.inc;if(k==='pay')return Math.round(x.c.pay);if(k==='bal')return Math.round(x.c.bal);
+      return bVal(k,b,x.c);
+    })});
+    saveXlsx('Brokerage_bookings',head,data,types);
+  }
+  /* ---- add / edit form ---- */
+  function brkOpenForm(id){
+    var b=null;
+    if(id){b=brk.rows.filter(function(r){return r.id===id})[0];if(!b)return}
+    var P0=brk.fp&&brk.cfg.projects[brk.fp]?brk.fp:brk.cfg.order[0],P=brk.cfg.projects[b?b.project:P0];
+    brk.form={id:b?b.id:'',at:b?b.at:'',autoPlc:!b,f:b?{project:b.project,priority:b.priority,client:b.client,tower:b.tower,unit:b.unit,rate:String(b.rate),area:String(b.area),floorPlc:String(b.floorPlc),discount:String(b.discount),plan:b.plan,pmt:String(Math.round(b.pmtPct*10000)/100),bba:b.bba,execDate:b.execDate,notes:b.notes}:{project:P0,priority:'',client:'',tower:'',unit:'',rate:String(P.rate),area:'',floorPlc:'',discount:'0',plan:'',pmt:'0',bba:'',execDate:'',notes:''}};
+    brkFormShow();
+  }
+  function bf(id,label,inner,cls){return '<div class="f'+(cls?' '+cls:'')+'"><label for="bf-'+id+'">'+label+'</label>'+inner+'</div>'}
+  function bfIn(id,type,extra){var v=brk.form.f[id];return '<input id="bf-'+id+'" type="'+type+'" value="'+esc(v===undefined?'':v)+'" autocomplete="off"'+(type==='number'?' step="any" min="0" inputmode="decimal"':'')+(extra||'')+'>'}
+  function brkFormShow(){
+    var box=$('brkFormBox');if(!box)return;
+    if(!brk.form){box.hidden=true;box.innerHTML='';return}
+    var f=brk.form.f,L=brk.cfg.lists;
+    var h='<h3 style="margin:0 0 4px;font-size:18px">'+(brk.form.id?'Edit booking':'Add booking')+'</h3><p class="hint" style="margin:0 0 16px">The figures at the bottom are worked out from the rules in Settings. Only the fields above are stored.</p><form id="brkForm" novalidate autocomplete="off"><div class="bfm">'+
+      bf('project','Project','<select id="bf-project">'+opts(brk.cfg.order,f.project)+'</select>')+
+      bf('priority','Priority No.',bfIn('priority','text'))+
+      bf('client','Client name *',bfIn('client','text'),'wide2')+
+      bf('tower','Tower',bfIn('tower','text',' list="bl-tower"')+'<datalist id="bl-tower">'+L.towers.map(function(t){return '<option value="'+esc(t)+'">'}).join('')+'</datalist>')+
+      bf('unit','Unit no. *',bfIn('unit','text',' placeholder="ALS-0903-A"'))+
+      bf('rate','Rate (₹ per sq ft)',bfIn('rate','number'))+
+      bf('area','Area (sq ft)',bfIn('area','number'))+
+      bf('floorPlc','Floor PLC (₹ per sq ft)',bfIn('floorPlc','number')+'<small class="hint" id="bf-plchint" style="margin:0"></small>')+
+      bf('discount','Discount (₹ per sq ft)',bfIn('discount','number'))+
+      bf('plan','Payment plan',bfIn('plan','text',' list="bl-plan"')+'<datalist id="bl-plan">'+L.plans.map(function(t){return '<option value="'+esc(t)+'">'}).join('')+'</datalist>')+
+      bf('pmt','Paid by customer (%)',bfIn('pmt','number'))+
+      bf('bba','BBA','<select id="bf-bba">'+opts(L.bba,f.bba,'Not set')+(f.bba&&L.bba.indexOf(f.bba)<0?'<option selected>'+esc(f.bba)+'</option>':'')+'</select>')+
+      bf('execDate','Executed date',bfIn('execDate','date'))+
+      bf('notes','Notes',bfIn('notes','text'),'wide')+
+      '</div><div class="bprev" id="bPrev" aria-live="polite"></div><div class="grow" style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="go" type="submit" id="bSave" style="padding:0 22px">Save</button><button class="btn" type="button" data-b="cancel">Cancel</button></div></form>';
+    box.hidden=false;box.innerHTML=h;brkPrev();
+    var el=$('bf-client');if(el&&!brk.form.id)el.focus();
+    box.scrollIntoView({block:'nearest'});
+  }
+  function bNum(v){var n=Number(String(v).replace(/,/g,''));return isFinite(n)?n:0}
+  function brkFormBooking(){
+    var f=brk.form.f;
+    return {project:f.project,rate:bNum(f.rate),area:bNum(f.area),floorPlc:bNum(f.floorPlc),discount:bNum(f.discount),pmtPct:bNum(f.pmt)/100,bba:f.bba};
+  }
+  function brkPrev(){
+    var b=brkFormBooking(),c=bCalc(b),P=bProj(b.project),f=brk.form.f;
+    var ph=$('bf-plchint');
+    if(ph){var fl=bFloor(f.unit),t=P?bFloorPlc(f.unit,P):null;ph.textContent=brk.form.autoPlc?(fl?(t!==null?'Auto: floor '+fl+' = ₹'+n2(t)+'. Type a number to override.':'Auto: no Floor PLC for floor '+fl+' in Settings.'):'Auto from the floor in the unit no.'):'Typed by you. Clear the box to go back to Auto.'}
+    var items=[['PLC (floor PLC × '+pcs(P?P.plcPct:0)+')',n2(c.plc)],['Slab (rate × '+pcs(P?P.slabPct:0)+')',n2(c.slab)],['Net (slab − discount)',n2(c.net)],['Net brokerage per sq ft',n2(c.netB)],['Brokerage amount',inr(c.brok)],['Incentive',inr(c.inc)],['Payout rule',c.scen?c.scen.name:'Not payable yet'],['Payable now',inr(c.pay)],['Balance',inr(c.bal)],['Due %',pcs(c.due)]];
+    $('bPrev').innerHTML=items.map(function(i){return '<div><small>'+i[0]+'</small><b class="num">'+esc(i[1])+'</b></div>'}).join('');
+  }
+  function brkFormInput(e){
+    var id=(e.target.id||'').replace('bf-','');if(!brk.form||!(id in brk.form.f))return;
+    var f=brk.form.f;f[id]=e.target.value;
+    var P=bProj(f.project);
+    if(id==='project'&&P&&!brk.form.id&&bNum(f.rate)===0){f.rate=String(P.rate);var r=$('bf-rate');if(r)r.value=f.rate}
+    if(id==='project'&&P&&!brk.form.id&&brk.form.rateAuto!==false){f.rate=String(P.rate);var r2=$('bf-rate');if(r2)r2.value=f.rate}
+    if(id==='rate')brk.form.rateAuto=false;
+    if(id==='floorPlc')brk.form.autoPlc=String(f.floorPlc).trim()==='';
+    if((id==='unit'||id==='project'||id==='floorPlc')&&brk.form.autoPlc){var t=P?bFloorPlc(f.unit,P):null;f.floorPlc=t===null?'':String(t);var p=$('bf-floorPlc');if(p)p.value=f.floorPlc}
+    brkPrev();
+  }
+  function brkSaveBooking(){
+    var f=brk.form.f;
+    if(!f.client.trim()){brkMsg('Client name is required.','err');$('bf-client').focus();return}
+    if(!f.unit.trim()){brkMsg('Unit no. is required.','err');$('bf-unit').focus();return}
+    if(!(bNum(f.area)>0)){brkMsg('Enter the area in sq ft.','err');$('bf-area').focus();return}
+    var pm=bNum(f.pmt);if(pm<0||pm>100){brkMsg('Customer paid % must be between 0 and 100.','err');return}
+    var payload={id:brk.form.id,at:brk.form.at,project:f.project,priority:f.priority,client:f.client,tower:f.tower,unit:f.unit,rate:bNum(f.rate),area:bNum(f.area),floorPlc:bNum(f.floorPlc),discount:bNum(f.discount),plan:f.plan,pmtPct:Math.round(pm*10000)/1000000,bba:f.bba,execDate:f.execDate,notes:f.notes};
+    var btn=$('bSave');btn.disabled=true;brkMsg('Saving…');
+    post({action:'brkSaveBooking',token:token,booking:payload},CONFIG.BRK_API_URL).then(function(j){
+      btn.disabled=false;
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(j&&j.error==='no_access'){brk.loaded=false;brk.locked=true;brk.form=null;brkRender();return}
+      if(j&&j.error){brkMsg(j.error,'err');return}
+      var nb=j.booking,i=-1;brk.rows.forEach(function(r,k){if(r.id===nb.id)i=k});
+      if(i>-1)brk.rows[i]=nb;else brk.rows.push(nb);
+      brk.rows.sort(function(a,b){return a.sr-b.sr});
+      brk.form=null;brkMsg('Booking saved.','ok');brkRender();
+    }).catch(function(e){btn.disabled=false;brkMsg('Could not save. '+(e.message||''),'err')});
+  }
+  /* ---- criteria (the notes of the Excel file, always in step with Settings) ---- */
+  function brkCriteriaHtml(name,P){
+    var h='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 10px;font-size:18px">'+esc(name)+'</h3><ul class="clist">';
+    h+='<li><b>Rate</b> ₹'+n2(P.rate)+' per sq ft. <b>Slab</b> = rate × '+pcs(P.slabPct)+' = ₹'+n2(P.rate*P.slabPct)+' per sq ft.</li>';
+    h+='<li><b>Floor PLC brokerage</b> = floor PLC × '+pcs(P.plcPct)+'. The floor is the last two digits of the number in the unit no. (ALS-0903-A is floor 3).</li>';
+    h+='<li><b>Net brokerage per sq ft</b> = slab + PLC − discount. <b>Brokerage amount</b> = net brokerage × area.</li>';
+    h+='<li><b>Incentive</b> ₹'+n2(P.incentive)+' per unit.</li>';
+    P.scenarios.slice().sort(function(a,b){return a.minPmt-b.minPmt}).forEach(function(s){h+='<li><b>'+esc(s.name)+'</b>: customer has paid '+pcs(s.minPmt)+' or more'+(s.bba?' and BBA is '+esc(s.bba):'')+' → '+pcs(s.brokerage)+' of brokerage + '+pcs(s.plc)+' of PLC + '+pcs(s.incentive)+' of incentive is payable. The best rule that fits is used.</li>'});
+    h+='<li><b>Due %</b> = the share of brokerage still not payable (100% minus the brokerage % of the rule that fits).</li></ul>';
+    h+='<h4 style="margin:14px 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Floor PLC (₹ per sq ft)</h4><div class="scrollx"><div class="tbl" style="min-width:360px"><div class="tr th" style="grid-template-columns:1fr 1fr 1fr 1fr"><span>From floor</span><span>To floor</span><span class="r">Floor PLC</span><span class="r">PLC brokerage</span></div>'+P.floors.map(function(f){return '<div class="tr" style="grid-template-columns:1fr 1fr 1fr 1fr"><span>'+f.from+'</span><span>'+f.to+'</span><span class="r num">'+n2(f.plc)+'</span><span class="r num">'+n2(f.plc*P.plcPct)+'</span></div>'}).join('')+'</div></div></div>';
+    return h;
+  }
+  function brkCriteriaTab(){return brk.cfg.order.map(function(n){return brkCriteriaHtml(n,brk.cfg.projects[n])}).join('')||'<div class="empty">No projects yet.</div>'}
+  /* ---- settings ---- */
+  function sIn(path,val,o){o=o||{};return '<input data-s="'+path+'"'+(o.pc?' data-pc="1"':'')+(o.txt?'':' data-n="1" type="number" step="any" min="0" inputmode="decimal"')+' value="'+esc(o.pc?Math.round(val*10000)/100:val)+'"'+(o.label?' aria-label="'+esc(o.label)+'"':'')+(o.list?' list="'+o.list+'"':'')+'>'}
+  function brkSettingsHtml(){
+    var C=brk.dcfg;if(!C.order.length)return '<div class="empty">No projects.</div>';
+    if(!brk.sp||!C.projects[brk.sp])brk.sp=C.order[0];
+    var P=C.projects[brk.sp],used=brk.rows.some(function(b){return b.project===brk.sp});
+    var h='<div class="panel glass" style="padding:22px"><div class="etools"><div class="f"><label for="sp">Project</label><select id="sp">'+opts(C.order,brk.sp)+'</select></div><div class="field"><label for="spNew">New project name</label><input id="spNew" type="text" autocomplete="off"></div><div class="grow"><button class="btn" type="button" data-b="addp">Add project</button><button class="btn danger" type="button" data-b="delp"'+(used||C.order.length<2?' disabled title="'+(used?'This project has bookings':'Keep at least one project')+'"':'')+'>Remove this project</button></div></div>';
+    h+='<div class="fgrid2" style="margin-top:6px"><div class="f"><label>Rate (₹ per sq ft)</label>'+sIn('rate',P.rate,{label:'Rate'})+'</div><div class="f"><label>Slab (% of rate)</label>'+sIn('slabPct',P.slabPct,{pc:1,label:'Slab percent'})+'</div><div class="f"><label>PLC brokerage (% of floor PLC)</label>'+sIn('plcPct',P.plcPct,{pc:1,label:'PLC brokerage percent'})+'</div><div class="f"><label>Incentive (₹ per unit)</label>'+sIn('incentive',P.incentive,{label:'Incentive'})+'</div></div></div>';
+    h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Floor PLC by floor</h3><p class="hint" style="margin:0 0 12px">Used to fill Floor PLC automatically from the unit no. You can still type another figure on a booking.</p><div class="scrollx"><div class="tbl" style="min-width:420px"><div class="tr th" style="grid-template-columns:1fr 1fr 1fr 60px"><span>From floor</span><span>To floor</span><span>₹ per sq ft</span><span></span></div>'+
+      P.floors.map(function(f,i){return '<div class="tr" style="grid-template-columns:1fr 1fr 1fr 60px">'+sIn('floors.'+i+'.from',f.from,{label:'From floor'})+sIn('floors.'+i+'.to',f.to,{label:'To floor'})+sIn('floors.'+i+'.plc',f.plc,{label:'Floor PLC'})+'<button type="button" class="btn sm" data-b="delf" data-i="'+i+'" aria-label="Remove row">✕</button></div>'}).join('')+'</div></div><p style="margin:12px 0 0"><button class="btn" type="button" data-b="addf">Add floor row</button></p></div>';
+    h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Payout rules (due scenarios)</h3><p class="hint" style="margin:0 0 12px">A rule applies when the customer has paid at least the minimum % and the BBA status matches. If several fit, the one with the highest minimum % is used. If none fit, nothing is payable yet.</p><div class="scrollx"><div class="tbl" style="min-width:860px"><div class="tr th" style="grid-template-columns:1.6fr .8fr 1fr .9fr .8fr .9fr 60px"><span>Name</span><span>Customer paid ≥ %</span><span>BBA status</span><span>Brokerage %</span><span>PLC %</span><span>Incentive %</span><span></span></div>'+
+      P.scenarios.map(function(s,i){return '<div class="tr" style="grid-template-columns:1.6fr .8fr 1fr .9fr .8fr .9fr 60px">'+sIn('sc.'+i+'.name',s.name,{txt:1,label:'Rule name'})+sIn('sc.'+i+'.minPmt',s.minPmt,{pc:1,label:'Minimum customer payment percent'})+sIn('sc.'+i+'.bba',s.bba,{txt:1,list:'sl-bba',label:'BBA status needed'})+sIn('sc.'+i+'.brokerage',s.brokerage,{pc:1,label:'Brokerage percent payable'})+sIn('sc.'+i+'.plc',s.plc,{pc:1,label:'PLC percent payable'})+sIn('sc.'+i+'.incentive',s.incentive,{pc:1,label:'Incentive percent payable'})+'<button type="button" class="btn sm" data-b="dels" data-i="'+i+'" aria-label="Remove rule">✕</button></div>'}).join('')+'</div></div><datalist id="sl-bba">'+C.lists.bba.map(function(v){return '<option value="'+esc(v)+'">'}).join('')+'</datalist><p style="margin:12px 0 0"><button class="btn" type="button" data-b="adds">Add payout rule</button></p></div>';
+    h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Choice lists (for all projects)</h3><p class="hint" style="margin:0 0 12px">One value per line. These fill the dropdowns on the booking form.</p><div class="fgrid2">'+[['plans','Payment plans'],['bba','BBA statuses'],['towers','Towers']].map(function(l){return '<div class="f"><label for="sl-'+l[0]+'">'+l[1]+'</label><textarea id="sl-'+l[0]+'" data-l="'+l[0]+'" rows="9" spellcheck="false">'+esc(C.lists[l[0]].join('\n'))+'</textarea></div>'}).join('')+'</div></div>';
+    h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Criteria as it stands</h3><div id="sCrit">'+brkCriteriaHtml(brk.sp,P).replace(/<div class="panel glass"[^>]*>/,'<div>')+'</div></div>';
+    h+='<div class="grow" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px"><button class="go" type="button" id="sSave" style="padding:0 22px" data-b="saveCfg">Save settings</button><button class="btn" type="button" data-b="discard">Discard changes</button><span class="hint" id="sDirty" style="margin:0;align-self:center">'+(brk.dirty?'Unsaved changes':'')+'</span></div>';
+    return h;
+  }
+  function brkSetPath(P,path,raw,el){
+    var parts=path.split('.'),o=P,i;
+    for(i=0;i<parts.length-1;i++){o=o[parts[i]==='sc'?'scenarios':parts[i]];if(!o)return}
+    var k=parts[parts.length-1];
+    if(k==='name'||k==='bba'){o[k]=raw;return}
+    var n=Number(raw);if(!isFinite(n))n=0;
+    if(el.getAttribute('data-pc'))n=Math.round(n*10000)/1000000;
+    o[k]=n;
+  }
+  function brkSettingsInput(e){
+    var t=e.target,C=brk.dcfg;if(!C)return;
+    if(t.getAttribute('data-l')){C.lists[t.getAttribute('data-l')]=t.value.split(/\r?\n/).map(function(v){return v.trim()}).filter(String);brk.dirty=true;$('sDirty').textContent='Unsaved changes';return}
+    var path=t.getAttribute('data-s');if(!path)return;
+    brkSetPath(C.projects[brk.sp],path,t.value,t);brk.dirty=true;$('sDirty').textContent='Unsaved changes';
+    var c=$('sCrit');if(c)c.innerHTML=brkCriteriaHtml(brk.sp,C.projects[brk.sp]).replace(/<div class="panel glass"[^>]*>/,'<div>');
+  }
+  function brkSaveCfg(){
+    var btn=$('sSave');btn.disabled=true;brkMsg('Saving settings…');
+    post({action:'brkSaveCfg',token:token,cfg:brk.dcfg,rev:brk.rev},CONFIG.BRK_API_URL).then(function(j){
+      btn.disabled=false;
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(j&&j.error==='no_access'){brk.loaded=false;brk.locked=true;brkRender();return}
+      if(j&&j.error){brkMsg(j.error,'err');return}
+      brk.cfg=j.cfg;brk.dcfg=JSON.parse(JSON.stringify(j.cfg));brk.rev=j.rev;brk.dirty=false;brkMsg('Settings saved. Every figure now follows the new rules.','ok');brkRender();
+    }).catch(function(e){btn.disabled=false;brkMsg('Could not save. '+(e.message||''),'err')});
+  }
+  /* ---- clicks and inputs ---- */
+  $('brkTabs').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-bt]');if(!b)return;
+    if(brk.tab==='settings'&&brk.dirty&&!confirm('You have unsaved settings. Leave this tab and lose them?'))return;
+    if(brk.tab==='settings'&&brk.dirty){brk.dcfg=JSON.parse(JSON.stringify(brk.cfg));brk.dirty=false}
+    brk.tab=b.getAttribute('data-bt');brkMsg('');brkRender();
+  });
+  $('brkBody').addEventListener('click',function(e){
+    var b=e.target.closest('[data-b]');if(!b)return;var a=b.getAttribute('data-b'),C=brk.dcfg;
+    if(a==='retry'||a==='refresh'){brk.form=null;brkLoad();return}
+    if(a==='add'){brkOpenForm('');return}
+    if(a==='edit'){brkOpenForm(b.getAttribute('data-id'));return}
+    if(a==='cancel'){brk.form=null;brkMsg('');brkFormShow();return}
+    if(a==='xls'){brkXls();return}
+    if(a==='saveCfg'){brkSaveCfg();return}
+    if(a==='discard'){brk.dcfg=JSON.parse(JSON.stringify(brk.cfg));brk.dirty=false;brkMsg('');brkRender();return}
+    if(!C)return;var P=C.projects[brk.sp];
+    if(a==='addf'){var last=P.floors[P.floors.length-1];P.floors.push({from:last?last.to+1:1,to:last?last.to+5:5,plc:0})}
+    else if(a==='delf')P.floors.splice(+b.getAttribute('data-i'),1);
+    else if(a==='adds')P.scenarios.push({name:'New rule',minPmt:0.1,bba:C.lists.bba[0]||'',brokerage:0.5,plc:0.5,incentive:1});
+    else if(a==='dels')P.scenarios.splice(+b.getAttribute('data-i'),1);
+    else if(a==='addp'){
+      var nm=($('spNew').value||'').trim();
+      if(!nm){brkMsg('Type the new project name first.','err');return}
+      if(C.order.some(function(x){return x.toLowerCase()===nm.toLowerCase()})){brkMsg('That project already exists.','err');return}
+      C.projects[nm]={rate:P.rate,slabPct:P.slabPct,plcPct:P.plcPct,incentive:P.incentive,floors:JSON.parse(JSON.stringify(P.floors)),scenarios:JSON.parse(JSON.stringify(P.scenarios))};C.order.push(nm);brk.sp=nm;
+    }
+    else if(a==='delp'){if(!confirm('Remove project '+brk.sp+' and its rules?'))return;delete C.projects[brk.sp];C.order.splice(C.order.indexOf(brk.sp),1);brk.sp=C.order[0]}
+    else return;
+    brk.dirty=true;brkMsg('');brkRender();
+  });
+  $('brkBody').addEventListener('input',function(e){
+    var id=e.target.id;
+    if(id==='bq'){brk.q=e.target.value;brkTable();return}
+    if(e.target.closest('#brkForm')){brkFormInput(e);return}
+    if(brk.tab==='settings')brkSettingsInput(e);
+  });
+  $('brkBody').addEventListener('change',function(e){
+    var id=e.target.id,m={bop:'op',bfp:'fp',bft:'ft',bfb:'fb',bfs:'fs'};
+    if(id==='bop'){brk.op=e.target.value;brkRender();return}
+    if(m[id]){brk[m[id]]=e.target.value;brkTable();return}
+    if(id==='sp'){brk.sp=e.target.value;brkRender();return}
+    if(e.target.closest('#brkForm'))brkFormInput(e);
+  });
+  $('brkBody').addEventListener('submit',function(e){e.preventDefault();brkSaveBooking()});
 
   if(CONFIG.AUTO_REFRESH_SECONDS>0)setInterval(function(){if(token&&(view==='report'||view==='home'))load()},CONFIG.AUTO_REFRESH_SECONDS*1000);
   load();
