@@ -814,6 +814,20 @@ body:not([data-view="report"]) #fShow{display:none!important}
 .bprev>div{padding:10px 12px;border-radius:12px;background:var(--row);border:1px solid var(--line)}
 .bprev small{display:block;color:var(--muted);font-size:11px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px}
 .clist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.5}
+.acts{display:flex;gap:6px;flex-wrap:nowrap;align-items:center}
+.acts .btn.sm{white-space:nowrap}
+.bxc{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;background:var(--row)}
+.bmodal{position:fixed;inset:0;background:rgba(8,22,18,.58);display:flex;align-items:flex-start;justify-content:center;padding:4vh 14px;overflow:auto;z-index:2000}
+.bmodal[hidden]{display:none}
+.bmbox{background:var(--card,#fff);color:var(--fg);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.4);width:100%;padding:20px 24px 24px;margin:auto}
+.bm-md{max-width:660px}.bm-lg{max-width:900px}.bm-xl{max-width:1080px}
+.bmhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.bmhead h3{margin:0;font-size:20px}
+.mfoot{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.mfoot .go{padding:0 22px}
+body.bm-open{overflow:hidden}
+.bmodal .banner{margin-bottom:12px}
+.bmodal .tr input{height:40px}
 </style>
 </head>
 <body>
@@ -1076,6 +1090,7 @@ body:not([data-view="report"]) #fShow{display:none!important}
 </div>
 
 <div class="cmask" id="calcMask" hidden><div class="cbox" role="dialog" aria-modal="true" aria-labelledby="calcT"><div class="chead"><h2 id="calcT">Property cost calculator</h2><button class="btn" id="calcX" type="button" aria-label="Close">Close</button></div><div id="calcBody"></div></div></div>
+<div class="bmodal" id="bmodal" hidden><div class="bmbox bm-md" id="bmbox" role="dialog" aria-modal="true" aria-labelledby="bmTitle"><div class="bmhead"><h3 id="bmTitle"></h3><button type="button" class="btn sm" data-b="mclose" aria-label="Close this window">✕</button></div><div id="bmBody"></div></div></div>
 <script>
 /* ============ SETTINGS: edit these ============ */
 var CONFIG = {
@@ -2093,8 +2108,12 @@ var CONFIG = {
       ['DSR tabs',[['p_dsr','Show the DSR page (the DSR link in the top bar)'],['dsr_new','New DSR form'],['dsr_mine','My DSRs (the ones this person submitted)'],['dsr_appr','Approvals (needed by approvers; Admins can approve any DSR)']]],
       ['Change the form',[['g_dsr_edit','Form settings tab: change the questions (text, required or optional, dropdown choices, order, add or hide). Off unless you tick it. Admins always can.']]]]],
     ['Admin page','Opens from Admin in the top bar.',['@admin']],
-    ['Brokerage page','Brokerage access is given in the private Brokerage Google Sheet: add the person on its Access tab and the Brokerage link appears for them. This tick is only needed if the Brokerage script has REQUIRE_ADMIN_TICK = true (an optional extra lock). The Admin role never opens Brokerage by itself.',[
-      ['Page',[['g_brokerage','Brokerage page: extra lock (only used when REQUIRE_ADMIN_TICK is true in the Brokerage script)']]]]]
+    ['Brokerage page','Brokerage access starts in the private Brokerage Google Sheet (Access tab: View only, Editor or Admin level). The ticks below then switch single tabs, columns and buttons on or off for this person. Add, edit and payment actions are also checked on the server. The Admin role never opens Brokerage by itself.',[
+      ['Extra lock (optional)',[['g_brokerage','Brokerage page: extra lock (only used when REQUIRE_ADMIN_TICK is true in the Brokerage script)']]],
+      ['Tabs',[['b_overview','Overview tab'],['b_bookings','Booking details tab'],['b_brokerage','Brokerage part tab'],['b_criteria','Criteria tab (the rules)'],['b_settings','Settings tab (also needs the Admin level in the sheet)']]],
+      ['Overview',[['b_ov_kpi','Total boxes (bookings, area, brokerage, incentive, payable, balance, payments, invoices)'],['b_ov_stage','Payout stage table'],['b_ov_chart','Bars by tower and project']]],
+      ['Booking details',[['b_bd_calc','Calculation columns (PLC, Slab, Net, Net brokerage, Brokerage amount, Extra components)'],['b_bd_pay','Total Amount Paid and Last Payment Date columns'],['b_bd_team','Sales Person, TL, AM and HOD columns'],['b_add','Add booking button (opens a popup; Editors and Admins)'],['b_edit','Edit button (Admin level only)'],['b_pay','Make a Payment button (Editors add; Admins also edit and delete)'],['b_hist','Payment history buttons'],['b_histdl','Download in the payment history'],['b_xls','Excel download buttons (also needs the master Excel switch above)']]],
+      ['Brokerage part',[['b_bp_due','Due % column'],['b_bp_amt','Total earnable, Incentive, Payable now and Balance columns'],['b_bp_inv','Invoice columns (count, latest proforma, latest tax invoice, date, total amount)'],['b_inv','Add invoice button (Editors add; Admins also edit and delete)'],['b_invhist','Invoice history buttons'],['b_invdl','Download in the invoice history']]]]]
   ];
   var ALLP=['Every page',[['dl_excel','Allow Excel downloads (master switch, the download ticks on each page work only when this is on)']]];
   var GROUPS=[ALLP];
@@ -3366,10 +3385,10 @@ var CONFIG = {
   }
   window.addEventListener('resize',function(){if(HA.on){HA.on=false;cancelAnimationFrame(HA.raf);homeAnim(true)}});
 
-  /* ================= Brokerage (separate private sheet; two locks) ================= */
-  function brkNew(){return {allowed:false,cfg:null,dcfg:null,rev:0,rows:[],perms:{},tab:'overview',loaded:false,busy:false,locked:false,form:null,q:'',fp:'',ft:'',fb:'',fs:'',op:'',sp:'',dirty:false}}
+  /* ================= Brokerage (separate private sheet; access starts on its Access tab) ================= */
+  function brkNew(){return {allowed:false,cfg:null,dcfg:null,rev:0,rows:[],pays:[],invs:[],perms:{},tab:'overview',loaded:false,busy:false,locked:false,form:null,pform:null,hist:null,iform:null,ihist:null,mstack:[],mdirty:false,opener:null,q:'',fp:'',ft:'',fb:'',fs:'',op:'',sp:'',dirty:false}}
   var brk=brkNew();
-  function brkReset(){brk=brkNew();var e=$('brkBody');if(e)e.innerHTML='';var m=$('brkMsg');if(m)m.hidden=true}
+  function brkReset(){brk=brkNew();var e=$('brkBody');if(e)e.innerHTML='';var m=$('brkMsg');if(m)m.hidden=true;var o=$('bmodal');if(o){o.hidden=true;$('bmBody').innerHTML=''}document.body.classList.remove('bm-open')}
   /* the link shows only for people the Brokerage sheet lists (asked once after sign-in) */
   function brkOK(){return mode==='live'&&!!CONFIG.BRK_API_URL&&brk.allowed}
   function brkCheck(){
@@ -3381,6 +3400,7 @@ var CONFIG = {
   }
   function brkMsg(t,kind){var b=$('brkMsg');b.hidden=!t;b.className='banner'+(kind==='err'?' err':kind==='ok'?' ok':'');b.innerHTML=t?'<b>'+(kind==='err'?'Problem':kind==='ok'?'Done':'Working')+'</b><span>'+esc(t)+'</span>':''}
   function brkEnter(){if(brk.loaded||brk.locked){brkRender();return}if(!brk.busy)brkLoad()}
+  function brkNorm(c){['plans','bba','towers','payTypes','sales','tls','ams','hods'].forEach(function(k){if(!Array.isArray(c.lists[k]))c.lists[k]=[]});c.order.forEach(function(n){var p=c.projects[n];if(!Array.isArray(p.extras))p.extras=[]});return c}
   function brkLoad(){
     brk.busy=true;brkMsg('Loading Brokerage…');
     return post({action:'brkLoad',token:token},CONFIG.BRK_API_URL).then(function(j){
@@ -3388,38 +3408,76 @@ var CONFIG = {
       if(j&&j.error==='unauthorized'){sessionEnded();return}
       if(j&&j.error==='no_access'){brk.locked=true;brk.loaded=false;brkMsg('');brkRender();return}
       if(j&&j.error){brkMsg(j.error,'err');return}
-      brk.locked=false;brk.cfg=j.cfg;brk.dcfg=JSON.parse(JSON.stringify(j.cfg));brk.rev=j.rev;brk.rows=j.bookings||[];brk.perms=j.perms||{};brk.loaded=true;brk.dirty=false;
-      if(brk.tab==='settings'&&!brk.perms.settings)brk.tab='overview';
+      brk.locked=false;brk.cfg=brkNorm(j.cfg);brk.dcfg=JSON.parse(JSON.stringify(brk.cfg));brk.rev=j.rev;brk.rows=j.bookings||[];brk.pays=j.payments||[];brk.invs=j.invoices||[];brk.perms=j.perms||{};brk.loaded=true;brk.dirty=false;
       brkMsg('');brkRender();
     }).catch(function(e){brk.busy=false;brkMsg('Could not reach the Brokerage server. '+(e.message||''),'err')});
   }
+  /* what this person may do: the sheet level (from the server) AND the Admin-panel ticks */
+  function canAdd(){return !!brk.perms.add&&vis('b_add')}
+  function canEdit(){return !!brk.perms.edit&&vis('b_edit')}
+  function canPay(){return !!brk.perms.pay&&vis('b_pay')}
+  function canPayEdit(){return !!brk.perms.payEdit&&vis('b_pay')}
+  function canInv(){return !!brk.perms.inv&&vis('b_inv')}
+  function canInvEdit(){return !!brk.perms.invEdit&&vis('b_inv')}
+  function canSet(){return !!brk.perms.settings&&vis('b_settings')}
+  function canXls(){return vis('dl_excel')&&vis('b_xls')}
   /* ---- the rules, one function ---- */
+  function lc(v){return String(v||'').trim().toLowerCase()}
   function bProj(name){return (brk.cfg&&brk.cfg.projects[name])||null}
   function bFloor(unit){var m=String(unit||'').match(/-(\d{3,4})-/);return m?(parseInt(m[1].slice(-2),10)||0):0}
   function bFloorPlc(unit,P){var f=bFloor(unit);if(!f||!P)return null;var t=P.floors.filter(function(x){return f>=x.from&&f<=x.to})[0];return t?t.plc:null}
   function bScen(b,P){
     var best=null;
     P.scenarios.forEach(function(s){
-      if(b.pmtPct+1e-9>=s.minPmt&&(!s.bba||String(b.bba).toUpperCase()===String(s.bba).toUpperCase())){
+      if(b.pmtPct+1e-9>=s.minPmt&&(!s.bba||lc(b.bba)===lc(s.bba))){
         if(!best||s.minPmt>best.minPmt||(s.minPmt===best.minPmt&&s.brokerage>best.brokerage))best=s;
       }
     });
     return best;
   }
-  function bCalc(b,Pin){
-    var P=Pin||bProj(b.project)||{slabPct:0,plcPct:0,incentive:0,floors:[],scenarios:[]};
-    var plc=b.floorPlc*P.plcPct,slab=b.rate*P.slabPct,net=slab-b.discount,netB=slab+plc-b.discount,brok=netB*b.area;
-    var s=bScen(b,P),pay=s?(net*b.area)*s.brokerage+(plc*b.area)*s.plc+P.incentive*s.incentive:0,tot=brok+P.incentive;
-    return {plc:plc,slab:slab,net:net,netB:netB,brok:brok,inc:P.incentive,tot:tot,scen:s,pay:pay,bal:tot-pay,due:s?1-s.brokerage:1};
+  function bExOn(e,b){
+    if(e.towers&&e.towers.length&&e.towers.map(lc).indexOf(lc(b.tower))<0)return false;
+    if(e.plans&&e.plans.length&&e.plans.map(lc).indexOf(lc(b.plan))<0)return false;
+    if(e.floorFrom||e.floorTo){var f=bFloor(b.unit);if(!f)return false;if(e.floorFrom&&f<e.floorFrom)return false;if(e.floorTo&&f>e.floorTo)return false}
+    return true;
   }
+  function bCalc(b,Pin){
+    var P=Pin||bProj(b.project)||{slabPct:0,plcPct:0,incentive:0,floors:[],scenarios:[],extras:[]};
+    var plc=b.floorPlc*P.plcPct,slab=b.rate*P.slabPct,net=slab-b.discount,netB=slab+plc-b.discount,brok=netB*b.area;
+    var B={brokerage:net*b.area,plc:plc*b.area,incentive:P.incentive},ex=0,exs=[];
+    (P.extras||[]).forEach(function(e){
+      if(!bExOn(e,b))return;
+      var a=e.kind==='sqft'?e.value*b.area:e.kind==='rate'?e.value*b.rate*b.area:e.kind==='unit'?e.value:e.value*brok;
+      if(e.effect==='deduct')a=-a;
+      B[e.follow]=(B[e.follow]||0)+a;ex+=a;exs.push({name:e.name,amt:a});
+    });
+    var s=bScen(b,P),pay=s?B.brokerage*s.brokerage+B.plc*s.plc+B.incentive*s.incentive:0,tot=brok+P.incentive+ex;
+    return {plc:plc,slab:slab,net:net,netB:netB,brok:brok,inc:P.incentive,ex:ex,exs:exs,tot:tot,scen:s,pay:pay,bal:tot-pay,due:s?1-s.brokerage:1};
+  }
+  function bPayMap(){var m={};brk.pays.forEach(function(p){var o=m[p.bookingId]||(m[p.bookingId]={total:0,last:'',n:0});o.total+=p.amount;o.n++;if(p.date>o.last)o.last=p.date});return m}
   function n2(v){return (Math.round(v*100)/100).toLocaleString('en-IN',{maximumFractionDigits:2})}
   function pcs(v){return (Math.round(v*10000)/100)+'%'}
-  function bDate(s){if(!s)return '—';var p=s.split('-');return fmtDate(new Date(+p[0],+p[1]-1,+p[2]))}
+  function bDate(s){if(!s)return '';var p=s.split('-');return fmtDate(new Date(+p[0],+p[1]-1,+p[2]))}
+  function tod(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+  function minr(v){return (v<0?'−':'')+inr(Math.abs(v))}
   function opts(list,sel,blank){return (blank!==undefined?'<option value="">'+esc(blank)+'</option>':'')+list.map(function(v){return '<option'+(v===sel?' selected':'')+'>'+esc(v)+'</option>'}).join('')}
+  function uniqNames(a){var s={},o=[];a.forEach(function(v){v=String(v||'').trim();if(v&&!s[lc(v)]){s[lc(v)]=1;o.push(v)}});return o}
+  function fmtV(t,v){if(v===''||v===null||v===undefined)return '—';if(t==='n')return n2(v);if(t==='m')return minr(v);if(t==='p')return pcs(v);if(t==='d')return bDate(v)||'—';return String(v)}
+  function rawV(t,v){if(v===''||v===null||v===undefined)return '';if(t==='p')return Math.round(v*10000)/100;if(t==='m')return Math.round(v*100)/100;if(t==='d')return bDate(v);return v}
+  function xT(t){return t==='m'?'m':t==='n'||t==='p'?'n':'s'}
+  function bInvMap(){
+    var m={};
+    brk.invs.forEach(function(i){var o=m[i.bookingId]||(m[i.bookingId]={n:0,total:0,last:null,key:''}),k=(i.taxDate||i.proformaDate||'')+'|'+i.at;o.n++;o.total+=i.amount;if(!o.last||k>o.key){o.last=i;o.key=k}});
+    return m;
+  }
   /* ---- tabs ---- */
   function brkTabsList(){
-    var t=[['overview','Overview'],['bookings','Booking details'],['criteria','Criteria']];
-    if(brk.perms.settings)t.push(['settings','Settings']);
+    var t=[];
+    if(vis('b_overview'))t.push(['overview','Overview']);
+    if(vis('b_bookings'))t.push(['bookings','Booking details']);
+    if(vis('b_brokerage'))t.push(['brokerage','Brokerage part']);
+    if(vis('b_criteria'))t.push(['criteria','Criteria']);
+    if(canSet())t.push(['settings','Settings']);
     return t;
   }
   function brkRender(){
@@ -3431,143 +3489,195 @@ var CONFIG = {
     }
     if(!brk.loaded)return;
     var tabs=brkTabsList();
-    if(!tabs.some(function(t){return t[0]===brk.tab}))brk.tab='overview';
+    if(!tabs.length){$('brkTabs').innerHTML='';body.innerHTML='<div class="empty">Your Admin has switched every Brokerage tab off for you.</div>';return}
+    if(!tabs.some(function(t){return t[0]===brk.tab}))brk.tab=tabs[0][0];
     $('brkTabs').innerHTML=tabs.map(function(t){return '<button type="button" class="btn" data-bt="'+t[0]+'" aria-pressed="'+(t[0]===brk.tab)+'">'+t[1]+'</button>'}).join('');
-    body.innerHTML=brk.tab==='overview'?brkOverviewHtml():brk.tab==='bookings'?brkBookingsHtml():brk.tab==='criteria'?brkCriteriaTab():brkSettingsHtml();
-    if(brk.tab==='bookings'){brkTable();brkFormShow()}
+    body.innerHTML=brk.tab==='overview'?brkOverviewHtml():brk.tab==='bookings'||brk.tab==='brokerage'?brkListHtml():brk.tab==='criteria'?brkCriteriaTab():brkSettingsHtml();
+    if(brk.tab==='bookings'||brk.tab==='brokerage')brkTable();
+    if(mTop())mRender();
   }
   /* ---- overview ---- */
   function brkOverviewHtml(){
-    var names=brk.cfg.order,rows=brk.rows.filter(function(b){return !brk.op||b.project===brk.op});
-    var T={area:0,brok:0,inc:0,tot:0,pay:0,bal:0,exec:0},st={},byT={},byP={},mx=0;
+    var names=brk.cfg.order,rows=brk.rows.filter(function(b){return !brk.op||b.project===brk.op}),pm=bPayMap(),iv=bInvMap();
+    var T={area:0,brok:0,inc:0,tot:0,pay:0,bal:0,exec:0,paid:0,inv:0},st={},byT={},byP={};
     rows.forEach(function(b){
-      var c=bCalc(b);T.area+=b.area;T.brok+=c.brok;T.inc+=c.inc;T.tot+=c.tot;T.pay+=c.pay;T.bal+=c.bal;if(String(b.bba).toUpperCase()==='EXECUTED')T.exec++;
+      var c=bCalc(b);T.area+=b.area;T.brok+=c.brok;T.inc+=c.inc;T.tot+=c.tot;T.pay+=c.pay;T.bal+=c.bal;if(lc(b.bba)==='executed')T.exec++;
+      if(pm[b.id])T.paid+=pm[b.id].total;if(iv[b.id])T.inv+=iv[b.id].total;
       var k=c.scen?c.scen.name:'Not payable yet',s=st[k]||(st[k]={n:0,pay:0,bal:0});s.n++;s.pay+=c.pay;s.bal+=c.bal;
       var tw=b.tower||'(No tower)',t=byT[tw]||(byT[tw]={n:0,v:0});t.n++;t.v+=c.tot;
       var p=byP[b.project]||(byP[b.project]={n:0,v:0});p.n++;p.v+=c.tot;
     });
-    var K=[['Bookings',rows.length.toLocaleString('en-IN'),'in this view'],['Total area',n2(T.area)+' sq ft','all units'],['Brokerage',inr(T.brok),'net brokerage × area'],['Incentive',inr(T.inc),'per unit'],['Total earnable',inr(T.tot),'brokerage + incentive'],['Payable now',inr(T.pay),'payout rules met'],['Balance pending',inr(T.bal),'not yet payable'],['BBA executed',T.exec.toLocaleString('en-IN'),'of '+rows.length]];
+    var K=[['Bookings',rows.length.toLocaleString('en-IN'),'in this view'],['Total area',n2(T.area)+' sq ft','all units'],['Brokerage',inr(T.brok),'net brokerage × area'],['Incentive',inr(T.inc),'per unit'],['Total earnable',inr(T.tot),'brokerage + incentive + extras'],['Payable now',inr(T.pay),'payout rules met'],['Balance pending',inr(T.bal),'not yet payable'],['BBA executed',T.exec.toLocaleString('en-IN'),'of '+rows.length],['Paid by customers',inr(T.paid),'payments recorded'],['Tax invoiced',inr(T.inv),'all invoices']];
     var h='<div class="etools"><div class="f"><label for="bop">Project</label><select id="bop">'+opts(names,brk.op,'All projects')+'</select></div><div class="grow"><button class="btn" type="button" data-b="refresh">Refresh</button></div></div>';
-    h+='<div class="kpis">'+K.map(function(k){return '<div class="kpi glass"><div class="label">'+k[0]+'</div><div class="big num">'+esc(k[1])+'</div><div class="sub">'+k[2]+'</div></div>'}).join('')+'</div>';
+    if(vis('b_ov_kpi'))h+='<div class="kpis">'+K.map(function(k){return '<div class="kpi glass"><div class="label">'+k[0]+'</div><div class="big num">'+esc(k[1])+'</div><div class="sub">'+k[2]+'</div></div>'}).join('')+'</div>';
     function bars(o,title){
       var ks=Object.keys(o).sort(function(a,b){return o[b].v-o[a].v}),m=ks.length?o[ks[0]].v:0;
       return '<div class="panel glass" style="padding:20px"><h3 style="margin:0 0 14px;font-size:16px">'+title+'</h3><div class="bbars">'+(ks.length?ks.map(function(k){return '<div class="bbr"><span>'+esc(k)+' <small class="muted">('+o[k].n+')</small></span><span class="bt"><i style="width:'+(m>0?Math.max(2,o[k].v/m*100):2)+'%"></i></span><span class="num">'+inr(o[k].v)+'</span></div>'}).join(''):'<div class="empty">No bookings.</div>')+'</div></div>';
     }
     var sk=Object.keys(st).sort(function(a,b){return st[b].pay-st[a].pay});
-    var stage='<div class="panel glass" style="padding:20px"><h3 style="margin:0 0 14px;font-size:16px">Payout stage</h3><div class="scrollx"><div class="tbl" style="min-width:420px">'+'<div class="tr th" style="grid-template-columns:1.6fr .6fr 1fr 1fr"><span>Stage</span><span class="r">Bookings</span><span class="r">Payable now</span><span class="r">Balance</span></div>'+(sk.length?sk.map(function(k){return '<div class="tr" style="grid-template-columns:1.6fr .6fr 1fr 1fr"><span class="nmx">'+esc(k)+'</span><span class="r num">'+st[k].n+'</span><span class="r num">'+inr(st[k].pay)+'</span><span class="r num">'+inr(st[k].bal)+'</span></div>'}).join(''):'<div class="empty">No bookings.</div>')+'</div></div></div>';
-    h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:14px">'+stage+bars(byT,'Total earnable by tower')+(Object.keys(byP).length>1?bars(byP,'Total earnable by project'):'')+'</div>';
+    var stage='<div class="panel glass" style="padding:20px"><h3 style="margin:0 0 14px;font-size:16px">Payout stage</h3><div class="scrollx"><div class="tbl" style="min-width:420px"><div class="tr th" style="grid-template-columns:1.6fr .6fr 1fr 1fr"><span>Stage</span><span class="r">Bookings</span><span class="r">Payable now</span><span class="r">Balance</span></div>'+(sk.length?sk.map(function(k){return '<div class="tr" style="grid-template-columns:1.6fr .6fr 1fr 1fr"><span class="nmx">'+esc(k)+'</span><span class="r num">'+st[k].n+'</span><span class="r num">'+inr(st[k].pay)+'</span><span class="r num">'+inr(st[k].bal)+'</span></div>'}).join(''):'<div class="empty">No bookings.</div>')+'</div></div></div>';
+    var grid=(vis('b_ov_stage')?stage:'')+(vis('b_ov_chart')?bars(byT,'Total earnable by tower')+(Object.keys(byP).length>1?bars(byP,'Total earnable by project'):''):'');
+    if(grid)h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:14px">'+grid+'</div>';
     return h;
   }
-  /* ---- booking details ---- */
-  var BCOLS=[['sr','Sr.No',56],['project','Project',130],['priority','Priority No.',100],['client','Client Name',230],['tower','Tower',110],['unit','Unit No.',120],['rate','Rate',80,1],['area','Area (Sq.Ft)',96,1],['floorPlc','Floor PLC',86,1],['plc','PLC',70,1],['slab','Slab',70,1],['discount','Discount',84,1],['net','Net',72,1],['netB','Net Brokerage',104,1],['brok','Brokerage Amount',132,1],['plan','Pmt Plan',116],['pmt','PMT %',70,1],['bba','BBA',100],['date','Executed Date',112],['due','Due %',70,1],['inc','Incentive',104,1],['pay','Payable now',124,1],['bal','Balance',124,1]];
-  function bVal(k,b,c){
-    switch(k){
-      case 'sr':return b.sr;case 'project':return b.project;case 'priority':return b.priority;case 'client':return b.client;case 'tower':return b.tower;case 'unit':return b.unit;
-      case 'rate':return n2(b.rate);case 'area':return n2(b.area);case 'floorPlc':return n2(b.floorPlc);case 'plc':return n2(c.plc);case 'slab':return n2(c.slab);case 'discount':return n2(b.discount);
-      case 'net':return n2(c.net);case 'netB':return n2(c.netB);case 'brok':return inr(c.brok);case 'plan':return b.plan;case 'pmt':return pcs(b.pmtPct);case 'bba':return b.bba;
-      case 'date':return bDate(b.execDate);case 'due':return pcs(c.due);case 'inc':return inr(c.inc);case 'pay':return inr(c.pay);case 'bal':return inr(c.bal);
-    }
-    return '';
-  }
-  function brkBookingsHtml(){
+  /* ---- the two tables: Booking details and Brokerage part ---- */
+  /* [key, label, width, type (t text, n number, m money, p percent, d date), gate, value function] */
+  var BD=[
+    ['sr','Sr.No',56,'t',0,function(x){return x.b.sr}],['project','Project',130,'t',0,function(x){return x.b.project}],['priority','Priority No.',100,'t',0,function(x){return x.b.priority}],['client','Client Name',230,'t',0,function(x){return x.b.client}],['tower','Tower',110,'t',0,function(x){return x.b.tower}],['unit','Unit No.',120,'t',0,function(x){return x.b.unit}],
+    ['rate','Rate',80,'n',0,function(x){return x.b.rate}],['area','Area (Sq.Ft)',96,'n',0,function(x){return x.b.area}],['floorPlc','Floor PLC',86,'n',0,function(x){return x.b.floorPlc}],
+    ['plc','PLC',70,'n','calc',function(x){return x.c.plc}],['slab','Slab',70,'n','calc',function(x){return x.c.slab}],['discount','Discount',84,'n',0,function(x){return x.b.discount}],['net','Net',72,'n','calc',function(x){return x.c.net}],['netB','Net Brokerage',104,'n','calc',function(x){return x.c.netB}],['brok','Brokerage Amount',132,'m','calc',function(x){return x.c.brok}],['extra','Extra components',130,'m','calc',function(x){return x.c.ex||''}],
+    ['plan','Pmt Plan',116,'t',0,function(x){return x.b.plan}],['pmt','PMT %',70,'p',0,function(x){return x.b.pmtPct}],['bba','BBA',100,'t',0,function(x){return x.b.bba}],['date','Executed Date',112,'d',0,function(x){return x.b.execDate}],
+    ['paid','Total Amount Paid',132,'m','pay',function(x){return x.p.total}],['lastPay','Last Payment Date',124,'d','pay',function(x){return x.p.last}],
+    ['sales','Sales Person',130,'t','team',function(x){return x.b.sales}],['tl','TL',110,'t','team',function(x){return x.b.tl}],['am','AM',110,'t','team',function(x){return x.b.am}],['hod','HOD',110,'t','team',function(x){return x.b.hod}]];
+  var BP=[
+    ['sr','Sr.No',56,'t',0,function(x){return x.b.sr}],['project','Project',130,'t',0,function(x){return x.b.project}],['client','Client Name',230,'t',0,function(x){return x.b.client}],['unit','Unit No.',120,'t',0,function(x){return x.b.unit}],
+    ['due','Due %',72,'p','due',function(x){return x.c.due}],['tot','Total Earnable',124,'m','amt',function(x){return x.c.tot}],['inc','Incentive',104,'m','amt',function(x){return x.c.inc}],['pay','Payable now',124,'m','amt',function(x){return x.c.pay}],['bal','Balance',124,'m','amt',function(x){return x.c.bal}],
+    ['invN','Invoices',84,'t','inv',function(x){return x.v.n?String(x.v.n):''}],['proformaNo','Proforma Tax Invoice (latest)',186,'t','inv',function(x){return x.v.last?x.v.last.proformaNo:''}],['taxNo','Tax Invoice (latest)',150,'t','inv',function(x){return x.v.last?x.v.last.taxNo:''}],['taxDate','Tax Invoice Date (latest)',170,'d','inv',function(x){return x.v.last?x.v.last.taxDate:''}],['taxAmt','Tax Invoice Amount (total)',180,'m','inv',function(x){return x.v.n?x.v.total:''}]];
+  var GATE={calc:'b_bd_calc',pay:'b_bd_pay',team:'b_bd_team',due:'b_bp_due',amt:'b_bp_amt',inv:'b_bp_inv'};
+  function hasExtras(){return brk.cfg.order.some(function(n){return brk.cfg.projects[n].extras.length})}
+  function colsOf(def){return def.filter(function(c){if(c[0]==='extra'&&!hasExtras())return false;return !c[4]||vis(GATE[c[4]])})}
+  function toolbar(){
     var towers={};brk.rows.forEach(function(b){if(b.tower)towers[b.tower]=1});
     var bbas=brk.cfg.lists.bba.slice();brk.rows.forEach(function(b){if(b.bba&&bbas.indexOf(b.bba)<0)bbas.push(b.bba)});
-    var h='<div class="panel glass" id="brkFormBox" hidden style="padding:24px"></div>';
-    h+='<div class="panel glass"><div class="etools"><div class="field"><label for="bq">Search client, unit, priority no., tower, project or payment plan</label><input id="bq" type="search" autocomplete="off" value="'+esc(brk.q)+'"></div>'+
+    var bk=brk.tab==='bookings';
+    return '<div class="etools"><div class="field"><label for="bq">Search client, unit, priority no., tower, project, plan, team or invoice no.</label><input id="bq" type="search" autocomplete="off" value="'+esc(brk.q)+'"></div>'+
       '<div class="f"><label for="bfp">Project</label><select id="bfp">'+opts(brk.cfg.order,brk.fp,'All')+'</select></div>'+
       '<div class="f"><label for="bft">Tower</label><select id="bft">'+opts(Object.keys(towers).sort(),brk.ft,'All')+'</select></div>'+
       '<div class="f"><label for="bfb">BBA</label><select id="bfb">'+opts(bbas,brk.fb,'All')+'</select></div>'+
       '<div class="f"><label for="bfs">Payout</label><select id="bfs"><option value="">All</option><option value="now"'+(brk.fs==='now'?' selected':'')+'>Payable now</option><option value="wait"'+(brk.fs==='wait'?' selected':'')+'>Not payable yet</option></select></div>'+
-      '<div class="grow">'+(brk.perms.edit?'<button class="go sm" type="button" data-b="add">Add booking</button>':'')+'<button class="btn" type="button" data-b="refresh">Refresh</button>'+(vis('dl_excel')?'<button class="btn" type="button" data-b="xls">Download Excel</button>':'')+'</div></div>'+
-      '<p class="hint" id="bCount" style="margin:0 0 12px"></p><div class="scrollx" tabindex="0" role="region" aria-label="Brokerage bookings, scrolls sideways"><div class="tbl" id="bTbl" role="table" aria-label="Brokerage bookings"></div></div></div>';
-    return h;
+      '<div class="grow">'+(bk&&canAdd()?'<button class="go sm" type="button" data-b="add">Add booking</button>':'')+(bk&&vis('b_hist')?'<button class="btn" type="button" data-b="histall">Payment history</button>':'')+(!bk&&vis('b_invhist')?'<button class="btn" type="button" data-b="invhistall">Invoice history</button>':'')+'<button class="btn" type="button" data-b="refresh">Refresh</button>'+(canXls()?'<button class="btn" type="button" data-b="'+(bk?'xls':'xlsbp')+'">Download Excel</button>':'')+'</div></div>';
+  }
+  function brkListHtml(){
+    var bk=brk.tab==='bookings',lab=bk?'Booking details':'Brokerage part';
+    return '<div class="panel glass">'+toolbar()+'<p class="hint" id="bCount" style="margin:0 0 12px"></p><div class="scrollx" tabindex="0" role="region" aria-label="'+lab+', scrolls sideways"><div class="tbl" id="bTbl" role="table" aria-label="'+lab+'"></div></div></div>';
   }
   function brkFiltered(){
-    var q=brk.q.trim().toLowerCase().split(/\s+/).filter(String);
-    return brk.rows.map(function(b){return {b:b,c:bCalc(b)}}).filter(function(x){
+    var q=brk.q.trim().toLowerCase().split(/\s+/).filter(String),pm=bPayMap(),iv=bInvMap(),invTxt={};
+    brk.invs.forEach(function(i){invTxt[i.bookingId]=(invTxt[i.bookingId]||'')+' '+i.proformaNo+' '+i.taxNo});
+    return brk.rows.map(function(b){return {b:b,c:bCalc(b),p:pm[b.id]||{total:0,last:'',n:0},v:iv[b.id]||{n:0,total:0,last:null}}}).filter(function(x){
       var b=x.b;
       if(brk.fp&&b.project!==brk.fp)return false;if(brk.ft&&b.tower!==brk.ft)return false;if(brk.fb&&b.bba!==brk.fb)return false;
       if(brk.fs==='now'&&!(x.c.pay>0))return false;if(brk.fs==='wait'&&x.c.pay>0)return false;
       if(!q.length)return true;
-      var hay=[b.client,b.unit,b.priority,b.tower,b.project,b.plan,b.bba,b.notes].join(' ').toLowerCase();
+      var hay=[b.client,b.unit,b.priority,b.tower,b.project,b.plan,b.bba,b.notes,b.sales,b.tl,b.am,b.hod,invTxt[b.id]].join(' ').toLowerCase();
       return q.every(function(t){return hay.indexOf(t)>-1});
     });
   }
+  function rowActs(x){
+    var h='',id=esc(x.b.id);
+    if(brk.tab==='bookings'){
+      if(canPay())h+='<button type="button" class="btn sm" data-b="pay" data-id="'+id+'">Pay</button>';
+      if(vis('b_hist'))h+='<button type="button" class="btn sm" data-b="hist" data-id="'+id+'">History'+(x.p.n?' ('+x.p.n+')':'')+'</button>';
+      if(canEdit())h+='<button type="button" class="btn sm" data-b="edit" data-id="'+id+'">Edit</button>';
+    }else{
+      if(canInv())h+='<button type="button" class="btn sm" data-b="inv" data-id="'+id+'">Add invoice</button>';
+      if(vis('b_invhist'))h+='<button type="button" class="btn sm" data-b="invhist" data-id="'+id+'">Invoices'+(x.v.n?' ('+x.v.n+')':'')+'</button>';
+    }
+    return h;
+  }
   function brkTable(){
-    var list=brkFiltered(),cols=BCOLS.slice(),edit=!!brk.perms.edit;
-    var gt='grid-template-columns:'+cols.map(function(c){return c[2]+'px'}).join(' ')+(edit?' 70px':'');
-    $('bTbl').style.minWidth=(cols.reduce(function(a,c){return a+c[2]},0)+(edit?70:0)+cols.length*12+32)+'px';
-    var T={area:0,brok:0,inc:0,pay:0,bal:0};
-    var h='<div class="tr th" role="row" style="'+gt+'">'+cols.map(function(c){return '<span role="columnheader"'+(c[3]?' class="r"':'')+'>'+c[1]+'</span>'}).join('')+(edit?'<span></span>':'')+'</div>';
+    var bk=brk.tab==='bookings',def=bk?BD:BP,cols=colsOf(def),list=brkFiltered();
+    var nAct=bk?(canPay()?1:0)+(vis('b_hist')?1:0)+(canEdit()?1:0):(canInv()?1:0)+(vis('b_invhist')?1:0),aw=nAct?nAct*(bk?92:112)+8:0;
+    var gt='grid-template-columns:'+cols.map(function(c){return c[2]+'px'}).join(' ')+(aw?' '+aw+'px':'');
+    $('bTbl').style.minWidth=(cols.reduce(function(a,c){return a+c[2]},0)+aw+(cols.length+1)*12+32)+'px';
+    var h='<div class="tr th" role="row" style="'+gt+'">'+cols.map(function(c){return '<span role="columnheader"'+(c[3]!=='t'&&c[3]!=='d'?' class="r"':'')+'>'+esc(c[1])+'</span>'}).join('')+(aw?'<span></span>':'')+'</div>';
     list.slice(0,400).forEach(function(x){
-      h+='<div class="tr" role="row" style="'+gt+'">'+cols.map(function(c){var v=bVal(c[0],x.b,x.c);return '<span'+(c[3]?' class="r num"':(c[0]==='client'?' class="nmx"':''))+'>'+esc(v===''||v===undefined?'—':v)+'</span>'}).join('')+(edit?'<span><button type="button" class="btn sm" data-b="edit" data-id="'+esc(x.b.id)+'">Edit</button></span>':'')+'</div>';
+      h+='<div class="tr" role="row" style="'+gt+'">'+cols.map(function(c){var v=c[5](x);return '<span'+(c[3]!=='t'&&c[3]!=='d'?' class="r num"':(c[0]==='client'?' class="nmx"':''))+'>'+esc(fmtV(c[3],v))+'</span>'}).join('')+(aw?'<span class="acts">'+rowActs(x)+'</span>':'')+'</div>';
     });
-    list.forEach(function(x){T.area+=x.b.area;T.brok+=x.c.brok;T.inc+=x.c.inc;T.pay+=x.c.pay;T.bal+=x.c.bal});
-    if(list.length)h+='<div class="tr btot" role="row" style="'+gt+'">'+cols.map(function(c){var v='';if(c[0]==='client')v='Total ('+list.length+')';else if(c[0]==='area')v=n2(T.area);else if(c[0]==='brok')v=inr(T.brok);else if(c[0]==='inc')v=inr(T.inc);else if(c[0]==='pay')v=inr(T.pay);else if(c[0]==='bal')v=inr(T.bal);return '<span'+(c[3]?' class="r num"':'')+'>'+esc(v)+'</span>'}).join('')+(edit?'<span></span>':'')+'</div>';
+    if(list.length){
+      var tot={};['brok','extra','paid','tot','inc','pay','bal','taxAmt','area'].forEach(function(k){tot[k]=0});
+      list.forEach(function(x){tot.area+=x.b.area;tot.brok+=x.c.brok;tot.extra+=x.c.ex;tot.paid+=x.p.total;tot.tot+=x.c.tot;tot.inc+=x.c.inc;tot.pay+=x.c.pay;tot.bal+=x.c.bal;tot.taxAmt+=x.v.total});
+      h+='<div class="tr btot" role="row" style="'+gt+'">'+cols.map(function(c){var v='';if(c[0]==='client')v='Total ('+list.length+')';else if(c[0]==='area')v=n2(tot.area);else if(tot[c[0]]!==undefined)v=minr(tot[c[0]]);return '<span'+(c[3]!=='t'&&c[3]!=='d'?' class="r num"':'')+'>'+esc(v)+'</span>'}).join('')+(aw?'<span></span>':'')+'</div>';
+    }
     $('bTbl').innerHTML=list.length?h:'<div class="empty">No bookings match.</div>';
     $('bCount').textContent=list.length.toLocaleString('en-IN')+' of '+brk.rows.length.toLocaleString('en-IN')+' bookings'+(list.length>400?'. The table shows the first 400; narrow it with the filters.':'');
   }
-  function brkXls(){
-    var list=brkFiltered(),head=BCOLS.map(function(c){return c[1]}),types=BCOLS.map(function(c){return c[3]||c[0]==='sr'?'m':'s'});
-    var data=list.map(function(x){return BCOLS.map(function(c){
-      var b=x.b,k=c[0];
-      if(k==='rate')return b.rate;if(k==='area')return b.area;if(k==='floorPlc')return b.floorPlc;if(k==='plc')return x.c.plc;if(k==='slab')return x.c.slab;if(k==='discount')return b.discount;if(k==='net')return x.c.net;if(k==='netB')return x.c.netB;
-      if(k==='brok')return Math.round(x.c.brok);if(k==='pmt')return b.pmtPct*100;if(k==='due')return x.c.due*100;if(k==='inc')return x.c.inc;if(k==='pay')return Math.round(x.c.pay);if(k==='bal')return Math.round(x.c.bal);
-      return bVal(k,b,x.c);
-    })});
-    saveXlsx('Brokerage_bookings',head,data,types);
+  function brkXls(kind){
+    var def=kind==='bp'?BP:BD,cols=colsOf(def),list=brkFiltered();
+    saveXlsx(kind==='bp'?'Brokerage_part':'Booking_details',cols.map(function(c){return c[1]}),list.map(function(x){return cols.map(function(c){return rawV(c[3],c[5](x))})}),cols.map(function(c){return xT(c[3])}));
   }
-  /* ---- add / edit form ---- */
+  /* ================= small popup windows (one stack: a popup can open another and return to it) ================= */
+  function mTop(){return brk.mstack[brk.mstack.length-1]||''}
+  function mOpen(type){if(!brk.mstack.length)brk.opener=document.activeElement;brk.mstack.push(type);brk.mdirty=false;mRender()}
+  function mClose(force){
+    var t=mTop();if(!t)return;
+    if(!force&&brk.mdirty&&(t==='form'||t==='pay'||t==='inv')&&!confirm('Close without saving? What you typed will be lost.'))return;
+    brk.mstack.pop();
+    if(t==='form')brk.form=null;if(t==='pay')brk.pform=null;if(t==='hist')brk.hist=null;if(t==='inv')brk.iform=null;if(t==='invhist')brk.ihist=null;
+    brk.mdirty=false;mRender();
+    if(!brk.mstack.length&&brk.opener&&document.body.contains(brk.opener))try{brk.opener.focus()}catch(e){}
+  }
+  function mMsg(t,kind){var e=$('bmMsg');if(!e)return;e.hidden=!t;e.className='banner'+(kind==='err'?' err':kind==='ok'?' ok':'');e.innerHTML=t?'<b>'+(kind==='err'?'Problem':kind==='ok'?'Done':'Working')+'</b><span>'+esc(t)+'</span>':''}
+  function msg(t,kind){if(mTop())mMsg(t,kind);else brkMsg(t,kind)}
+  function mRender(){
+    var el=$('bmodal'),t=mTop();
+    if(!t){el.hidden=true;$('bmBody').innerHTML='';document.body.classList.remove('bm-open');return}
+    var r=t==='form'?mFormView():t==='pay'?mPayView():t==='hist'?mHistView():t==='inv'?mInvView():mInvHistView();
+    $('bmTitle').textContent=r.title;
+    $('bmBody').innerHTML='<div class="banner" id="bmMsg" role="status" hidden></div>'+r.html;
+    $('bmbox').className='bmbox '+r.size;
+    el.hidden=false;document.body.classList.add('bm-open');
+    if(r.after)r.after();
+    if(!r.focused){var f=$('bmBody').querySelector('input,select,textarea,button');if(f)f.focus()}
+    el.scrollTop=0;
+  }
+  function bById(id){return brk.rows.filter(function(r){return r.id===id})[0]}
+  function dlist(id,arr){return '<datalist id="'+id+'">'+arr.map(function(t){return '<option value="'+esc(t)+'">'}).join('')+'</datalist>'}
+  function fld(p,id,label,inner,cls){return '<div class="f'+(cls?' '+cls:'')+'"><label for="'+p+'-'+id+'">'+label+'</label>'+inner+'</div>'}
+  function inp(p,st,id,type,extra){var v=st[id];return '<input id="'+p+'-'+id+'" type="'+type+'" value="'+esc(v===undefined?'':v)+'" autocomplete="off"'+(type==='number'?' step="any" min="0" inputmode="decimal"':'')+(extra||'')+'>'}
+  /* ---- add / edit booking ---- */
   function brkOpenForm(id){
     var b=null;
-    if(id){b=brk.rows.filter(function(r){return r.id===id})[0];if(!b)return}
+    if(id){b=bById(id);if(!b)return}
     var P0=brk.fp&&brk.cfg.projects[brk.fp]?brk.fp:brk.cfg.order[0],P=brk.cfg.projects[b?b.project:P0];
-    brk.form={id:b?b.id:'',at:b?b.at:'',autoPlc:!b,f:b?{project:b.project,priority:b.priority,client:b.client,tower:b.tower,unit:b.unit,rate:String(b.rate),area:String(b.area),floorPlc:String(b.floorPlc),discount:String(b.discount),plan:b.plan,pmt:String(Math.round(b.pmtPct*10000)/100),bba:b.bba,execDate:b.execDate,notes:b.notes}:{project:P0,priority:'',client:'',tower:'',unit:'',rate:String(P.rate),area:'',floorPlc:'',discount:'0',plan:'',pmt:'0',bba:'',execDate:'',notes:''}};
-    brkFormShow();
+    var f=b?{project:b.project,priority:b.priority,client:b.client,tower:b.tower,unit:b.unit,rate:String(b.rate),area:String(b.area),floorPlc:String(b.floorPlc),discount:String(b.discount),plan:b.plan,pmt:String(Math.round(b.pmtPct*10000)/100),bba:b.bba,execDate:b.execDate,notes:b.notes,sales:b.sales,tl:b.tl,am:b.am,hod:b.hod}
+      :{project:P0,priority:'',client:'',tower:'',unit:'',rate:String(P.rate),area:'',floorPlc:'',discount:'0',plan:'',pmt:'0',bba:'',execDate:'',notes:'',sales:'',tl:'',am:'',hod:''};
+    brk.form={id:b?b.id:'',at:b?b.at:'',autoPlc:!b,f:f};
+    mOpen('form');
   }
-  function bf(id,label,inner,cls){return '<div class="f'+(cls?' '+cls:'')+'"><label for="bf-'+id+'">'+label+'</label>'+inner+'</div>'}
-  function bfIn(id,type,extra){var v=brk.form.f[id];return '<input id="bf-'+id+'" type="'+type+'" value="'+esc(v===undefined?'':v)+'" autocomplete="off"'+(type==='number'?' step="any" min="0" inputmode="decimal"':'')+(extra||'')+'>'}
-  function brkFormShow(){
-    var box=$('brkFormBox');if(!box)return;
-    if(!brk.form){box.hidden=true;box.innerHTML='';return}
-    var f=brk.form.f,L=brk.cfg.lists;
-    var h='<h3 style="margin:0 0 4px;font-size:18px">'+(brk.form.id?'Edit booking':'Add booking')+'</h3><p class="hint" style="margin:0 0 16px">The figures at the bottom are worked out from the rules in Settings. Only the fields above are stored.</p><form id="brkForm" novalidate autocomplete="off"><div class="bfm">'+
-      bf('project','Project','<select id="bf-project">'+opts(brk.cfg.order,f.project)+'</select>')+
-      bf('priority','Priority No.',bfIn('priority','text'))+
-      bf('client','Client name *',bfIn('client','text'),'wide2')+
-      bf('tower','Tower',bfIn('tower','text',' list="bl-tower"')+'<datalist id="bl-tower">'+L.towers.map(function(t){return '<option value="'+esc(t)+'">'}).join('')+'</datalist>')+
-      bf('unit','Unit no. *',bfIn('unit','text',' placeholder="ALS-0903-A"'))+
-      bf('rate','Rate (₹ per sq ft)',bfIn('rate','number'))+
-      bf('area','Area (sq ft)',bfIn('area','number'))+
-      bf('floorPlc','Floor PLC (₹ per sq ft)',bfIn('floorPlc','number')+'<small class="hint" id="bf-plchint" style="margin:0"></small>')+
-      bf('discount','Discount (₹ per sq ft)',bfIn('discount','number'))+
-      bf('plan','Payment plan',bfIn('plan','text',' list="bl-plan"')+'<datalist id="bl-plan">'+L.plans.map(function(t){return '<option value="'+esc(t)+'">'}).join('')+'</datalist>')+
-      bf('pmt','Paid by customer (%)',bfIn('pmt','number'))+
-      bf('bba','BBA','<select id="bf-bba">'+opts(L.bba,f.bba,'Not set')+(f.bba&&L.bba.indexOf(f.bba)<0?'<option selected>'+esc(f.bba)+'</option>':'')+'</select>')+
-      bf('execDate','Executed date',bfIn('execDate','date'))+
-      bf('notes','Notes',bfIn('notes','text'),'wide')+
-      '</div><div class="bprev" id="bPrev" aria-live="polite"></div><div class="grow" style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button class="go" type="submit" id="bSave" style="padding:0 22px">Save</button><button class="btn" type="button" data-b="cancel">Cancel</button></div></form>';
-    box.hidden=false;box.innerHTML=h;brkPrev();
-    var el=$('bf-client');if(el&&!brk.form.id)el.focus();
-    box.scrollIntoView({block:'nearest'});
+  function mFormView(){
+    var F=brk.form,f=F.f,L=brk.cfg.lists,isNew=!F.id,s=function(id,label,inner,cls){return fld('bf',id,label,inner,cls)},i=function(id,type,extra){return inp('bf',f,id,type,extra)};
+    function names(k,key){return uniqNames(L[k].concat(brk.rows.map(function(r){return r[key]})))}
+    var h='<p class="hint" style="margin:0 0 14px">The figures at the bottom are worked out from the rules in Settings. Only the fields above are stored.'+(isNew&&!canEdit()?' Once saved, only an Admin can change a booking.':'')+'</p><form id="brkForm" novalidate autocomplete="off"><div class="bfm">'+
+      s('project','Project','<select id="bf-project">'+opts(brk.cfg.order,f.project)+'</select>')+
+      s('priority','Priority No.',i('priority','text'))+
+      s('client','Client name *',i('client','text'),'wide2')+
+      s('tower','Tower',i('tower','text',' list="bl-tower"')+dlist('bl-tower',L.towers))+
+      s('unit','Unit no. *',i('unit','text',' placeholder="ALS-0903-A"'))+
+      s('rate','Rate (₹ per sq ft)',i('rate','number'))+
+      s('area','Area (sq ft)',i('area','number'))+
+      s('floorPlc','Floor PLC (₹ per sq ft)',i('floorPlc','number')+'<small class="hint" id="bf-plchint" style="margin:0"></small>')+
+      s('discount','Discount (₹ per sq ft)',i('discount','number'))+
+      s('plan','Payment plan',i('plan','text',' list="bl-plan"')+dlist('bl-plan',L.plans))+
+      s('pmt','Paid by customer (%)',i('pmt','number'))+
+      s('bba','BBA','<select id="bf-bba">'+opts(L.bba,f.bba,'Not set')+(f.bba&&L.bba.indexOf(f.bba)<0?'<option selected>'+esc(f.bba)+'</option>':'')+'</select>')+
+      s('execDate','Executed date',i('execDate','date'))+
+      s('sales','Sales person',i('sales','text',' list="bl-sales"')+dlist('bl-sales',names('sales','sales')))+
+      s('tl','TL',i('tl','text',' list="bl-tl"')+dlist('bl-tl',names('tls','tl')))+
+      s('am','AM',i('am','text',' list="bl-am"')+dlist('bl-am',names('ams','am')))+
+      s('hod','HOD',i('hod','text',' list="bl-hod"')+dlist('bl-hod',names('hods','hod')))+
+      s('notes','Notes',i('notes','text'),'wide')+
+      '</div><div class="bprev" id="bPrev" aria-live="polite"></div><div class="mfoot"><button class="go" type="submit" id="bSave">Save</button><button class="btn" type="button" data-b="cancel">Cancel</button></div></form>';
+    return {title:isNew?'Add booking':'Edit booking',html:h,size:'bm-lg',focused:isNew,after:function(){brkPrev();var el=$('bf-client');if(el&&isNew)el.focus()}};
   }
   function bNum(v){var n=Number(String(v).replace(/,/g,''));return isFinite(n)?n:0}
   function brkFormBooking(){
     var f=brk.form.f;
-    return {project:f.project,rate:bNum(f.rate),area:bNum(f.area),floorPlc:bNum(f.floorPlc),discount:bNum(f.discount),pmtPct:bNum(f.pmt)/100,bba:f.bba};
+    return {project:f.project,tower:f.tower,unit:f.unit,plan:f.plan,rate:bNum(f.rate),area:bNum(f.area),floorPlc:bNum(f.floorPlc),discount:bNum(f.discount),pmtPct:bNum(f.pmt)/100,bba:f.bba};
   }
   function brkPrev(){
     var b=brkFormBooking(),c=bCalc(b),P=bProj(b.project),f=brk.form.f;
     var ph=$('bf-plchint');
     if(ph){var fl=bFloor(f.unit),t=P?bFloorPlc(f.unit,P):null;ph.textContent=brk.form.autoPlc?(fl?(t!==null?'Auto: floor '+fl+' = ₹'+n2(t)+'. Type a number to override.':'Auto: no Floor PLC for floor '+fl+' in Settings.'):'Auto from the floor in the unit no.'):'Typed by you. Clear the box to go back to Auto.'}
-    var items=[['PLC (floor PLC × '+pcs(P?P.plcPct:0)+')',n2(c.plc)],['Slab (rate × '+pcs(P?P.slabPct:0)+')',n2(c.slab)],['Net (slab − discount)',n2(c.net)],['Net brokerage per sq ft',n2(c.netB)],['Brokerage amount',inr(c.brok)],['Incentive',inr(c.inc)],['Payout rule',c.scen?c.scen.name:'Not payable yet'],['Payable now',inr(c.pay)],['Balance',inr(c.bal)],['Due %',pcs(c.due)]];
+    var items=[['PLC (floor PLC × '+pcs(P?P.plcPct:0)+')',n2(c.plc)],['Slab (rate × '+pcs(P?P.slabPct:0)+')',n2(c.slab)],['Net (slab − discount)',n2(c.net)],['Net brokerage per sq ft',n2(c.netB)],['Brokerage amount',inr(c.brok)],['Incentive',inr(c.inc)]];
+    if(c.exs.length)items.push(['Extra components ('+c.exs.map(function(e){return e.name}).join(', ')+')',minr(c.ex)]);
+    items.push(['Payout rule',c.scen?c.scen.name:'Not payable yet'],['Payable now',inr(c.pay)],['Balance',inr(c.bal)],['Due %',pcs(c.due)]);
     $('bPrev').innerHTML=items.map(function(i){return '<div><small>'+i[0]+'</small><b class="num">'+esc(i[1])+'</b></div>'}).join('');
   }
   function brkFormInput(e){
     var id=(e.target.id||'').replace('bf-','');if(!brk.form||!(id in brk.form.f))return;
     var f=brk.form.f;f[id]=e.target.value;
     var P=bProj(f.project);
-    if(id==='project'&&P&&!brk.form.id&&bNum(f.rate)===0){f.rate=String(P.rate);var r=$('bf-rate');if(r)r.value=f.rate}
     if(id==='project'&&P&&!brk.form.id&&brk.form.rateAuto!==false){f.rate=String(P.rate);var r2=$('bf-rate');if(r2)r2.value=f.rate}
     if(id==='rate')brk.form.rateAuto=false;
     if(id==='floorPlc')brk.form.autoPlc=String(f.floorPlc).trim()==='';
@@ -3576,58 +3686,225 @@ var CONFIG = {
   }
   function brkSaveBooking(){
     var f=brk.form.f;
-    if(!f.client.trim()){brkMsg('Client name is required.','err');$('bf-client').focus();return}
-    if(!f.unit.trim()){brkMsg('Unit no. is required.','err');$('bf-unit').focus();return}
-    if(!(bNum(f.area)>0)){brkMsg('Enter the area in sq ft.','err');$('bf-area').focus();return}
-    var pm=bNum(f.pmt);if(pm<0||pm>100){brkMsg('Customer paid % must be between 0 and 100.','err');return}
-    var payload={id:brk.form.id,at:brk.form.at,project:f.project,priority:f.priority,client:f.client,tower:f.tower,unit:f.unit,rate:bNum(f.rate),area:bNum(f.area),floorPlc:bNum(f.floorPlc),discount:bNum(f.discount),plan:f.plan,pmtPct:Math.round(pm*10000)/1000000,bba:f.bba,execDate:f.execDate,notes:f.notes};
-    var btn=$('bSave');btn.disabled=true;brkMsg('Saving…');
+    if(!f.client.trim()){msg('Client name is required.','err');$('bf-client').focus();return}
+    if(!f.unit.trim()){msg('Unit no. is required.','err');$('bf-unit').focus();return}
+    if(!(bNum(f.area)>0)){msg('Enter the area in sq ft.','err');$('bf-area').focus();return}
+    var pm=bNum(f.pmt);if(pm<0||pm>100){msg('Paid by customer % must be between 0 and 100.','err');return}
+    var payload={id:brk.form.id,at:brk.form.at,project:f.project,priority:f.priority,client:f.client,tower:f.tower,unit:f.unit,rate:bNum(f.rate),area:bNum(f.area),floorPlc:bNum(f.floorPlc),discount:bNum(f.discount),plan:f.plan,pmtPct:Math.round(pm*10000)/1000000,bba:f.bba,execDate:f.execDate,notes:f.notes,sales:f.sales,tl:f.tl,am:f.am,hod:f.hod};
+    var btn=$('bSave');btn.disabled=true;msg('Saving…');
     post({action:'brkSaveBooking',token:token,booking:payload},CONFIG.BRK_API_URL).then(function(j){
       btn.disabled=false;
       if(j&&j.error==='unauthorized'){sessionEnded();return}
-      if(j&&j.error==='no_access'){brk.loaded=false;brk.locked=true;brk.form=null;brkRender();return}
-      if(j&&j.error){brkMsg(j.error,'err');return}
+      if(j&&j.error==='no_access'){msg('You do not have the right to do that. Only an Admin can change an existing booking.','err');return}
+      if(j&&j.error){msg(j.error,'err');return}
       var nb=j.booking,i=-1;brk.rows.forEach(function(r,k){if(r.id===nb.id)i=k});
       if(i>-1)brk.rows[i]=nb;else brk.rows.push(nb);
       brk.rows.sort(function(a,b){return a.sr-b.sr});
-      brk.form=null;brkMsg('Booking saved.','ok');brkRender();
-    }).catch(function(e){btn.disabled=false;brkMsg('Could not save. '+(e.message||''),'err')});
+      brk.mdirty=false;mClose(true);brkMsg('Booking saved.','ok');brkRender();
+    }).catch(function(e){btn.disabled=false;msg('Could not save. '+(e.message||''),'err')});
+  }
+  /* ---- make a payment ---- */
+  function brkOpenPay(bookingId,payId){
+    var b=bById(bookingId);if(!b)return;
+    var p=payId?brk.pays.filter(function(x){return x.id===payId})[0]:null,types=brk.cfg.lists.payTypes;
+    brk.pform={bookingId:bookingId,id:p?p.id:'',at:p?p.at:'',f:p?{date:p.date,type:p.type,amount:String(p.amount),ref:p.ref,notes:p.notes}:{date:tod(),type:types[0]||'UPI',amount:'',ref:'',notes:''}};
+    mOpen('pay');
+  }
+  function mPayView(){
+    var P=brk.pform,f=P.f,b=bById(P.bookingId),pm=bPayMap()[P.bookingId]||{total:0,n:0},types=brk.cfg.lists.payTypes.slice();
+    if(f.type&&types.indexOf(f.type)<0)types.push(f.type);
+    var h='<p class="hint" style="margin:0 0 16px"><b>'+esc(b.client)+'</b> · '+esc(b.unit)+' · paid so far '+inr(pm.total)+' ('+pm.n+' payment'+(pm.n===1?'':'s')+')</p><form id="brkPayForm" novalidate autocomplete="off"><div class="bfm">'+
+      fld('pf','date','Date of payment *','<input id="pf-date" type="date" value="'+esc(f.date)+'">')+
+      fld('pf','type','Payment type *','<select id="pf-type">'+opts(types,f.type)+'</select>')+
+      fld('pf','amount','Amount (₹) *','<input id="pf-amount" type="number" step="any" min="0" inputmode="decimal" value="'+esc(f.amount)+'">')+
+      fld('pf','ref','Reference / cheque no. / UTR','<input id="pf-ref" type="text" value="'+esc(f.ref)+'">')+
+      fld('pf','notes','Notes','<input id="pf-notes" type="text" value="'+esc(f.notes)+'">','wide')+
+      '</div><div class="mfoot"><button class="go" type="submit" id="pSave">Save payment</button><button class="btn" type="button" data-b="paycancel">Cancel</button></div></form>';
+    return {title:P.id?'Edit payment':'Make a payment',html:h,size:'bm-md',focused:!P.id,after:function(){var el=$('pf-amount');if(el&&!P.id)el.focus()}};
+  }
+  function brkSavePay(){
+    var pfm=brk.pform,f=pfm.f;
+    if(!f.date){msg('Pick the date of payment.','err');$('pf-date').focus();return}
+    if(!f.type){msg('Choose the payment type.','err');return}
+    if(!(bNum(f.amount)>0)){msg('Enter the amount paid.','err');$('pf-amount').focus();return}
+    var payload={id:pfm.id,at:pfm.at,bookingId:pfm.bookingId,date:f.date,type:f.type,amount:bNum(f.amount),ref:f.ref,notes:f.notes};
+    var btn=$('pSave');btn.disabled=true;msg('Saving payment…');
+    post({action:'brkSavePayment',token:token,payment:payload},CONFIG.BRK_API_URL).then(function(j){
+      btn.disabled=false;
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(j&&j.error==='no_access'){msg('You do not have the right to do that. Editors can add a payment; only an Admin can change one.','err');return}
+      if(j&&j.error){msg(j.error,'err');return}
+      var np=j.payment,i=-1;brk.pays.forEach(function(r,k){if(r.id===np.id)i=k});
+      if(i>-1)brk.pays[i]=np;else brk.pays.push(np);
+      brk.mdirty=false;mClose(true);brkTable();msg('Payment saved.','ok');
+    }).catch(function(e){btn.disabled=false;msg('Could not save. '+(e.message||''),'err')});
+  }
+  function brkDelPay(id){
+    var p=brk.pays.filter(function(x){return x.id===id})[0];if(!p)return;
+    if(!confirm('Delete this payment of '+inr(p.amount)+' ('+p.type+', '+bDate(p.date)+')? This cannot be undone.'))return;
+    msg('Deleting…');
+    post({action:'brkDeletePayment',token:token,id:p.id,at:p.at},CONFIG.BRK_API_URL).then(function(j){
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(j&&j.error==='no_access'){msg('Only an Admin can delete a payment.','err');return}
+      if(j&&j.error){msg(j.error,'err');return}
+      brk.pays=brk.pays.filter(function(x){return x.id!==id});
+      mRender();brkTable();msg('Payment deleted.','ok');
+    }).catch(function(e){msg('Could not delete. '+(e.message||''),'err')});
+  }
+  /* ---- payment history ---- */
+  function histRows(){
+    var h=brk.hist,ids={};
+    if(h.bookingId){ids[h.bookingId]=1}else{brkFiltered().forEach(function(x){ids[x.b.id]=1})}
+    return brk.pays.filter(function(p){return ids[p.bookingId]}).sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0});
+  }
+  function brkOpenHist(bookingId){brk.hist={bookingId:bookingId||''};mOpen('hist')}
+  function mHistView(){
+    var h=brk.hist,b=h.bookingId?bById(h.bookingId):null,rows=histRows(),tot=0;rows.forEach(function(p){tot+=p.amount});
+    var edit=canPayEdit(),all=!b,gt=(all?'grid-template-columns:150px 120px 110px 120px 130px 150px 1fr 150px':'grid-template-columns:110px 120px 130px 160px 1fr 150px')+(edit?' 176px':'');
+    var out='<p class="hint" style="margin:0 0 14px">'+(b?'<b>'+esc(b.client)+'</b> · '+esc(b.unit)+' · ':'All bookings in the current filter · ')+rows.length+' payment'+(rows.length===1?'':'s')+' · total <b>'+inr(tot)+'</b></p><div class="mfoot" style="margin:0 0 14px">'+(b&&canPay()?'<button class="go sm" type="button" data-b="pay" data-id="'+esc(b.id)+'">Make a payment</button>':'')+(vis('dl_excel')&&vis('b_histdl')?'<button class="btn" type="button" data-b="xlshist">Download Excel</button>':'')+'<button class="btn" type="button" data-b="histclose">Close</button></div>';
+    out+='<div class="scrollx" tabindex="0" role="region" aria-label="Payment history, scrolls sideways"><div class="tbl" role="table" aria-label="Payment history" style="min-width:'+(all?1170:920)+'px">';
+    out+='<div class="tr th" role="row" style="'+gt+'">'+(all?'<span>Client</span><span>Unit</span>':'')+'<span>Date</span><span>Type</span><span class="r">Amount</span><span>Reference / cheque no.</span><span>Notes</span><span>Added by</span>'+(edit?'<span></span>':'')+'</div>';
+    out+=rows.length?rows.map(function(p){var pb=bById(p.bookingId)||{client:'',unit:''};return '<div class="tr" role="row" style="'+gt+'">'+(all?'<span class="nmx">'+esc(pb.client)+'</span><span>'+esc(pb.unit)+'</span>':'')+'<span>'+esc(bDate(p.date))+'</span><span>'+esc(p.type)+'</span><span class="r num">'+inr(p.amount)+'</span><span>'+esc(p.ref||'—')+'</span><span class="nmx">'+esc(p.notes||'—')+'</span><span class="nmx">'+esc(p.by||'—')+'</span>'+(edit?'<span class="acts"><button type="button" class="btn sm" data-b="payedit" data-id="'+esc(p.id)+'" data-bid="'+esc(p.bookingId)+'">Edit</button><button type="button" class="btn sm" data-b="paydel" data-id="'+esc(p.id)+'">Delete</button></span>':'')+'</div>'}).join(''):'<div class="empty">No payments recorded yet.</div>';
+    out+='</div></div>';
+    return {title:'Payment history',html:out,size:'bm-xl'};
+  }
+  function brkXlsHist(){
+    var rows=histRows(),all=!brk.hist.bookingId,b=all?null:bById(brk.hist.bookingId);
+    var head=(all?['Client','Unit']:[]).concat(['Date','Type','Amount','Reference / cheque no.','Notes','Added by']);
+    var types=(all?['s','s']:[]).concat(['s','s','m','s','s','s']);
+    var data=rows.map(function(p){var pb=bById(p.bookingId)||{client:'',unit:''};return (all?[pb.client,pb.unit]:[]).concat([bDate(p.date),p.type,p.amount,p.ref,p.notes,p.by])});
+    saveXlsx('Payment_history'+(b?'_'+String(b.unit).replace(/[^A-Za-z0-9]+/g,'_'):''),head,data,types);
+  }
+  /* ---- invoices (many per booking) ---- */
+  function brkOpenInv(bookingId,invId){
+    var b=bById(bookingId);if(!b)return;
+    var v=invId?brk.invs.filter(function(x){return x.id===invId})[0]:null;
+    brk.iform={bookingId:bookingId,id:v?v.id:'',at:v?v.at:'',f:v?{proformaNo:v.proformaNo,proformaDate:v.proformaDate,taxNo:v.taxNo,taxDate:v.taxDate,amount:String(v.amount),notes:v.notes}:{proformaNo:'',proformaDate:'',taxNo:'',taxDate:'',amount:'',notes:''}};
+    mOpen('inv');
+  }
+  function mInvView(){
+    var I=brk.iform,f=I.f,b=bById(I.bookingId),iv=bInvMap()[I.bookingId]||{n:0,total:0};
+    var h='<p class="hint" style="margin:0 0 16px"><b>'+esc(b.client)+'</b> · '+esc(b.unit)+' · '+iv.n+' invoice'+(iv.n===1?'':'s')+' so far · '+inr(iv.total)+' invoiced</p><form id="brkInvForm" novalidate autocomplete="off"><div class="bfm">'+
+      fld('if','proformaNo','Proforma tax invoice no.','<input id="if-proformaNo" type="text" value="'+esc(f.proformaNo)+'">')+
+      fld('if','proformaDate','Proforma date','<input id="if-proformaDate" type="date" value="'+esc(f.proformaDate)+'">')+
+      fld('if','taxNo','Tax invoice no.','<input id="if-taxNo" type="text" value="'+esc(f.taxNo)+'">')+
+      fld('if','taxDate','Tax invoice date','<input id="if-taxDate" type="date" value="'+esc(f.taxDate)+'">')+
+      fld('if','amount','Invoice amount (₹) *','<input id="if-amount" type="number" step="any" min="0" inputmode="decimal" value="'+esc(f.amount)+'">')+
+      fld('if','notes','Notes','<input id="if-notes" type="text" value="'+esc(f.notes)+'">','wide')+
+      '</div><p class="hint" style="margin:12px 0 0">Enter the proforma tax invoice no., the tax invoice no., or both. Raise the proforma first and edit the same invoice later to add the tax invoice no.</p><div class="mfoot"><button class="go" type="submit" id="iSave">Save invoice</button><button class="btn" type="button" data-b="invcancel">Cancel</button></div></form>';
+    return {title:I.id?'Edit invoice':'Add invoice',html:h,size:'bm-md',focused:!I.id,after:function(){var el=$('if-proformaNo');if(el&&!I.id)el.focus()}};
+  }
+  function brkSaveInv(){
+    var I=brk.iform,f=I.f;
+    if(!f.proformaNo.trim()&&!f.taxNo.trim()){msg('Enter the proforma tax invoice no. or the tax invoice no.','err');$('if-proformaNo').focus();return}
+    if(!(bNum(f.amount)>0)){msg('Enter the invoice amount.','err');$('if-amount').focus();return}
+    var payload={id:I.id,at:I.at,bookingId:I.bookingId,proformaNo:f.proformaNo,proformaDate:f.proformaDate,taxNo:f.taxNo,taxDate:f.taxDate,amount:bNum(f.amount),notes:f.notes};
+    var btn=$('iSave');btn.disabled=true;msg('Saving invoice…');
+    post({action:'brkSaveInvoice',token:token,invoice:payload},CONFIG.BRK_API_URL).then(function(j){
+      btn.disabled=false;
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(j&&j.error==='no_access'){msg('You do not have the right to do that. Editors can add an invoice; only an Admin can change one.','err');return}
+      if(j&&j.error){msg(j.error,'err');return}
+      var ni=j.invoice,i=-1;brk.invs.forEach(function(r,k){if(r.id===ni.id)i=k});
+      if(i>-1)brk.invs[i]=ni;else brk.invs.push(ni);
+      brk.mdirty=false;mClose(true);brkTable();msg('Invoice saved.','ok');
+    }).catch(function(e){btn.disabled=false;msg('Could not save. '+(e.message||''),'err')});
+  }
+  function brkDelInv(id){
+    var v=brk.invs.filter(function(x){return x.id===id})[0];if(!v)return;
+    if(!confirm('Delete invoice '+(v.taxNo||v.proformaNo)+' of '+inr(v.amount)+'? This cannot be undone.'))return;
+    msg('Deleting…');
+    post({action:'brkDeleteInvoice',token:token,id:v.id,at:v.at},CONFIG.BRK_API_URL).then(function(j){
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(j&&j.error==='no_access'){msg('Only an Admin can delete an invoice.','err');return}
+      if(j&&j.error){msg(j.error,'err');return}
+      brk.invs=brk.invs.filter(function(x){return x.id!==id});
+      mRender();brkTable();msg('Invoice deleted.','ok');
+    }).catch(function(e){msg('Could not delete. '+(e.message||''),'err')});
+  }
+  function invRows(){
+    var h=brk.ihist,ids={};
+    if(h.bookingId){ids[h.bookingId]=1}else{brkFiltered().forEach(function(x){ids[x.b.id]=1})}
+    return brk.invs.filter(function(i){return ids[i.bookingId]}).sort(function(a,b){var x=(a.taxDate||a.proformaDate)+'|'+a.at,y=(b.taxDate||b.proformaDate)+'|'+b.at;return x<y?1:x>y?-1:0});
+  }
+  function brkOpenInvHist(bookingId){brk.ihist={bookingId:bookingId||''};mOpen('invhist')}
+  function mInvHistView(){
+    var h=brk.ihist,b=h.bookingId?bById(h.bookingId):null,rows=invRows(),tot=0;rows.forEach(function(i){tot+=i.amount});
+    var edit=canInvEdit(),all=!b,gt=(all?'grid-template-columns:150px 120px 150px 110px 150px 110px 130px 1fr 150px':'grid-template-columns:150px 110px 150px 110px 130px 1fr 150px')+(edit?' 176px':'');
+    var out='<p class="hint" style="margin:0 0 14px">'+(b?'<b>'+esc(b.client)+'</b> · '+esc(b.unit)+' · ':'All bookings in the current filter · ')+rows.length+' invoice'+(rows.length===1?'':'s')+' · total <b>'+inr(tot)+'</b></p><div class="mfoot" style="margin:0 0 14px">'+(b&&canInv()?'<button class="go sm" type="button" data-b="inv" data-id="'+esc(b.id)+'">Add invoice</button>':'')+(vis('dl_excel')&&vis('b_invdl')?'<button class="btn" type="button" data-b="xlsinvhist">Download Excel</button>':'')+'<button class="btn" type="button" data-b="mclose">Close</button></div>';
+    out+='<div class="scrollx" tabindex="0" role="region" aria-label="Invoice history, scrolls sideways"><div class="tbl" role="table" aria-label="Invoice history" style="min-width:'+(all?1370:1040)+'px">';
+    out+='<div class="tr th" role="row" style="'+gt+'">'+(all?'<span>Client</span><span>Unit</span>':'')+'<span>Proforma tax invoice</span><span>Proforma date</span><span>Tax invoice</span><span>Tax invoice date</span><span class="r">Amount</span><span>Notes</span><span>Added by</span>'+(edit?'<span></span>':'')+'</div>';
+    out+=rows.length?rows.map(function(i){var pb=bById(i.bookingId)||{client:'',unit:''};return '<div class="tr" role="row" style="'+gt+'">'+(all?'<span class="nmx">'+esc(pb.client)+'</span><span>'+esc(pb.unit)+'</span>':'')+'<span>'+esc(i.proformaNo||'—')+'</span><span>'+esc(bDate(i.proformaDate)||'—')+'</span><span>'+esc(i.taxNo||'—')+'</span><span>'+esc(bDate(i.taxDate)||'—')+'</span><span class="r num">'+inr(i.amount)+'</span><span class="nmx">'+esc(i.notes||'—')+'</span><span class="nmx">'+esc(i.by||'—')+'</span>'+(edit?'<span class="acts"><button type="button" class="btn sm" data-b="invedit" data-id="'+esc(i.id)+'" data-bid="'+esc(i.bookingId)+'">Edit</button><button type="button" class="btn sm" data-b="invdel" data-id="'+esc(i.id)+'">Delete</button></span>':'')+'</div>'}).join(''):'<div class="empty">No invoices recorded yet.</div>';
+    out+='</div></div>';
+    return {title:'Invoice history',html:out,size:'bm-xl'};
+  }
+  function brkXlsInvHist(){
+    var rows=invRows(),all=!brk.ihist.bookingId,b=all?null:bById(brk.ihist.bookingId);
+    var head=(all?['Client','Unit']:[]).concat(['Proforma tax invoice','Proforma date','Tax invoice','Tax invoice date','Amount','Notes','Added by']);
+    var types=(all?['s','s']:[]).concat(['s','s','s','s','m','s','s']);
+    var data=rows.map(function(i){var pb=bById(i.bookingId)||{client:'',unit:''};return (all?[pb.client,pb.unit]:[]).concat([i.proformaNo,bDate(i.proformaDate),i.taxNo,bDate(i.taxDate),i.amount,i.notes,i.by])});
+    saveXlsx('Invoice_history'+(b?'_'+String(b.unit).replace(/[^A-Za-z0-9]+/g,'_'):''),head,data,types);
   }
   /* ---- criteria (the notes of the Excel file, always in step with Settings) ---- */
+  function exText(e){
+    var v=e.kind==='sqft'?'₹'+n2(e.value)+' per sq ft':e.kind==='rate'?pcs(e.value)+' of the rate (per sq ft)':e.kind==='unit'?'₹'+n2(e.value)+' per unit':pcs(e.value)+' of the brokerage amount';
+    var w=[];
+    if(e.towers&&e.towers.length)w.push('tower '+e.towers.join(' / '));
+    if(e.plans&&e.plans.length)w.push('payment plan '+e.plans.join(' / '));
+    if(e.floorFrom||e.floorTo)w.push('floors '+(e.floorFrom||1)+' to '+(e.floorTo||'top'));
+    return (e.effect==='deduct'?'Deducts ':'Adds ')+v+(w.length?', only for '+w.join(', '):', for every booking')+'. Paid together with the '+({brokerage:'brokerage',plc:'PLC',incentive:'incentive'}[e.follow]||'brokerage')+' %.';
+  }
   function brkCriteriaHtml(name,P){
     var h='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 10px;font-size:18px">'+esc(name)+'</h3><ul class="clist">';
     h+='<li><b>Rate</b> ₹'+n2(P.rate)+' per sq ft. <b>Slab</b> = rate × '+pcs(P.slabPct)+' = ₹'+n2(P.rate*P.slabPct)+' per sq ft.</li>';
     h+='<li><b>Floor PLC brokerage</b> = floor PLC × '+pcs(P.plcPct)+'. The floor is the last two digits of the number in the unit no. (ALS-0903-A is floor 3).</li>';
     h+='<li><b>Net brokerage per sq ft</b> = slab + PLC − discount. <b>Brokerage amount</b> = net brokerage × area.</li>';
     h+='<li><b>Incentive</b> ₹'+n2(P.incentive)+' per unit.</li>';
+    (P.extras||[]).forEach(function(e){h+='<li><b>'+esc(e.name)+'</b>: '+esc(exText(e))+'</li>'});
     P.scenarios.slice().sort(function(a,b){return a.minPmt-b.minPmt}).forEach(function(s){h+='<li><b>'+esc(s.name)+'</b>: customer has paid '+pcs(s.minPmt)+' or more'+(s.bba?' and BBA is '+esc(s.bba):'')+' → '+pcs(s.brokerage)+' of brokerage + '+pcs(s.plc)+' of PLC + '+pcs(s.incentive)+' of incentive is payable. The best rule that fits is used.</li>'});
     h+='<li><b>Due %</b> = the share of brokerage still not payable (100% minus the brokerage % of the rule that fits).</li></ul>';
     h+='<h4 style="margin:14px 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Floor PLC (₹ per sq ft)</h4><div class="scrollx"><div class="tbl" style="min-width:360px"><div class="tr th" style="grid-template-columns:1fr 1fr 1fr 1fr"><span>From floor</span><span>To floor</span><span class="r">Floor PLC</span><span class="r">PLC brokerage</span></div>'+P.floors.map(function(f){return '<div class="tr" style="grid-template-columns:1fr 1fr 1fr 1fr"><span>'+f.from+'</span><span>'+f.to+'</span><span class="r num">'+n2(f.plc)+'</span><span class="r num">'+n2(f.plc*P.plcPct)+'</span></div>'}).join('')+'</div></div></div>';
     return h;
   }
   function brkCriteriaTab(){return brk.cfg.order.map(function(n){return brkCriteriaHtml(n,brk.cfg.projects[n])}).join('')||'<div class="empty">No projects yet.</div>'}
-  /* ---- settings ---- */
+  /* ---- settings: everything can be added and removed ---- */
   function sIn(path,val,o){o=o||{};return '<input data-s="'+path+'"'+(o.pc?' data-pc="1"':'')+(o.txt?'':' data-n="1" type="number" step="any" min="0" inputmode="decimal"')+' value="'+esc(o.pc?Math.round(val*10000)/100:val)+'"'+(o.label?' aria-label="'+esc(o.label)+'"':'')+(o.list?' list="'+o.list+'"':'')+'>'}
+  function sSel(path,val,pairs){return '<select data-s="'+path+'">'+pairs.map(function(p){return '<option value="'+p[0]+'"'+(p[0]===val?' selected':'')+'>'+p[1]+'</option>'}).join('')+'</select>'}
+  var KINDS=[['sqft','₹ per sq ft'],['rate','% of rate'],['unit','₹ per unit'],['pct','% of brokerage amount']];
   function brkSettingsHtml(){
     var C=brk.dcfg;if(!C.order.length)return '<div class="empty">No projects.</div>';
     if(!brk.sp||!C.projects[brk.sp])brk.sp=C.order[0];
     var P=C.projects[brk.sp],used=brk.rows.some(function(b){return b.project===brk.sp});
     var h='<div class="panel glass" style="padding:22px"><div class="etools"><div class="f"><label for="sp">Project</label><select id="sp">'+opts(C.order,brk.sp)+'</select></div><div class="field"><label for="spNew">New project name</label><input id="spNew" type="text" autocomplete="off"></div><div class="grow"><button class="btn" type="button" data-b="addp">Add project</button><button class="btn danger" type="button" data-b="delp"'+(used||C.order.length<2?' disabled title="'+(used?'This project has bookings':'Keep at least one project')+'"':'')+'>Remove this project</button></div></div>';
-    h+='<div class="fgrid2" style="margin-top:6px"><div class="f"><label>Rate (₹ per sq ft)</label>'+sIn('rate',P.rate,{label:'Rate'})+'</div><div class="f"><label>Slab (% of rate)</label>'+sIn('slabPct',P.slabPct,{pc:1,label:'Slab percent'})+'</div><div class="f"><label>PLC brokerage (% of floor PLC)</label>'+sIn('plcPct',P.plcPct,{pc:1,label:'PLC brokerage percent'})+'</div><div class="f"><label>Incentive (₹ per unit)</label>'+sIn('incentive',P.incentive,{label:'Incentive'})+'</div></div></div>';
+    h+='<div class="fgrid2" style="margin-top:6px"><div class="f"><label>Rate (₹ per sq ft)</label>'+sIn('rate',P.rate,{label:'Rate'})+'</div><div class="f"><label>Slab (% of rate)</label>'+sIn('slabPct',P.slabPct,{pc:1,label:'Slab percent'})+'</div><div class="f"><label>PLC brokerage (% of floor PLC)</label>'+sIn('plcPct',P.plcPct,{pc:1,label:'PLC brokerage percent'})+'</div><div class="f"><label>Incentive (₹ per unit)</label>'+sIn('incentive',P.incentive,{label:'Incentive'})+'</div></div><p class="hint" style="margin:8px 0 0">Set Slab, PLC or Incentive to 0 to switch that part off.</p></div>';
     h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Floor PLC by floor</h3><p class="hint" style="margin:0 0 12px">Used to fill Floor PLC automatically from the unit no. You can still type another figure on a booking.</p><div class="scrollx"><div class="tbl" style="min-width:420px"><div class="tr th" style="grid-template-columns:1fr 1fr 1fr 60px"><span>From floor</span><span>To floor</span><span>₹ per sq ft</span><span></span></div>'+
       P.floors.map(function(f,i){return '<div class="tr" style="grid-template-columns:1fr 1fr 1fr 60px">'+sIn('floors.'+i+'.from',f.from,{label:'From floor'})+sIn('floors.'+i+'.to',f.to,{label:'To floor'})+sIn('floors.'+i+'.plc',f.plc,{label:'Floor PLC'})+'<button type="button" class="btn sm" data-b="delf" data-i="'+i+'" aria-label="Remove row">✕</button></div>'}).join('')+'</div></div><p style="margin:12px 0 0"><button class="btn" type="button" data-b="addf">Add floor row</button></p></div>';
+    h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Extra calculator components</h3><p class="hint" style="margin:0 0 14px">Add any extra amount to the calculation: a bonus per sq ft, a % of the rate, a flat amount per unit, or a deduction such as TDS. Limit it to a tower, a payment plan or a floor range if you want. Each one is paid together with the brokerage, PLC or incentive %.</p>'+
+      (P.extras.length?P.extras.map(function(e,i){var pc=e.kind==='rate'||e.kind==='pct';return '<div class="bxc"><div class="bfm">'+
+        '<div class="f wide2"><label>Name</label>'+sIn('ex.'+i+'.name',e.name,{txt:1,label:'Component name'})+'</div>'+
+        '<div class="f"><label>Type</label>'+sSel('ex.'+i+'.kind',e.kind,KINDS)+'</div>'+
+        '<div class="f"><label>'+(pc?'Value (%)':'Value (₹)')+'</label>'+sIn('ex.'+i+'.value',e.value,{pc:pc,label:'Component value'})+'</div>'+
+        '<div class="f"><label>Effect</label>'+sSel('ex.'+i+'.effect',e.effect,[['add','Add'],['deduct','Deduct']])+'</div>'+
+        '<div class="f"><label>Paid with</label>'+sSel('ex.'+i+'.follow',e.follow,[['brokerage','Brokerage %'],['plc','PLC %'],['incentive','Incentive %']])+'</div>'+
+        '<div class="f"><label>Only these towers (comma, blank = all)</label>'+sIn('ex.'+i+'.towers',(e.towers||[]).join(', '),{txt:1,list:'sl-tower',label:'Towers'})+'</div>'+
+        '<div class="f"><label>Only these payment plans (comma, blank = all)</label>'+sIn('ex.'+i+'.plans',(e.plans||[]).join(', '),{txt:1,label:'Payment plans'})+'</div>'+
+        '<div class="f"><label>From floor (0 = any)</label>'+sIn('ex.'+i+'.floorFrom',e.floorFrom||0,{label:'From floor'})+'</div>'+
+        '<div class="f"><label>To floor (0 = any)</label>'+sIn('ex.'+i+'.floorTo',e.floorTo||0,{label:'To floor'})+'</div>'+
+        '</div><p class="hint" style="margin:10px 0 0">'+esc(exText(e))+'</p><p style="margin:8px 0 0"><button type="button" class="btn sm" data-b="delx" data-i="'+i+'">Remove this component</button></p></div>'}).join(''):'<div class="empty" style="margin-bottom:12px">No extra components yet.</div>')+
+      '<datalist id="sl-tower">'+C.lists.towers.map(function(v){return '<option value="'+esc(v)+'">'}).join('')+'</datalist><p style="margin:12px 0 0"><button class="btn" type="button" data-b="addx">Add extra component</button></p></div>';
     h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Payout rules (due scenarios)</h3><p class="hint" style="margin:0 0 12px">A rule applies when the customer has paid at least the minimum % and the BBA status matches. If several fit, the one with the highest minimum % is used. If none fit, nothing is payable yet.</p><div class="scrollx"><div class="tbl" style="min-width:860px"><div class="tr th" style="grid-template-columns:1.6fr .8fr 1fr .9fr .8fr .9fr 60px"><span>Name</span><span>Customer paid ≥ %</span><span>BBA status</span><span>Brokerage %</span><span>PLC %</span><span>Incentive %</span><span></span></div>'+
       P.scenarios.map(function(s,i){return '<div class="tr" style="grid-template-columns:1.6fr .8fr 1fr .9fr .8fr .9fr 60px">'+sIn('sc.'+i+'.name',s.name,{txt:1,label:'Rule name'})+sIn('sc.'+i+'.minPmt',s.minPmt,{pc:1,label:'Minimum customer payment percent'})+sIn('sc.'+i+'.bba',s.bba,{txt:1,list:'sl-bba',label:'BBA status needed'})+sIn('sc.'+i+'.brokerage',s.brokerage,{pc:1,label:'Brokerage percent payable'})+sIn('sc.'+i+'.plc',s.plc,{pc:1,label:'PLC percent payable'})+sIn('sc.'+i+'.incentive',s.incentive,{pc:1,label:'Incentive percent payable'})+'<button type="button" class="btn sm" data-b="dels" data-i="'+i+'" aria-label="Remove rule">✕</button></div>'}).join('')+'</div></div><datalist id="sl-bba">'+C.lists.bba.map(function(v){return '<option value="'+esc(v)+'">'}).join('')+'</datalist><p style="margin:12px 0 0"><button class="btn" type="button" data-b="adds">Add payout rule</button></p></div>';
-    h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Choice lists (for all projects)</h3><p class="hint" style="margin:0 0 12px">One value per line. These fill the dropdowns on the booking form.</p><div class="fgrid2">'+[['plans','Payment plans'],['bba','BBA statuses'],['towers','Towers']].map(function(l){return '<div class="f"><label for="sl-'+l[0]+'">'+l[1]+'</label><textarea id="sl-'+l[0]+'" data-l="'+l[0]+'" rows="9" spellcheck="false">'+esc(C.lists[l[0]].join('\n'))+'</textarea></div>'}).join('')+'</div></div>';
+    h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Choice lists (for all projects)</h3><p class="hint" style="margin:0 0 12px">One value per line. Add or delete lines freely. These fill the dropdowns on the booking and payment forms.</p><div class="fgrid2">'+[['plans','Payment plans'],['bba','BBA statuses'],['towers','Towers'],['payTypes','Payment types'],['sales','Sales persons'],['tls','TL'],['ams','AM'],['hods','HOD']].map(function(l){return '<div class="f"><label for="sl-'+l[0]+'">'+l[1]+'</label><textarea id="sl-'+l[0]+'" data-l="'+l[0]+'" rows="8" spellcheck="false">'+esc(C.lists[l[0]].join('\n'))+'</textarea></div>'}).join('')+'</div></div>';
     h+='<div class="panel glass" style="padding:22px;margin-top:14px"><h3 style="margin:0 0 4px;font-size:17px">Criteria as it stands</h3><div id="sCrit">'+brkCriteriaHtml(brk.sp,P).replace(/<div class="panel glass"[^>]*>/,'<div>')+'</div></div>';
     h+='<div class="grow" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px"><button class="go" type="button" id="sSave" style="padding:0 22px" data-b="saveCfg">Save settings</button><button class="btn" type="button" data-b="discard">Discard changes</button><span class="hint" id="sDirty" style="margin:0;align-self:center">'+(brk.dirty?'Unsaved changes':'')+'</span></div>';
     return h;
   }
   function brkSetPath(P,path,raw,el){
-    var parts=path.split('.'),o=P,i;
-    for(i=0;i<parts.length-1;i++){o=o[parts[i]==='sc'?'scenarios':parts[i]];if(!o)return}
+    var parts=path.split('.'),o=P,i,map={sc:'scenarios',ex:'extras'};
+    for(i=0;i<parts.length-1;i++){o=o[map[parts[i]]||parts[i]];if(!o)return}
     var k=parts[parts.length-1];
-    if(k==='name'||k==='bba'){o[k]=raw;return}
+    if(k==='name'||k==='bba'||k==='kind'||k==='effect'||k==='follow'){o[k]=raw;return}
+    if(k==='towers'||k==='plans'){o[k]=String(raw).split(/[,;]/).map(function(v){return v.trim()}).filter(String);return}
     var n=Number(raw);if(!isFinite(n))n=0;
     if(el.getAttribute('data-pc'))n=Math.round(n*10000)/1000000;
     o[k]=n;
@@ -3636,33 +3913,46 @@ var CONFIG = {
     var t=e.target,C=brk.dcfg;if(!C)return;
     if(t.getAttribute('data-l')){C.lists[t.getAttribute('data-l')]=t.value.split(/\r?\n/).map(function(v){return v.trim()}).filter(String);brk.dirty=true;$('sDirty').textContent='Unsaved changes';return}
     var path=t.getAttribute('data-s');if(!path)return;
-    brkSetPath(C.projects[brk.sp],path,t.value,t);brk.dirty=true;$('sDirty').textContent='Unsaved changes';
-    var c=$('sCrit');if(c)c.innerHTML=brkCriteriaHtml(brk.sp,C.projects[brk.sp]).replace(/<div class="panel glass"[^>]*>/,'<div>');
+    var P=C.projects[brk.sp];
+    brkSetPath(P,path,t.value,t);brk.dirty=true;
+    if(/\.kind$/.test(path)&&e.type==='change'){var i=+path.split('.')[1];P.extras[i].value=0;brkRender();return}
+    if(t.tagName==='SELECT'&&/^ex\./.test(path)&&e.type==='change'){brkRender();return}
+    $('sDirty').textContent='Unsaved changes';
+    var xm=/^ex\.(\d+)\./.exec(path);
+    if(xm){var cards=document.querySelectorAll('#brkBody .bxc'),cd=cards[+xm[1]],hh=cd&&cd.querySelector('.hint');if(hh)hh.textContent=exText(P.extras[+xm[1]])}
+    var c=$('sCrit');if(c)c.innerHTML=brkCriteriaHtml(brk.sp,P).replace(/<div class="panel glass"[^>]*>/,'<div>');
   }
   function brkSaveCfg(){
     var btn=$('sSave');btn.disabled=true;brkMsg('Saving settings…');
     post({action:'brkSaveCfg',token:token,cfg:brk.dcfg,rev:brk.rev},CONFIG.BRK_API_URL).then(function(j){
       btn.disabled=false;
       if(j&&j.error==='unauthorized'){sessionEnded();return}
-      if(j&&j.error==='no_access'){brk.loaded=false;brk.locked=true;brkRender();return}
+      if(j&&j.error==='no_access'){brkMsg('Only an Admin can change Settings.','err');return}
       if(j&&j.error){brkMsg(j.error,'err');return}
-      brk.cfg=j.cfg;brk.dcfg=JSON.parse(JSON.stringify(j.cfg));brk.rev=j.rev;brk.dirty=false;brkMsg('Settings saved. Every figure now follows the new rules.','ok');brkRender();
+      brk.cfg=brkNorm(j.cfg);brk.dcfg=JSON.parse(JSON.stringify(brk.cfg));brk.rev=j.rev;brk.dirty=false;brkMsg('Settings saved. Every figure now follows the new rules.','ok');brkRender();
     }).catch(function(e){btn.disabled=false;brkMsg('Could not save. '+(e.message||''),'err')});
   }
-  /* ---- clicks and inputs ---- */
-  $('brkTabs').addEventListener('click',function(e){
-    var b=e.target.closest('button[data-bt]');if(!b)return;
-    if(brk.tab==='settings'&&brk.dirty&&!confirm('You have unsaved settings. Leave this tab and lose them?'))return;
-    if(brk.tab==='settings'&&brk.dirty){brk.dcfg=JSON.parse(JSON.stringify(brk.cfg));brk.dirty=false}
-    brk.tab=b.getAttribute('data-bt');brkMsg('');brkRender();
-  });
-  $('brkBody').addEventListener('click',function(e){
-    var b=e.target.closest('[data-b]');if(!b)return;var a=b.getAttribute('data-b'),C=brk.dcfg;
-    if(a==='retry'||a==='refresh'){brk.form=null;brkLoad();return}
+  /* ---- clicks and inputs (the page and the popup window share the same handlers) ---- */
+  function brkClick(e){
+    var b=e.target.closest('[data-b]');if(!b)return;var a=b.getAttribute('data-b'),C=brk.dcfg,id=b.getAttribute('data-id'),bid=b.getAttribute('data-bid');
+    if(a==='retry'||a==='refresh'){brk.mstack=[];brk.form=brk.pform=brk.hist=brk.iform=brk.ihist=null;mRender();brkLoad();return}
     if(a==='add'){brkOpenForm('');return}
-    if(a==='edit'){brkOpenForm(b.getAttribute('data-id'));return}
-    if(a==='cancel'){brk.form=null;brkMsg('');brkFormShow();return}
-    if(a==='xls'){brkXls();return}
+    if(a==='edit'){brkOpenForm(id);return}
+    if(a==='pay'){brkOpenPay(id,'');return}
+    if(a==='payedit'){brkOpenPay(bid,id);return}
+    if(a==='paydel'){brkDelPay(id);return}
+    if(a==='hist'){brkOpenHist(id);return}
+    if(a==='histall'){brkOpenHist('');return}
+    if(a==='inv'){brkOpenInv(id,'');return}
+    if(a==='invedit'){brkOpenInv(bid,id);return}
+    if(a==='invdel'){brkDelInv(id);return}
+    if(a==='invhist'){brkOpenInvHist(id);return}
+    if(a==='invhistall'){brkOpenInvHist('');return}
+    if(a==='cancel'||a==='paycancel'||a==='invcancel'||a==='histclose'||a==='mclose'){mClose();return}
+    if(a==='xls'){brkXls('bd');return}
+    if(a==='xlsbp'){brkXls('bp');return}
+    if(a==='xlshist'){brkXlsHist();return}
+    if(a==='xlsinvhist'){brkXlsInvHist();return}
     if(a==='saveCfg'){brkSaveCfg();return}
     if(a==='discard'){brk.dcfg=JSON.parse(JSON.stringify(brk.cfg));brk.dirty=false;brkMsg('');brkRender();return}
     if(!C)return;var P=C.projects[brk.sp];
@@ -3670,30 +3960,65 @@ var CONFIG = {
     else if(a==='delf')P.floors.splice(+b.getAttribute('data-i'),1);
     else if(a==='adds')P.scenarios.push({name:'New rule',minPmt:0.1,bba:C.lists.bba[0]||'',brokerage:0.5,plc:0.5,incentive:1});
     else if(a==='dels')P.scenarios.splice(+b.getAttribute('data-i'),1);
+    else if(a==='addx')P.extras.push({name:'New component',kind:'sqft',value:0,effect:'add',follow:'brokerage',towers:[],plans:[],floorFrom:0,floorTo:0});
+    else if(a==='delx')P.extras.splice(+b.getAttribute('data-i'),1);
     else if(a==='addp'){
       var nm=($('spNew').value||'').trim();
       if(!nm){brkMsg('Type the new project name first.','err');return}
       if(C.order.some(function(x){return x.toLowerCase()===nm.toLowerCase()})){brkMsg('That project already exists.','err');return}
-      C.projects[nm]={rate:P.rate,slabPct:P.slabPct,plcPct:P.plcPct,incentive:P.incentive,floors:JSON.parse(JSON.stringify(P.floors)),scenarios:JSON.parse(JSON.stringify(P.scenarios))};C.order.push(nm);brk.sp=nm;
+      C.projects[nm]={rate:P.rate,slabPct:P.slabPct,plcPct:P.plcPct,incentive:P.incentive,floors:JSON.parse(JSON.stringify(P.floors)),scenarios:JSON.parse(JSON.stringify(P.scenarios)),extras:JSON.parse(JSON.stringify(P.extras))};C.order.push(nm);brk.sp=nm;
     }
     else if(a==='delp'){if(!confirm('Remove project '+brk.sp+' and its rules?'))return;delete C.projects[brk.sp];C.order.splice(C.order.indexOf(brk.sp),1);brk.sp=C.order[0]}
     else return;
     brk.dirty=true;brkMsg('');brkRender();
-  });
-  $('brkBody').addEventListener('input',function(e){
+  }
+  function popField(e,formSel,prefix,st){
+    if(!e.target.closest(formSel))return false;
+    var k=(e.target.id||'').replace(prefix+'-','');
+    if(st&&k in st.f){st.f[k]=e.target.value;brk.mdirty=true}
+    return true;
+  }
+  function brkInput(e){
     var id=e.target.id;
     if(id==='bq'){brk.q=e.target.value;brkTable();return}
-    if(e.target.closest('#brkForm')){brkFormInput(e);return}
-    if(brk.tab==='settings')brkSettingsInput(e);
-  });
-  $('brkBody').addEventListener('change',function(e){
+    if(e.target.closest('#brkForm')){brk.mdirty=true;brkFormInput(e);return}
+    if(popField(e,'#brkPayForm','pf',brk.pform))return;
+    if(popField(e,'#brkInvForm','if',brk.iform))return;
+    if(brk.tab==='settings'&&!e.target.closest('#bmodal'))brkSettingsInput(e);
+  }
+  function brkChange(e){
     var id=e.target.id,m={bop:'op',bfp:'fp',bft:'ft',bfb:'fb',bfs:'fs'};
     if(id==='bop'){brk.op=e.target.value;brkRender();return}
     if(m[id]){brk[m[id]]=e.target.value;brkTable();return}
     if(id==='sp'){brk.sp=e.target.value;brkRender();return}
-    if(e.target.closest('#brkForm'))brkFormInput(e);
+    if(e.target.closest('#brkForm')){brk.mdirty=true;brkFormInput(e);return}
+    if(popField(e,'#brkPayForm','pf',brk.pform))return;
+    if(popField(e,'#brkInvForm','if',brk.iform))return;
+    if(brk.tab==='settings'&&e.target.tagName==='SELECT'&&e.target.getAttribute('data-s'))brkSettingsInput(e);
+  }
+  function brkSubmit(e){
+    e.preventDefault();
+    if(e.target.id==='brkPayForm')brkSavePay();else if(e.target.id==='brkInvForm')brkSaveInv();else if(e.target.id==='brkForm')brkSaveBooking();
+  }
+  ['brkBody','bmodal'].forEach(function(n){var el=$(n);el.addEventListener('click',brkClick);el.addEventListener('input',brkInput);el.addEventListener('change',brkChange);el.addEventListener('submit',brkSubmit)});
+  $('brkTabs').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-bt]');if(!b)return;
+    if(brk.tab==='settings'&&brk.dirty&&!confirm('You have unsaved settings. Leave this tab and lose them?'))return;
+    if(brk.tab==='settings'&&brk.dirty){brk.dcfg=JSON.parse(JSON.stringify(brk.cfg));brk.dirty=false}
+    brk.tab=b.getAttribute('data-bt');brk.mstack=[];brk.form=brk.pform=brk.hist=brk.iform=brk.ihist=null;mRender();brkMsg('');brkRender();
   });
-  $('brkBody').addEventListener('submit',function(e){e.preventDefault();brkSaveBooking()});
+  /* Esc closes the popup; Tab stays inside it */
+  document.addEventListener('keydown',function(e){
+    if(!mTop())return;
+    if(e.key==='Escape'){e.preventDefault();mClose();return}
+    if(e.key==='Tab'){
+      var f=[].slice.call($('bmbox').querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')).filter(function(x){return x.offsetParent!==null});
+      if(!f.length)return;
+      var first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+    }
+  });
 
   if(CONFIG.AUTO_REFRESH_SECONDS>0)setInterval(function(){if(token&&(view==='report'||view==='home'))load()},CONFIG.AUTO_REFRESH_SECONDS*1000);
   load();
