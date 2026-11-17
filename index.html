@@ -582,6 +582,7 @@ details.cbk[open]>.cbs{border-bottom:1px solid var(--line)}
 .cres div:first-child{border-top:0}
 .cres .ct{background:var(--sel-bg);font-weight:700;font-size:16px}
 .cact{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.cs-c{text-align:center}
 .cptw{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px}
 .cpt{border-collapse:collapse;width:100%;font-size:12px}
 .cpt th{position:sticky;top:0;background:var(--card,var(--field));text-align:left;padding:6px;font-size:11px;color:var(--muted);z-index:1;white-space:nowrap}
@@ -2881,7 +2882,7 @@ var CONFIG = {
       s.add.forEach(function(c){var a=c.r*e.size;addT+=a;P('row',c.l,'',inr(c.r)+' / '+au,a)});
       var ag=addT*s.ag/100;P('row','GST@'+s.ag+'%','','',ag);addT+=ag;P('tot','TOTAL ADDITIONAL CHARGES','','',addT);
       P('tot','TOTAL COST (I+II)','','',I+addT);
-      var othT=0;P('sec','OTHER CHARGES (III) PAYABLE AT THE TIME OF REGISTRY');
+      var othT=0;P('sec','OTHER CHARGES (III)');
       s.oth.forEach(function(c){var a=c.r*e.size;othT+=a;P('row',c.l,'',inr(c.r)+' / '+au,a)});
       var og=othT*s.og/100;P('row','GST@'+s.og+'%','','',og);othT+=og;P('tot','TOTAL OTHER CHARGES','','',othT);
       var tot=I+addT+othT;P('tot','TOTAL COST (I+II+III)','','',tot);
@@ -3026,7 +3027,7 @@ var CONFIG = {
     function sheetHtml(){
       return '<div class="csh">'+build().map(function(l){
         if(l.t==='title')return '<div class="cs-t">'+esc(l.a)+'</div>';
-        if(l.t==='sec')return '<div class="cs-s">'+esc(l.a)+'</div>';
+        if(l.t==='sec')return '<div class="cs-s'+(/^PAYMENT PLAN/.test(l.a)?' cs-c':'')+'">'+esc(l.a)+'</div>';
         if(l.t==='note')return '<div class="cs-n">'+esc(l.a)+'</div>';
         return '<div class="cs-r cs-'+l.t+'"><span>'+esc(l.a)+'</span><span>'+esc(l.b)+'</span><span class="r">'+esc(l.c)+'</span><span class="r num">'+cellD(l.d)+'</span></div>';
       }).join('')+'</div>';
@@ -3108,26 +3109,74 @@ var CONFIG = {
     function stamp(){return new Date().toISOString().slice(0,10)}
     function save(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
     function flat(l){return [l.a,l.b,l.c,typeof l.d==='number'?Math.round(l.d):l.d]}
-    function dlXls(){
-      var L=build(),rows=L.slice(1).map(function(l){return l.t==='sec'?[l.a,'','','']:flat(l)});
-      save(new Blob([xlsx([L[0].a,'','',''],rows,['s','s','s','m'])],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),'Costing_'+(V.client||'sheet').replace(/[^A-Za-z0-9_-]+/g,'-')+'_'+stamp()+'.xlsx');
-    }
-    function pdf(L){ // plain PDF with the built-in Helvetica font (no library); long sheets continue on the next page
-      var clean=function(s){return String(s).replace(/₹/g,'Rs.').replace(/×/g,'x').replace(/Ç/g,'C').replace(/[^\x20-\x7e]/g,'?').replace(/([\\()])/g,'\\$1')};
-      var pages=[],c='',y=800;
-      var T=function(f,sz,x,t){c+='BT /'+f+' '+sz+' Tf '+x+' '+y+' Td ('+clean(t)+') Tj ET\n'};
-      var np=function(){if(c)pages.push(c);c='';y=800};
+    function calcXlsx(L){
+      var ns='http://schemas.openxmlformats.org/',hd='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+      var rows='',merges=[],r=0,lw=[56,22,24,20];
       L.forEach(function(l){
-        if(l.t==='note'){var ws=l.a.split(' '),ln='',ch=[];ws.forEach(function(w){if((ln+' '+w).length>105){ch.push(ln);ln=w}else ln=ln?ln+' '+w:w});if(ln)ch.push(ln);ch.forEach(function(x){if(y-12<50)np();T('F1',8.5,50,x);y-=12});y-=6;return}
-        var gap=l.t==='sec'?24:l.t==='title'?30:17;if(y-gap<50)np();
-        var f=(l.t==='row')?'F1':'F2',sz=l.t==='title'?15:9.5;
-        if(l.t==='sec'){y-=6;T('F2',10,50,l.a)}
-        else if(l.t==='title')T('F2',15,50,l.a);
-        else{T(f,sz,50,l.a);if(l.b!=='')T('F1',9,250,l.b);if(l.c!=='')T('F1',9,360,l.c);
-          if(l.d!==''){var t=typeof l.d==='number'?inr(l.d):l.d;T(f,sz,Math.max(400,545-clean(t).length*5.4),t)}}
-        y-=gap;
+        r++;var cs='',ht='';
+        var c=function(i,st,v,num){var ref='ABCD'.charAt(i)+r;return num?'<c r="'+ref+'" s="'+st+'"><v>'+v+'</v></c>':'<c r="'+ref+'" s="'+st+'" t="inlineStr"><is><t xml:space="preserve">'+xe(v)+'</t></is></c>'};
+        var span=function(st,v){cs=c(0,st,v)+c(1,st,'')+c(2,st,'')+c(3,st,'');merges.push('A'+r+':D'+r)};
+        if(l.t==='title'){span(2,l.a);ht=' ht="26" customHeight="1"'}
+        else if(l.t==='sec'){span(/^PAYMENT PLAN/.test(l.a)?13:3,l.a);ht=' ht="20" customHeight="1"'}
+        else if(l.t==='note'){span(11,l.a);ht=' ht="'+(Math.ceil(String(l.a).length/105)*13+4)+'" customHeight="1"'}
+        else{
+          var hd2=l.t==='hdr',tot=l.t==='tot',d=l.d,num=typeof d==='number'&&isFinite(d);
+          cs=c(0,hd2?9:tot?8:4,l.a)+c(1,hd2?9:tot?8:4,l.b)+c(2,hd2?10:tot?12:5,l.c)+(num?c(3,tot?7:6,Math.round(d),1):c(3,hd2?10:tot?12:5,d===''?'':d));
+          var m=Math.max(Math.ceil(String(l.a).length/58),1);if(m>1)ht=' ht="'+(m*15+2)+'" customHeight="1"';
+        }
+        rows+='<row r="'+r+'"'+ht+'>'+cs+'</row>';
+      });
+      var sh=hd+'<worksheet xmlns="'+ns+'spreadsheetml/2006/main"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><sheetViews><sheetView showGridLines="0" workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="18" customHeight="1"/><cols>'+lw.map(function(w,i){return '<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>'}).join('')+'</cols><sheetData>'+rows+'</sheetData><mergeCells count="'+merges.length+'">'+merges.map(function(m){return '<mergeCell ref="'+m+'"/>'}).join('')+'</mergeCells><pageMargins left="0.5" right="0.5" top="0.6" bottom="0.6" header="0.3" footer="0.3"/><pageSetup paperSize="9" orientation="portrait" fitToWidth="1" fitToHeight="0"/></worksheet>';
+      var bd='<border><left style="thin"><color rgb="FFBFBFBF"/></left><right style="thin"><color rgb="FFBFBFBF"/></right><top style="thin"><color rgb="FFBFBFBF"/></top><bottom style="thin"><color rgb="FFBFBFBF"/></bottom><diagonal/></border>';
+      var inrf='[&gt;=10000000]&quot;Rs. &quot;##\\,##\\,##\\,##0;[&gt;=100000]&quot;Rs. &quot;##\\,##\\,##0;&quot;Rs. &quot;##,##0';
+      var xf=function(f,fl,b,al,nf){return '<xf numFmtId="'+(nf||0)+'" fontId="'+f+'" fillId="'+fl+'" borderId="'+b+'" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"'+(nf?' applyNumberFormat="1"':'')+'><alignment '+al+'/></xf>'};
+      var L2='horizontal="left" vertical="center" wrapText="1"',R2='horizontal="right" vertical="center" wrapText="1"',C2='horizontal="center" vertical="center"';
+      var st=hd+'<styleSheet xmlns="'+ns+'spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="'+inrf+'"/></numFmts><fonts count="4"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="10"/><name val="Arial"/></font><font><b/><sz val="14"/><color rgb="FFFFFFFF"/><name val="Arial"/></font><font><sz val="9"/><name val="Arial"/></font></fonts><fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1F4D3A"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE3EDE6"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF2F2F2"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border>'+bd+'</borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="14">'
+        +xf(0,0,0,L2)+xf(1,0,1,L2)+xf(2,2,1,C2)+xf(1,3,1,'horizontal="left" vertical="center"')+xf(0,0,1,L2)+xf(0,0,1,R2)+xf(0,0,1,R2,164)+xf(1,4,1,R2,164)+xf(1,4,1,L2)+xf(1,3,1,L2)+xf(1,3,1,R2)+xf(3,0,0,'horizontal="left" vertical="top" wrapText="1"')+xf(1,4,1,R2)+xf(1,3,1,'horizontal="center" vertical="center"')
+        +'</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+      return zip([
+        ['[Content_Types].xml',hd+'<Types xmlns="'+ns+'package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+        ['_rels/.rels',hd+'<Relationships xmlns="'+ns+'package/2006/relationships"><Relationship Id="rId1" Type="'+ns+'officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+        ['xl/workbook.xml',hd+'<workbook xmlns="'+ns+'spreadsheetml/2006/main" xmlns:r="'+ns+'officeDocument/2006/relationships"><sheets><sheet name="Costing sheet" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+        ['xl/_rels/workbook.xml.rels',hd+'<Relationships xmlns="'+ns+'package/2006/relationships"><Relationship Id="rId1" Type="'+ns+'officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="'+ns+'officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+        ['xl/styles.xml',st],['xl/worksheets/sheet1.xml',sh]
+      ]);
+    }
+    function dlXls(){
+      save(new Blob([calcXlsx(build())],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),'Costing_'+(V.client||'sheet').replace(/[^A-Za-z0-9_-]+/g,'-')+'_'+stamp()+'.xlsx');
+    }
+    function pdf(L){ // PDF with the built-in Helvetica font (no library): real columns, wrapped text, shaded headings; long sheets continue on the next page
+      var WR=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584],WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584];
+      var cl=function(s){return String(s).replace(/₹/g,'Rs.').replace(/×/g,'x').replace(/Ç/g,'C').replace(/[^\x20-\x7e]/g,'?')};
+      var ex=function(s){return s.replace(/([\\()])/g,'\\$1')};
+      var tw=function(s,b,sz){var W=b?WB:WR,n=0;for(var i=0;i<s.length;i++)n+=W[s.charCodeAt(i)-32]||556;return n*sz/1000};
+      var wrap=function(s,b,sz,mw){s=cl(s);var out=[],ln='';
+        s.split(' ').forEach(function(w){
+          while(tw(w,b,sz)>mw&&w.length>1){var k=w.length-1;while(k>1&&tw(w.slice(0,k),b,sz)>mw)k--;if(ln){out.push(ln);ln=''}out.push(w.slice(0,k));w=w.slice(k)}
+          var t=ln?ln+' '+w:w;if(ln&&tw(t,b,sz)>mw){out.push(ln);ln=w}else ln=t});
+        if(ln||!out.length)out.push(ln);return out};
+      var X0=40,X1=555,CX=[40,280,365,465,555],pages=[],c='',y=800,LH=11.5;
+      var np=function(){if(c)pages.push(c);c='';y=800};
+      var rect=function(x,yy,w,hh,f,s,st){if(f)c+=f+' rg '+x+' '+yy+' '+w+' '+hh+' re f\n';if(st)c+='0.72 0.72 0.72 RG 0.6 w '+x+' '+yy+' '+w+' '+hh+' re S\n'};
+      var T=function(fn,sz,x,yy,t,col){c+='BT /'+fn+' '+sz+' Tf '+(col||'0 g')+' '+x.toFixed(1)+' '+yy.toFixed(1)+' Td ('+ex(t)+') Tj ET\n'};
+      L.forEach(function(l){
+        var th,i;
+        if(l.t==='title'){th=30;if(y-th<50)np();rect(X0,y-th,X1-X0,th,'0.12 0.30 0.23',0,0);var ts=cl(l.a);T('F2',14,(X0+X1)/2-tw(ts,1,14)/2,y-20,ts,'1 g');y-=th+6;return}
+        if(l.t==='sec'){th=21;if(y-th<50)np();rect(X0,y-th,X1-X0,th,'0.89 0.93 0.90',0,0);c+='0.72 0.72 0.72 RG 0.6 w '+X0+' '+(y-th)+' '+(X1-X0)+' '+th+' re S\n';var ss=cl(l.a),cn=/^PAYMENT PLAN/.test(ss);T('F2',10,cn?(X0+X1)/2-tw(ss,1,10)/2:X0+6,y-14.5,ss);y-=th;return}
+        if(l.t==='note'){var nl=wrap(l.a,0,8.5,X1-X0-4);th=nl.length*11+8;if(y-th<50)np();nl.forEach(function(x,k){T('F1',8.5,X0+2,y-12-k*11,x)});y-=th;return}
+        var b=l.t!=='row',cells=[wrap(l.a,b,9.5,CX[1]-CX[0]-12),wrap(l.b===''?'':String(l.b),0,9,CX[2]-CX[1]-10),wrap(l.c===''?'':String(l.c),b&&l.t==='hdr',9,CX[3]-CX[2]-10),null];
+        var dt=l.d===''?'':(typeof l.d==='number'?inr(l.d):String(l.d));cells[3]=wrap(dt,b,9.5,CX[4]-CX[3]-10);
+        var n=Math.max(cells[0].length,cells[1].length,cells[2].length,cells[3].length);th=n*LH+8;if(y-th<50)np();
+        rect(X0,y-th,X1-X0,th,l.t==='hdr'?'0.89 0.93 0.90':l.t==='tot'?'0.95 0.95 0.95':0,0,1);
+        for(i=1;i<4;i++)c+='0.72 0.72 0.72 RG 0.6 w '+CX[i]+' '+(y-th)+' m '+CX[i]+' '+y+' l S\n';
+        cells[0].forEach(function(x,k){T(b?'F2':'F1',9.5,CX[0]+6,y-13-k*LH,x)});
+        cells[1].forEach(function(x,k){T(l.t==='hdr'?'F2':'F1',9,CX[1]+5,y-13-k*LH,x)});
+        cells[2].forEach(function(x,k){var f=(b&&l.t==='hdr')?1:0;T(f?'F2':'F1',9,CX[3]-5-tw(x,f,9),y-13-k*LH,x)});
+        cells[3].forEach(function(x,k){T(b?'F2':'F1',9.5,CX[4]-6-tw(x,b,9.5),y-13-k*LH,x)});
+        y-=th;
       });
       np();
+      pages=pages.map(function(p,k){return p+'BT /F1 8 Tf 0.4 g '+(297-tw('Page '+(k+1)+' of '+pages.length,0,8)/2).toFixed(1)+' 28 Td (Page '+(k+1)+' of '+pages.length+') Tj ET\n'});
       var o=['<< /Type /Catalog /Pages 2 0 R >>','','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>'],kids=[];
       pages.forEach(function(p){var n=o.length+1;kids.push(n+' 0 R');
         o.push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+(n+1)+' 0 R >>');
@@ -3140,10 +3189,10 @@ var CONFIG = {
     }
     function dlPdf(){save(pdf(build()),'Costing_'+(V.client||'sheet').replace(/[^A-Za-z0-9_-]+/g,'-')+'_'+stamp()+'.pdf')}
     function prt(){
-      var L=build(),h='<!doctype html><meta charset="utf-8"><title>'+esc(L[0].a)+'</title><style>body{font:12px Arial,sans-serif;margin:24px;color:#000}table{border-collapse:collapse;width:100%;margin-bottom:14px}td{border:1px solid #000;padding:5px 8px}td:nth-child(n+3){text-align:right}.t td{text-align:center;font-weight:700;font-size:15px}.s td{text-align:center;font-weight:700;background:#eee}.tot td,.hdr td{font-weight:700}tr{page-break-inside:avoid}.n td{border:0;font-size:10px;text-align:left!important}</style><table>';
+      var L=build(),h='<!doctype html><meta charset="utf-8"><title>'+esc(L[0].a)+'</title><style>@page{size:A4;margin:12mm}*{box-sizing:border-box}body{font:11px/1.35 Arial,sans-serif;margin:0;color:#000}table{border-collapse:collapse;width:100%;table-layout:fixed}td{font-size:11px;border:1px solid #bbb;padding:5px 7px;vertical-align:middle;overflow-wrap:anywhere}td:nth-child(3),td:nth-child(4){text-align:right}.t td{text-align:center!important;font-weight:700;font-size:15px;background:#1f4d3a;color:#fff;border-color:#1f4d3a;padding:8px}.s td{text-align:left!important;font-weight:700;font-size:12px;background:#e3ede6}.s.c td{text-align:center!important}.hdr td{font-weight:700;background:#e3ede6}.tot td{font-weight:700;background:#f2f2f2}tr{page-break-inside:avoid}.n td{border:0;font-size:9px;text-align:left!important;padding:6px 2px 0}table,td{-webkit-print-color-adjust:exact;print-color-adjust:exact}</style><table><colgroup><col style="width:44%"><col style="width:17%"><col style="width:20%"><col style="width:19%"></colgroup>';
       L.forEach(function(l){
         if(l.t==='title')h+='<tr class="t"><td colspan="4">'+esc(l.a)+'</td></tr>';
-        else if(l.t==='sec')h+='<tr class="s"><td colspan="4">'+esc(l.a)+'</td></tr>';
+        else if(l.t==='sec')h+='<tr class="s'+(/^PAYMENT PLAN/.test(l.a)?' c':'')+'"><td colspan="4">'+esc(l.a)+'</td></tr>';
         else if(l.t==='note')h+='<tr class="n"><td colspan="4">'+esc(l.a)+'</td></tr>';
         else h+='<tr class="'+l.t+'"><td>'+esc(l.a)+'</td><td>'+esc(l.b)+'</td><td>'+esc(l.c)+'</td><td>'+(typeof l.d==='number'?inr(l.d):esc(l.d))+'</td></tr>';
       });
