@@ -1010,6 +1010,72 @@ button.usr:hover{background:var(--row)}
 .hgreet h2 em{font-style:normal;color:var(--accent-2)}
 @media (max-width:899px){.topbar{position:sticky;top:8px;margin:8px 8px 0;border-bottom:1px solid var(--line);background:var(--card);border-radius:28px;flex-wrap:wrap}.topbar .tsearch{flex:1 1 180px}.tbk{display:none}}
 @media (max-width:560px){.topbar .usr .ut2{display:none}#tbRefresh{display:none}.topbar .tb-ic{width:40px;height:40px}.topbar .tsearch{height:40px;flex:1 1 120px}}
+/* chat */
+.chat{display:flex;flex-direction:column;gap:12px;padding-top:8px}
+.chshell{display:grid;grid-template-columns:minmax(260px,330px) 1fr;height:calc(100vh - 150px);min-height:460px;border:1px solid var(--line);border-radius:var(--r-card,20px);background:var(--card);overflow:hidden;box-shadow:var(--shadow-card)}
+.chlist{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--card)}
+.chhead{padding:12px;border-bottom:1px solid var(--line)}.chhead .usearch{width:100%}
+.chtabs{display:flex;gap:6px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.chtabs .btn{flex:1;min-height:40px}.chtabs .btn[aria-pressed="true"]{background:var(--pill-on-bg);color:var(--pill-on-fg);border-color:transparent}
+.chitems{flex:1;overflow:auto;padding:6px}
+.chi{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border-radius:14px;border:1px solid transparent;background:transparent;color:var(--fg);font:inherit;text-align:left;cursor:pointer;min-height:56px}
+.chi:hover{background:var(--row)}.chi[aria-current="true"]{background:var(--sel-bg);border-color:var(--sel-line)}
+.chat .av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--rail);color:#E3C58F;font-weight:700}
+.chat .t{display:flex;flex-direction:column;min-width:0;flex:1;line-height:1.3}
+.chat .t b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat .t small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chi .r{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none}.chi time{font-size:11px;color:var(--muted)}
+.chnone{padding:18px;color:var(--muted);font-size:13px;text-align:center}
+.chthread{display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--bg)}
+.chtop{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--card)}
+.chback{display:none}
+.chlive{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);display:flex;align-items:center;gap:6px}
+.chlive::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.chlive.on{color:var(--c-confirmed,#2FA37A)}
+.chmsgs{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
+.chday{display:flex;justify-content:center;margin:10px 0 4px}.chday span{font-size:11px;font-weight:600;color:var(--muted);background:var(--card);border:1px solid var(--line);padding:3px 12px;border-radius:99px}
+.chmore{display:flex;justify-content:center;margin-bottom:6px}
+.cm{max-width:min(520px,82%);padding:8px 12px 6px;border-radius:16px;display:flex;flex-direction:column;gap:3px;word-break:break-word}
+.cm.them{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:5px}
+.cm.mine{align-self:flex-end;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);border-bottom-right-radius:5px}
+.cm.mine a{color:inherit}.cm a{text-decoration:underline}
+.cm.pend{opacity:.7}.cm.fail{outline:2px solid var(--bad)}
+.cmn{font-size:11px;font-weight:700;color:var(--accent-2)}
+.cmb{font-size:14px;line-height:1.45}
+.cmt{font-size:10.5px;opacity:.75;align-self:flex-end}
+.cmt .lnk{background:none;border:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+.cmf{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:rgba(127,127,127,.14)}
+.cmf .fn{display:flex;flex-direction:column;min-width:0;flex:1}.cmf .fn b{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cmf .fn small{font-size:11px;opacity:.8}
+.cmf .btn{min-height:34px;color:var(--fg)}
+.chfile{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 12px;padding:8px 12px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:13px}
+.chfile[hidden]{display:none}.chfile .warn{color:var(--bad)}
+.chform{display:flex;align-items:flex-end;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--card)}
+.chform textarea{flex:1;resize:none;max-height:140px;min-height:44px;padding:11px 14px;border-radius:22px;border:1px solid var(--line-strong);background:var(--field);color:var(--fg);font:14px/1.4 var(--font-body)}
+.chform textarea:focus{outline:2px solid var(--accent);outline-offset:0}
+.chform .tb-ic{width:44px;height:44px;border-radius:50%;padding:0;flex:none}
+.chform .go{height:44px;border-radius:22px;padding:0 20px;flex:none}
+.chempty{margin:auto;text-align:center;padding:24px;color:var(--muted);max-width:360px}.chempty h3{margin:0 0 6px;color:var(--fg)}
+.nbadge{position:absolute;top:6px;right:10px;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--bad);color:#fff;font:700 10px/18px var(--font-body);text-align:center;font-style:normal}
+.nbadge[hidden]{display:none}
+#navLinks .btn{position:relative}
+.topbar #tbBell{position:relative}
+.topbar #tbBell .badge{position:absolute;top:-3px;right:-3px;margin:0;min-width:18px;height:18px;padding:0 5px;font:700 10px/18px var(--font-body);border:2px solid var(--card);background:var(--bad);color:#fff}
+.topbar #tbBell[hidden]{display:none}
+.bellm .ai .badge{flex:none}
+.acgrid{display:flex;flex-direction:column;gap:14px;max-width:640px}
+.acbox{border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;max-height:420px;overflow:auto}
+.acbox legend{padding:0 6px;font-weight:600}
+.acbox .chk{display:flex;align-items:center;gap:10px;padding:6px 0;min-height:36px}
+.acact{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;position:sticky;bottom:-12px;background:var(--bg);padding:8px 0}
+.aclist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-width:640px}
+.aclist li{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.aclist li span{margin-left:auto;display:flex;gap:6px}
+@media (max-width:899px){
+  .chshell{grid-template-columns:1fr;height:calc(100vh - 330px);height:calc(100dvh - 330px);min-height:380px}
+  .chshell .chthread{display:none}.chshell[data-open="1"] .chthread{display:flex}.chshell[data-open="1"] .chlist{display:none}
+  .chback{display:inline-flex}
+}
+@media (prefers-reduced-motion:reduce){.chmsgs{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -1031,6 +1097,7 @@ button.usr:hover{background:var(--row)}
           <button class="btn" type="button" data-v="emp" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6M17 5a3.5 3.5 0 010 7M22 20c0-3-1.5-4.8-4-5.6"/></svg><span>Employees</span></button>
           <button class="btn" type="button" data-v="dsr" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h7"/></svg><span>DSR</span></button>
           <button class="btn" type="button" data-v="brk" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2M3 13h18"/></svg><span>Brokerage</span></button>
+          <button class="btn" type="button" data-v="chat" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><span>Chat</span><i class="nbadge" id="navChatN" hidden></i></button>
           <button class="btn" type="button" data-v="admin" aria-pressed="false" hidden><svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><span>Admin</span></button>
         </span>
         <button class="btn" id="refreshBtn" type="button">Refresh</button>
@@ -1041,7 +1108,7 @@ button.usr:hover{background:var(--row)}
     </div>
   </nav>
 
-  <div class="topbar" id="topbar" hidden><label class="tsearch tb-report" for="gq"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="gq" type="search" placeholder="Search anything: customer, project, unit, status, team, request no" autocomplete="off" aria-keyshortcuts="/ Control+K Meta+K"><kbd class="tbk" id="tbKey" aria-hidden="true">/</kbd></label><span class="tbsp"></span><button class="btn tb-report tb-ic" id="fShow" type="button" aria-pressed="true" aria-label="Filters" title="Filters"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4"/></svg><span class="sr">Filters</span><span class="badge num" id="fShowN" hidden></span></button><button class="btn tb-report tb-ic" id="calcBtn" type="button" aria-label="Property cost calculator" title="Property cost calculator" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 7h7"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></button><button class="btn tb-ic" id="tbTheme" type="button" aria-label="Choose a colour theme" title="Colour theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.6 1.7-1.6H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><path d="M7.5 11h.01M10 7.5h.01M14 7.5h.01"/></svg></button><button class="btn tb-ic" id="tbRefresh" type="button" aria-label="Refresh data" title="Refresh data"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button><button type="button" class="usr" id="usrChip" aria-haspopup="menu" aria-expanded="false" aria-controls="acm"><span class="av" id="usrAv" aria-hidden="true"></span><span class="ut2"><b id="usrName"></b><small id="usrRole"></small></span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="acm" id="acm" role="menu" aria-label="Accounts" hidden></div></div>
+  <div class="topbar" id="topbar" hidden><label class="tsearch tb-report" for="gq"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="gq" type="search" placeholder="Search anything: customer, project, unit, status, team, request no" autocomplete="off" aria-keyshortcuts="/ Control+K Meta+K"><kbd class="tbk" id="tbKey" aria-hidden="true">/</kbd></label><span class="tbsp"></span><button class="btn tb-report tb-ic" id="fShow" type="button" aria-pressed="true" aria-label="Filters" title="Filters"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4"/></svg><span class="sr">Filters</span><span class="badge num" id="fShowN" hidden></span></button><button class="btn tb-report tb-ic" id="calcBtn" type="button" aria-label="Property cost calculator" title="Property cost calculator" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 7h7"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></button><button class="btn tb-ic" id="tbTheme" type="button" aria-label="Choose a colour theme" title="Colour theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.6 1.7-1.6H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><path d="M7.5 11h.01M10 7.5h.01M14 7.5h.01"/></svg></button><button class="btn tb-ic" id="tbRefresh" type="button" aria-label="Refresh data" title="Refresh data"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button><button class="btn tb-ic" id="tbBell" type="button" aria-label="Messages" title="Messages" aria-haspopup="menu" aria-expanded="false" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><i class="badge" id="bellN" hidden>0</i></button><button type="button" class="usr" id="usrChip" aria-haspopup="menu" aria-expanded="false" aria-controls="acm"><span class="av" id="usrAv" aria-hidden="true"></span><span class="ut2"><b id="usrName"></b><small id="usrRole"></small></span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="acm" id="acm" role="menu" aria-label="Accounts" hidden></div><div class="acm bellm" id="bellm" role="menu" aria-label="Messages" hidden></div></div>
 
   <section class="login" id="login" hidden aria-labelledby="loginTitle">
     <div class="card glass raised">
@@ -1248,6 +1315,17 @@ button.usr:hover{background:var(--row)}
     <div id="brkBody"></div>
   </section>
 
+  <section class="chat" id="chat" hidden aria-labelledby="chTitle">
+    <h1 class="sr" id="chTitle">Chat</h1>
+    <div class="chshell" id="chShell" data-open="0">
+      <aside class="chlist" aria-label="Conversations">
+        <div class="chhead"><label class="usearch"><span class="sr">Search people or groups</span><input id="chq" type="search" placeholder="Search people or groups" autocomplete="off"></label></div>
+        <div class="chtabs" id="chTabs" hidden><button type="button" class="btn" data-ct="mine" aria-pressed="true">My chats</button><button type="button" class="btn" data-ct="all" aria-pressed="false">All chats (Admin)</button></div>
+        <div class="chitems" id="chItems" role="list"></div>
+      </aside>
+      <div class="chthread" id="chThread"></div>
+    </div>
+  </section>
   <section class="adm" id="admin" hidden aria-labelledby="admTitle">
     <h1 class="sr" id="admTitle">Who can see what</h1>
     <div class="banner" id="admMsg" role="status" hidden></div>
@@ -1257,6 +1335,7 @@ button.usr:hover{background:var(--row)}
         <button type="button" class="an" data-ap="people" aria-current="page">People</button>
         <button type="button" class="an" data-ap="templates">Access templates</button>
         <button type="button" class="an" data-ap="summary">Summary</button>
+        <button type="button" class="an" data-ap="chat">Chat</button>
       </nav>
       <div class="admbody">
         <div class="admpeople" id="admPeople">
@@ -1269,6 +1348,7 @@ button.usr:hover{background:var(--row)}
         </div>
         <div class="admpage" id="admTpl" hidden></div>
         <div class="admpage" id="admSum" hidden></div>
+        <div class="admpage" id="admChat" hidden></div>
       </div>
     </div>
   </section>
@@ -1415,6 +1495,7 @@ var CONFIG = {
   function accRemove(e){accSet(accGet().filter(function(x){return x.e.toLowerCase()!==String(e||'').toLowerCase()}))}
   function saveSession(t,em){
     if(t&&em)accUpsert(em,t);else if(userEmail)accRemove(userEmail);
+    if(t!==token&&typeof chatReset==='function'&&typeof CH!=='undefined'&&CH)chatReset();
     token=t;userEmail=em;
     try{
       if(t){sessionStorage.setItem('bsb-token',t);sessionStorage.setItem('bsb-email',em)}
@@ -1450,13 +1531,14 @@ var CONFIG = {
     if(teamLevels().length>0&&vis('team'))t.push(['team','Team report']);
     return t;
   }
-  function viewOK(v){return (v==='home'&&vis('p_home'))||(v==='report'&&vis('p_sales')&&salesTabs().length>0)||(v==='emp'&&vis('p_emp')&&empOK())||(v==='admin'&&isAdmin)||(v==='dsr'&&dsrOK())||(v==='brk'&&brkOK())}
+  function viewOK(v){return (v==='home'&&vis('p_home'))||(v==='report'&&vis('p_sales')&&salesTabs().length>0)||(v==='emp'&&vis('p_emp')&&empOK())||(v==='admin'&&isAdmin)||(v==='dsr'&&dsrOK())||(v==='brk'&&brkOK())||(v==='chat'&&chatOK())}
   function applyView(){
-    if(!viewOK(view))view=['home','report','emp','dsr','brk','admin'].filter(viewOK)[0]||'home';
-    $('home').hidden=view!=='home';$('app').hidden=view!=='report';$('emp').hidden=view!=='emp';$('dsr').hidden=view!=='dsr';$('brk').hidden=view!=='brk';$('admin').hidden=view!=='admin';
+    if(!viewOK(view))view=['home','report','emp','dsr','brk','chat','admin'].filter(viewOK)[0]||'home';
+    $('home').hidden=view!=='home';$('app').hidden=view!=='report';$('emp').hidden=view!=='emp';$('dsr').hidden=view!=='dsr';$('brk').hidden=view!=='brk';$('chat').hidden=view!=='chat';$('admin').hidden=view!=='admin';
     document.querySelectorAll('#navLinks [data-v]').forEach(function(b){var v=b.getAttribute('data-v');b.hidden=!viewOK(v);b.setAttribute('aria-pressed',v===view)});
     homeAnim(view==='home');document.body.setAttribute('data-view',view);
     if(view==='report'&&data.length)renderBig();
+    if(view==='chat')chatOpenView();
   }
   function showApp(){
     $('login').hidden=true;$('navApp').hidden=false;
@@ -2150,7 +2232,7 @@ var CONFIG = {
   function gr(k){return mode==='demo'||hid.indexOf(k)>-1}
   /* Overall Revenue is separate from Net Revenue: the main tick (g_comm) plus the tick of each place */
   function cm(k){return gr('g_comm')&&vis(k)}
-  function start(){setBanner();buildFilters();applySections();render();greet()}
+  function start(){setBanner();buildFilters();applySections();render();greet();chatBoot()}
 
   /* ---------- events ---------- */
   $('fgrid').addEventListener('change',function(e){
@@ -2406,6 +2488,7 @@ var CONFIG = {
       ['Bookings tab',[['search','Booking search box'],['t_date','Date'],['t_project','Project (when several are picked)'],['t_customer','Customer'],['t_unit','Unit'],['t_developer','Developer'],['t_status','Status'],['t_area','Area'],['t_bsp','Total BSP'],['t_gross','Gross value'],['t_revenue','Net Revenue'],['t_comm','Overall Revenue']]],
       ['Customer details (opens from a customer name)',[['cust_open','Open customer details from a name'],['cust_contact','Contact (mobile, email)'],['cust_sum','Summary numbers'],['cust_books','List of all bookings'],['cust_all','Every column of each booking'],['cust_pay','Payment details (needs the Payment Details sheet)']]],
       ['Property cost calculator (off unless you tick them)',[['g_calc','Calculator button (calculator icon next to Filters)'],['g_calc_dl','PDF, Excel and Print buttons in the calculator'],['g_calc_plc','Can change the PLC rates inside the calculator (the PLC discount can always be typed) (plot projects such as Dharohar Estate)'],['g_calc_edit','Can edit the calculator (floors, property types, rates, charges, payment plans)']]],
+      ['Chat (off unless you tick it)',[['g_chat','Chat in the side menu and the bell in the top bar: message other users and share files. The Admin chooses who each person may chat with under Admin, then Chat.']]],
       ['Payment progress (off unless you tick it)',[['g_pay_prog','Paid, Due, progress and payment stage (customer details page and Bookings list). Needs the Payment Details sheet.']]],
       ['Team report tab',[['tm_total','Total Sales column'],['tm_s_conf','Status column: Confirmed'],['tm_s_notc','Status column: Not confirmed'],['tm_s_resale','Status column: Resale'],['tm_s_canc','Status column: Cancelled'],['tm_s_dup','Status column: Duplicate DSR'],['tm_s_na','Status column: Status not available'],['tm_s_other','Status column: any other status'],['tm_details','Open booking details when a number is clicked']]],
       '@team',
@@ -2628,9 +2711,9 @@ var CONFIG = {
   }
   function showAdmPage(p){
     adm.page=p;
-    $('admPeople').hidden=p!=='people';$('admTpl').hidden=p!=='templates';$('admSum').hidden=p!=='summary';
+    $('admPeople').hidden=p!=='people';$('admTpl').hidden=p!=='templates';$('admSum').hidden=p!=='summary';$('admChat').hidden=p!=='chat';
     document.querySelectorAll('.admnav .an').forEach(function(b){if(b.getAttribute('data-ap')===p)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
-    if(p==='templates')renderTpl();if(p==='summary')renderAdmSum();
+    if(p==='templates')renderTpl();if(p==='summary')renderAdmSum();if(p==='chat')acLoad();
   }
   function renderEditor(){
     var d=adm.draft,box=$('admEditor');
@@ -4640,8 +4723,384 @@ var CONFIG = {
   });
 
 
+  /* ================= Chat: live messages through Firebase, files through Google Drive ================= */
+  var CH={on:false,busy:false,err:'',ini:null,idt:'',rt:'',uid:'',me:null,admin:false,contacts:[],groups:[],store:{},reads:{},cur:'',es:[],live:false,hyd:false,out:{},file:null,sending:false,oldMore:true,aud:null,audit:false,aChats:null,aGroups:{},aMsgs:[],aCur:'',tm:0,q:''};
+  var CH_TITLE=document.title;
+  function chatOK(){return mode==='live'&&gr('g_chat')}
+  function chPair(a,b){return a<b?a+'__'+b:b+'__'+a}
+  function chKey(){var t=Date.now().toString(36);while(t.length<9)t='0'+t;return t+'-'+Math.random().toString(36).slice(2,6)}
+  function chMembers(chat){
+    if(chat.indexOf('g_')===0){var g=CH.groups.filter(function(x){return x.id===chat})[0];return g?g.members.map(function(m){return m.uid}):[]}
+    return chat.split('__');
+  }
+  function chConvs(){
+    var L=[];
+    CH.contacts.forEach(function(c){L.push({id:chPair(CH.uid,c.uid),name:c.name||c.email,sub:c.email,group:false})});
+    CH.groups.forEach(function(g){L.push({id:g.id,name:g.name,sub:g.members.length+' people',group:true})});
+    var msgs=chMsgs();
+    L.forEach(function(c){var m=msgs[c.id]||[];c.last=m[m.length-1]||null;c.un=chUnread(c.id,m)});
+    L.sort(function(a,b){var x=a.last?a.last.ts:0,y=b.last?b.last.ts:0;return y-x||(a.name<b.name?-1:1)});
+    return L;
+  }
+  function chMsgs(){
+    var by={};Object.keys(CH.store).sort().forEach(function(k){var m=CH.store[k];(by[m.chat]=by[m.chat]||[]).push(m)});return by;
+  }
+  function chUnread(chat,list){
+    var r=CH.reads[chat]||0,n=0;(list||chMsgs()[chat]||[]).forEach(function(m){if(m.from!==CH.uid&&Number(m.ts)>r)n++});return n;
+  }
+  function chTotal(){var by=chMsgs(),n=0;chConvs().forEach(function(c){n+=c.un});return n}
+  function chFmt(ts){var d=new Date(Number(ts));return d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
+  function chDay(ts){var d=new Date(Number(ts)),n=new Date(),y=new Date(Date.now()-864e5);
+    if(d.toDateString()===n.toDateString())return 'Today';if(d.toDateString()===y.toDateString())return 'Yesterday';
+    return d.toLocaleDateString('en-US',{weekday:'short',day:'numeric',month:'short',year:d.getFullYear()===n.getFullYear()?undefined:'numeric'})}
+  function chSize(n){n=Number(n)||0;return n>1048576?(n/1048576).toFixed(1)+' MB':n>1024?Math.round(n/1024)+' KB':n+' B'}
+  function chLink(s){return esc(s).replace(/(https?:\/\/[^\s<]+)/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+u+'</a>'}).replace(/\n/g,'<br>')}
+
+  /* ---- connection ---- */
+  function chatBoot(){
+    if(!chatOK()){if(CH.on||CH.es.length)chatReset();CH.err='';chUi();return}
+    if(CH.on||CH.busy)return;
+    CH.busy=true;CH.err='';
+    post({action:'chat',op:'init',token:token}).then(function(j){
+      if(j&&j.error==='unauthorized'){CH.busy=false;return}
+      if(!j||j.error)throw new Error((j&&j.error)||'Chat could not start.');
+      CH.ini=j;CH.uid=j.uid;CH.me=j.me;CH.admin=!!j.admin;CH.contacts=j.contacts||[];CH.groups=j.groups||[];
+      return chSignIn(j.token);
+    }).then(function(){CH.busy=false;CH.on=true;chStart();chUi()}).catch(function(e){CH.busy=false;CH.err=e.message||'Chat could not start.';chUi()});
+  }
+  function chSignIn(ct){
+    return fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key='+encodeURIComponent(CH.ini.key),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:ct,returnSecureToken:true})})
+      .then(function(r){return r.json()}).then(function(j){
+        if(!j.idToken)throw new Error('Chat sign-in failed'+(j.error&&j.error.message?' ('+j.error.message+')':'')+'. Check that Firebase Authentication is switched on.');
+        CH.idt=j.idToken;CH.rt=j.refreshToken;chSchedule(Number(j.expiresIn)||3600);
+      });
+  }
+  function chSchedule(sec){clearTimeout(CH.tm);CH.tm=setTimeout(chRefresh,Math.max(60,sec-300)*1000)}
+  function chRefresh(){
+    if(!CH.ini)return;
+    fetch('https://securetoken.googleapis.com/v1/token?key='+encodeURIComponent(CH.ini.key),{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(CH.rt)})
+      .then(function(r){return r.json()}).then(function(j){
+        if(!j.id_token)throw 0;CH.idt=j.id_token;CH.rt=j.refresh_token||CH.rt;chSchedule(Number(j.expires_in)||3600);chStart();
+      }).catch(function(){
+        post({action:'chat',op:'init',token:token}).then(function(j){if(!j||j.error)throw 0;CH.ini=j;return chSignIn(j.token)}).then(chStart).catch(function(){CH.tm=setTimeout(chRefresh,30000)});
+      });
+  }
+  function chClose(){CH.es.forEach(function(e){try{e.close()}catch(x){}});CH.es=[]}
+  function chOpen(path,qs,fn){
+    var es=new EventSource(CH.ini.fb+path+'.json?auth='+encodeURIComponent(CH.idt)+(qs?'&'+qs:''));
+    ['put','patch'].forEach(function(t){es.addEventListener(t,function(e){try{fn(t,JSON.parse(e.data))}catch(x){if(window.console)console.error('chat stream',x)}})});
+    es.addEventListener('auth_revoked',function(){es.close();chRefresh()});
+    es.addEventListener('cancel',function(){es.close();CH.err='Chat was refused by the server. Ask the Admin to check the Firebase rules.';chLive(false);chUi()});
+    es.onopen=function(){chLive(true)};
+    es.onerror=function(){chLive(false);if(es.readyState===2){setTimeout(function(){if(CH.on&&CH.es.indexOf(es)>-1)chStart()},4000)}};
+    CH.es.push(es);
+  }
+  function chStart(){
+    chClose();CH.hyd=false;
+    chOpen('/inbox/'+CH.uid,'orderBy='+encodeURIComponent('"$key"')+'&limitToLast=1000',function(t,e){
+      var p=e.path||'/',d=e.data;
+      if(p==='/'){
+        if(d&&typeof d==='object')Object.keys(d).forEach(function(k){chAdd(k,d[k],!CH.hyd)});
+        CH.hyd=true;
+      }else{var k=p.split('/')[1];if(p.split('/').length===2&&d)chAdd(k,d,false)}
+      chUi();
+    });
+    chOpen('/reads/'+CH.uid,'',function(t,e){
+      var p=e.path||'/',d=e.data;
+      if(p==='/'){CH.reads=(d&&typeof d==='object')?d:(t==='put'?{}:CH.reads);if(t==='patch'&&d)Object.keys(d).forEach(function(k){CH.reads[k]=d[k]})}
+      else{var k=p.split('/')[1];if(d!=null)CH.reads[k]=d}
+      chUi();
+    });
+  }
+  function chLive(v){if(CH.live!==v){CH.live=v;chHeadStatus()}}
+  function chatReset(){
+    clearTimeout(CH.tm);chClose();
+    CH.on=false;CH.busy=false;CH.err='';CH.ini=null;CH.idt='';CH.rt='';CH.store={};CH.reads={};CH.cur='';CH.contacts=[];CH.groups=[];CH.out={};CH.file=null;CH.live=false;CH.hyd=false;CH.oldMore=true;CH.audit=false;CH.aChats=null;CH.aCur='';CH.aMsgs=[];
+    chUi();
+  }
+  function chAdd(k,m,quiet){
+    if(!m||!m.chat)return;
+    var had=CH.store[k]&&!CH.store[k].pending;
+    m.k=k;CH.store[k]=m;delete CH.out[k];
+    if(had||quiet||m.from===CH.uid)return;
+    chAlert(m);
+  }
+
+  /* ---- alerts: bell, sound, title, desktop notification ---- */
+  function chAlert(m){
+    var here=view==='chat'&&CH.cur===m.chat&&!document.hidden&&!CH.audit;
+    if(here)return;
+    chBeep();
+    if(document.hidden&&window.Notification&&Notification.permission==='granted'){
+      try{var n=new Notification(m.fn||'New message',{body:m.text?String(m.text).slice(0,120):(m.file?'Sent a file: '+m.file.name:''),tag:m.chat});n.onclick=function(){window.focus();chOpenChat(m.chat);n.close()}}catch(e){}
+    }
+  }
+  function chBeep(){
+    try{var A=window.AudioContext||window.webkitAudioContext;if(!A)return;CH.aud=CH.aud||new A();var o=CH.aud.createOscillator(),g=CH.aud.createGain();o.type='sine';o.frequency.value=880;g.gain.value=.05;o.connect(g);g.connect(CH.aud.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,CH.aud.currentTime+.25);o.stop(CH.aud.currentTime+.26)}catch(e){}
+  }
+  function chMarkRead(){
+    if(!CH.on||view!=='chat'||document.hidden||CH.audit||!CH.cur)return;
+    var m=(chMsgs()[CH.cur]||[]).filter(function(x){return x.from!==CH.uid&&!x.pending}),last=m.length?Number(m[m.length-1].ts):0;
+    if(last&&last>(CH.reads[CH.cur]||0)){
+      CH.reads[CH.cur]=last;
+      fetch(CH.ini.fb+'/reads/'+CH.uid+'/'+encodeURIComponent(CH.cur)+'.json?auth='+encodeURIComponent(CH.idt),{method:'PUT',body:JSON.stringify(last)}).catch(function(){});
+    }
+  }
+
+  /* ---- screen ---- */
+  function chUi(){
+    var on=chatOK();
+    var tb=$('tbBell');if(tb)tb.hidden=!on;
+    var n=on?chTotal():0;
+    [['bellN',n],['navChatN',n]].forEach(function(p){var e=$(p[0]);if(e){e.hidden=!p[1];e.textContent=p[1]>99?'99+':p[1]}});
+    document.title=(n?'('+n+') ':'')+CH_TITLE;
+    if(!$('bellm').hidden)bellPaint();
+    if(view==='chat')chRender();
+  }
+  function chHeadStatus(){var e=$('chLive');if(e){e.className='chlive'+(CH.live?' on':'');e.textContent=CH.live?'Live':'Reconnecting…'}}
+  function chRender(){
+    var sh=$('chShell');if(!sh)return;
+    $('chTabs').hidden=!CH.admin;
+    document.querySelectorAll('#chTabs [data-ct]').forEach(function(b){b.setAttribute('aria-pressed',(b.getAttribute('data-ct')==='all')===CH.audit)});
+    if(CH.err||!CH.on){
+      $('chItems').innerHTML='';
+      $('chThread').innerHTML='<div class="chempty"><h3>'+(CH.err?'Chat is not available':'Connecting…')+'</h3><p>'+esc(CH.err||'Starting the live connection.')+'</p></div>';
+      sh.setAttribute('data-open','0');return;
+    }
+    if(CH.audit){chRenderAudit();return}
+    var q=CH.q.toLowerCase(),L=chConvs().filter(function(c){return !q||c.name.toLowerCase().indexOf(q)>-1||c.sub.toLowerCase().indexOf(q)>-1});
+    $('chItems').innerHTML=L.length?L.map(function(c){
+      var pv=c.last?(c.last.from===CH.uid?'You: ':(c.group?(c.last.fn||'')+': ':''))+(c.last.text?c.last.text:(c.last.file?'📎 '+c.last.file.name:'')):'No messages yet';
+      return '<button type="button" class="chi" role="listitem" data-c="'+esc(c.id)+'" aria-current="'+(c.id===CH.cur)+'"><span class="av">'+(c.group?'#':esc(c.name.charAt(0).toUpperCase()))+'</span><span class="t"><b>'+esc(c.name)+'</b><small>'+esc(pv.slice(0,60))+'</small></span><span class="r">'+(c.last?'<time>'+esc(chFmt(c.last.ts))+'</time>':'')+(c.un?'<i class="badge">'+c.un+'</i>':'')+'</span></button>';
+    }).join(''):'<div class="chnone">'+(CH.contacts.length||CH.groups.length?'No match.':'Nobody is added for you yet. Ask the Admin to choose who you may chat with.')+'</div>';
+    var c=L.concat(chConvs()).filter(function(x){return x.id===CH.cur})[0];
+    sh.setAttribute('data-open',c?'1':'0');
+    if(!c){$('chThread').innerHTML='<div class="chempty"><h3>Chat</h3><p>Choose a person or group on the left.</p></div>';return}
+    chThreadPaint(c);
+  }
+  function chBubble(m){
+    var mine=m.from===CH.uid,f=m.file;
+    return '<div class="cm '+(mine?'mine':'them')+(m.pending?' pend':'')+(m.failed?' fail':'')+'" data-k="'+esc(m.k)+'">'+
+      (!mine&&(CH.cur.indexOf('g_')===0||CH.audit)?'<div class="cmn">'+esc(m.fn||m.fe||'')+'</div>':'')+
+      (m.text?'<div class="cmb">'+chLink(m.text)+'</div>':'')+
+      (f?'<div class="cmf"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="fn"><b>'+esc(f.name)+'</b><small>'+esc(chSize(f.size))+'</small></span>'+(CH.audit?'':'<button type="button" class="btn sm" data-fo="'+esc(f.id)+'" data-fn="'+esc(f.name)+'" data-fm="'+esc(f.mime||'')+'">Open</button><button type="button" class="btn sm" data-fd="'+esc(f.id)+'" data-fn="'+esc(f.name)+'">Save</button>')+'</div>':'')+
+      '<div class="cmt"><time>'+esc(chFmt(m.ts))+'</time>'+(m.pending?' · sending…':'')+(m.failed?' · <button type="button" class="lnk" data-retry="'+esc(m.k)+'">Not sent. Tap to retry</button>':'')+'</div></div>';
+  }
+  function chBody(list,more){
+    var h=more?'<div class="chmore"><button type="button" class="btn sm" id="chOlder">Load earlier messages</button></div>':'',day='';
+    list.forEach(function(m){var d=chDay(m.ts);if(d!==day){day=d;h+='<div class="chday"><span>'+esc(d)+'</span></div>'}h+=chBubble(m)});
+    return h||'<div class="chnone">No messages yet. Say hello.</div>';
+  }
+  function chThreadPaint(c){
+    var th=$('chThread'),box=$('chMsgs'),list=(chMsgs()[c.id]||[]);
+    if(!box||th.getAttribute('data-c')!==c.id){
+      th.setAttribute('data-c',c.id);
+      th.innerHTML='<div class="chtop"><button type="button" class="btn sm chback" id="chBack" aria-label="Back to the list">←</button><span class="av">'+(c.group?'#':esc(c.name.charAt(0).toUpperCase()))+'</span><span class="t"><b>'+esc(c.name)+'</b><small>'+esc(c.sub)+'</small></span><span class="chlive" id="chLive"></span></div>'+
+        '<div class="chmsgs" id="chMsgs" tabindex="0" aria-live="polite"></div><div class="chfile" id="chFile" hidden></div>'+
+        '<form class="chform" id="chForm" autocomplete="off"><button type="button" class="btn tb-ic" id="chAttach" aria-label="Attach a file" title="Attach a file"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12l-8.5 8.5a5 5 0 0 1-7-7L14 5a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 8"/></svg></button><input type="file" id="chFileIn" hidden><textarea id="chText" rows="1" maxlength="4000" placeholder="Write a message" aria-label="Message"></textarea><button class="go" id="chSend" type="submit">Send</button></form>';
+      box=$('chMsgs');chHeadStatus();chFilePaint();
+      box.innerHTML=chBody(list,CH.oldMore&&list.length>=20);box.scrollTop=box.scrollHeight;
+      chMarkRead();setTimeout(function(){var t=$('chText');if(t&&!isPhone())t.focus()},0);return;
+    }
+    var near=box.scrollHeight-box.scrollTop-box.clientHeight<120;
+    box.innerHTML=chBody(list,CH.oldMore&&list.length>=20);
+    if(near)box.scrollTop=box.scrollHeight;
+    chMarkRead();
+  }
+  function chFilePaint(){
+    var e=$('chFile');if(!e)return;var f=CH.file;
+    e.hidden=!f;e.innerHTML=f?'<span>📎 <b>'+esc(f.name)+'</b> · '+esc(chSize(f.size))+'</span><button type="button" class="btn sm" id="chFileX" aria-label="Remove the file">✕</button>':'';
+  }
+  function chOpenChat(id){CH.cur=id;CH.audit=false;view='chat';applyView();var l=$('chItems');chRender()}
+
+  /* ---- sending ---- */
+  function chSend(ev){
+    if(ev)ev.preventDefault();
+    var chat=CH.cur,ta=$('chText'),t=(ta.value||'').trim(),f=CH.file;
+    if(!chat||CH.sending||(!t&&!f))return;
+    CH.sending=true;$('chSend').disabled=true;
+    var go=function(meta){
+      var key=chKey(),m={from:CH.uid,fe:CH.me.email,fn:CH.me.name,chat:chat,ts:{'.sv':'timestamp'}};
+      if(t)m.text=t;if(meta)m.file=meta;
+      var upd={};upd['msgs/'+chat+'/'+key]=m;chMembers(chat).forEach(function(u){upd['inbox/'+u+'/'+key]=m});
+      var loc={from:CH.uid,fe:CH.me.email,fn:CH.me.name,chat:chat,ts:Date.now(),k:key,pending:1};if(t)loc.text=t;if(meta)loc.file=meta;
+      CH.store[key]=loc;CH.out[key]=upd;ta.value='';ta.style.height='';CH.file=null;chFilePaint();CH.sending=false;$('chSend').disabled=false;chUi();
+      chPush(key);ta.focus();
+    };
+    if(f){
+      var s=$('chFile');s.innerHTML='<span>Uploading <b>'+esc(f.name)+'</b>…</span>';
+      chRead(f.obj).then(function(b64){return post({action:'chat',op:'file',token:token,chat:chat,name:f.name,mime:f.mime,b64:b64})}).then(function(j){
+        if(!j||j.error)throw new Error((j&&j.error)||'The file could not be uploaded.');go(j.file);
+      }).catch(function(e){CH.sending=false;$('chSend').disabled=false;chFilePaint();chToast(e.message||'The file could not be uploaded.')});
+    }else go(null);
+  }
+  function chPush(key){
+    var upd=CH.out[key];if(!upd)return;
+    fetch(CH.ini.fb+'/.json?auth='+encodeURIComponent(CH.idt),{method:'PATCH',body:JSON.stringify(upd)}).then(function(r){
+      if(!r.ok)throw new Error('refused');
+    }).catch(function(){var m=CH.store[key];if(m&&m.pending){m.failed=1;delete m.pending;chUi()}});
+  }
+  function chRead(file){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(',')[1]||'')};r.onerror=function(){rej(new Error('The file could not be read.'))};r.readAsDataURL(file)})}
+  function chToast(t){var m=$('chText');var e=$('chFile');if(e){e.hidden=false;e.innerHTML='<span class="warn">'+esc(t)+'</span>'}}
+  function chGetFile(id,name,mode_){
+    post({action:'chat',op:'fileGet',token:token,id:id}).then(function(j){
+      if(!j||j.error)throw new Error((j&&j.error)||'Could not get the file.');
+      var bin=atob(j.b64),a=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);
+      var url=URL.createObjectURL(new Blob([a],{type:j.mime||'application/octet-stream'}));
+      if(mode_==='open'){window.open(url,'_blank','noopener')}
+      else{var l=document.createElement('a');l.href=url;l.download=name||j.name||'file';document.body.appendChild(l);l.click();l.remove()}
+      setTimeout(function(){URL.revokeObjectURL(url)},60000);
+    }).catch(function(e){chToast(e.message||'Could not get the file.')});
+  }
+  function chOlder(){
+    var keys=Object.keys(CH.store).sort(),first=keys[0];if(!first)return;
+    fetch(CH.ini.fb+'/inbox/'+CH.uid+'.json?auth='+encodeURIComponent(CH.idt)+'&orderBy='+encodeURIComponent('"$key"')+'&endAt='+encodeURIComponent('"'+first+'"')+'&limitToLast=500').then(function(r){return r.json()}).then(function(d){
+      var n=0;if(d&&typeof d==='object')Object.keys(d).forEach(function(k){if(!CH.store[k]){d[k].k=k;CH.store[k]=d[k];n++}});
+      if(n<5)CH.oldMore=false;chUi();
+    }).catch(function(){});
+  }
+
+  /* ---- Admin: read every conversation (read only) ---- */
+  function chAuditLoad(){
+    CH.aChats=null;chRender();
+    fetch(CH.ini.fb+'/msgs.json?shallow=true&auth='+encodeURIComponent(CH.idt)).then(function(r){return r.json()}).then(function(d){
+      if(d&&d.error)throw new Error(d.error);CH.aChats=Object.keys(d||{});
+      return post({action:'chat',op:'adminGet',token:token}).then(function(j){CH.aGroups={};((j&&j.groups)||[]).forEach(function(g){CH.aGroups['g_'+g.id]=g.name})});
+    }).then(chRender).catch(function(e){CH.aChats=[];CH.err2=e.message;chRender()});
+  }
+  function chAName(id){
+    if(id.indexOf('g_')===0)return 'Group: '+(CH.aGroups[id]||id.slice(2));
+    return id.split('__').map(function(u){return u.replace(/,/g,'.')}).join('  ↔  ');
+  }
+  function chAuditOpen(id){
+    CH.aCur=id;CH.aMsgs=null;chRender();
+    fetch(CH.ini.fb+'/msgs/'+encodeURIComponent(id)+'.json?auth='+encodeURIComponent(CH.idt)+'&orderBy='+encodeURIComponent('"$key"')+'&limitToLast=500').then(function(r){return r.json()}).then(function(d){
+      var a=[];if(d&&typeof d==='object')Object.keys(d).sort().forEach(function(k){d[k].k=k;a.push(d[k])});CH.aMsgs=a;chRender();
+    }).catch(function(){CH.aMsgs=[];chRender()});
+  }
+  function chRenderAudit(){
+    var sh=$('chShell');
+    if(CH.aChats===null){$('chItems').innerHTML='<div class="chnone">Loading all conversations…</div>';if(!CH.aMsgs&&!CH.aCur)$('chThread').innerHTML='';return}
+    var q=CH.q.toLowerCase(),L=CH.aChats.filter(function(id){return !q||chAName(id).toLowerCase().indexOf(q)>-1});
+    $('chItems').innerHTML=L.length?L.map(function(id){return '<button type="button" class="chi" role="listitem" data-au="'+esc(id)+'" aria-current="'+(id===CH.aCur)+'"><span class="av">'+(id.indexOf('g_')===0?'#':'↔')+'</span><span class="t"><b>'+esc(chAName(id))+'</b></span></button>'}).join(''):'<div class="chnone">'+esc(CH.err2||'No conversations yet.')+'</div>';
+    sh.setAttribute('data-open',CH.aCur?'1':'0');
+    $('chThread').removeAttribute('data-c');
+    $('chThread').innerHTML=CH.aCur?('<div class="chtop"><button type="button" class="btn sm chback" id="chBack" aria-label="Back to the list">←</button><span class="t"><b>'+esc(chAName(CH.aCur))+'</b><small>Admin view. Read only.</small></span><button type="button" class="btn sm" id="chARef" style="margin-left:auto">Refresh</button></div><div class="chmsgs" id="chMsgs">'+(CH.aMsgs?chBody(CH.aMsgs,false):'<div class="chnone">Loading…</div>')+'</div>'):'<div class="chempty"><h3>All conversations</h3><p>Admin view. You can read every chat but not write in it.</p></div>';
+    var b=$('chMsgs');if(b)b.scrollTop=b.scrollHeight;
+  }
+
+  /* ---- bell ---- */
+  function bellPaint(){
+    var m=$('bellm'),L=chConvs().filter(function(c){return c.un>0});
+    var h='<h4>Messages</h4>';
+    h+=L.length?L.map(function(c){return '<button type="button" class="ai" role="menuitem" data-bc="'+esc(c.id)+'"><span class="av">'+(c.group?'#':esc(c.name.charAt(0).toUpperCase()))+'</span><span class="t"><b>'+esc(c.name)+'</b><small>'+esc(((c.last&&(c.last.text||(c.last.file?'📎 '+c.last.file.name:'')))||'').slice(0,50))+'</small></span><i class="badge">'+c.un+'</i></button>'}).join(''):'<p class="hint" style="margin:6px 10px 10px">You are all caught up.</p>';
+    if(window.Notification&&Notification.permission==='default')h+='<hr><button type="button" class="ax" role="menuitem" data-bn="perm">Turn on desktop alerts</button>';
+    h+='<hr><button type="button" class="ax" role="menuitem" data-bn="open">Open Chat</button>';
+    m.innerHTML=h;
+  }
+  function bellClose(){var m=$('bellm');if(m&&!m.hidden){m.hidden=true;$('tbBell').setAttribute('aria-expanded','false')}}
+  $('tbBell').addEventListener('click',function(e){e.stopPropagation();acmClose();if($('bellm').hidden){bellPaint();$('bellm').hidden=false;this.setAttribute('aria-expanded','true')}else bellClose()});
+  $('bellm').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    if(b.getAttribute('data-bc')){bellClose();chOpenChat(b.getAttribute('data-bc'))}
+    else if(b.getAttribute('data-bn')==='open'){bellClose();view='chat';applyView();chUi()}
+    else if(b.getAttribute('data-bn')==='perm'){try{Notification.requestPermission().then(function(){bellPaint()})}catch(x){}}
+  });
+  document.addEventListener('click',function(e){if(!e.target.closest('#bellm')&&!e.target.closest('#tbBell'))bellClose()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')bellClose()});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)chMarkRead()});
+
+  /* ---- chat screen events ---- */
+  $('chat').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    if(b.classList.contains('chi')){
+      if(b.getAttribute('data-au')){chAuditOpen(b.getAttribute('data-au'));return}
+      CH.cur=b.getAttribute('data-c');chRender();return}
+    if(b.id==='chBack'){if(CH.audit)CH.aCur='';else CH.cur='';chRender();return}
+    if(b.id==='chAttach'){$('chFileIn').click();return}
+    if(b.id==='chFileX'){CH.file=null;chFilePaint();return}
+    if(b.id==='chOlder'){chOlder();return}
+    if(b.id==='chARef'){chAuditOpen(CH.aCur);return}
+    if(b.getAttribute('data-ct')){CH.audit=b.getAttribute('data-ct')==='all';CH.q='';$('chq').value='';if(CH.audit&&CH.aChats===null)chAuditLoad();else chRender();return}
+    if(b.getAttribute('data-fo'))chGetFile(b.getAttribute('data-fo'),b.getAttribute('data-fn'),'open');
+    else if(b.getAttribute('data-fd'))chGetFile(b.getAttribute('data-fd'),b.getAttribute('data-fn'),'save');
+    else if(b.getAttribute('data-retry')){var k=b.getAttribute('data-retry'),m=CH.store[k];if(m){delete m.failed;m.pending=1;chUi();chPush(k)}}
+  });
+  $('chat').addEventListener('submit',function(e){if(e.target.id==='chForm')chSend(e)});
+  $('chat').addEventListener('change',function(e){
+    if(e.target.id!=='chFileIn')return;
+    var f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+    if(f.size>10*1024*1024){chToast('That file is too large. The limit is 10 MB.');return}
+    CH.file={obj:f,name:f.name,size:f.size,mime:f.type||'application/octet-stream'};chFilePaint();
+  });
+  $('chat').addEventListener('keydown',function(e){
+    if(e.target.id==='chText'&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();chSend()}
+  });
+  $('chat').addEventListener('input',function(e){
+    if(e.target.id==='chText'){var t=e.target;t.style.height='auto';t.style.height=Math.min(t.scrollHeight,140)+'px'}
+    if(e.target.id==='chq'){CH.q=e.target.value;chRender()}
+  });
+  $('chat').addEventListener('paste',function(e){
+    if(e.target.id!=='chText')return;var it=e.clipboardData&&e.clipboardData.files&&e.clipboardData.files[0];
+    if(it){e.preventDefault();if(it.size>10*1024*1024){chToast('That file is too large. The limit is 10 MB.');return}CH.file={obj:it,name:it.name||'pasted-image.png',size:it.size,mime:it.type||'application/octet-stream'};chFilePaint()}
+  });
+  function chatOpenView(){
+    if(!CH.cur&&!isPhone()){var L=chConvs();var u=L.filter(function(c){return c.un})[0]||L[0];if(u)CH.cur=u.id}
+    chRender();
+  }
+
+  /* ---- Admin page: who may chat with whom ---- */
+  var ac={ready:false,users:[],pairs:[],groups:[],sel:'',gsel:null,msg:''};
+  function acLoad(){
+    $('admChat').innerHTML='<p class="hint">Loading…</p>';
+    post({action:'chat',op:'adminGet',token:token}).then(function(j){
+      if(j&&j.error==='unauthorized'){sessionEnded();return}
+      if(!j||j.error)throw new Error((j&&j.error)||'Could not load.');
+      ac.ready=j.ready;ac.users=j.users||[];ac.pairs=j.pairs||[];ac.groups=j.groups||[];acPaint();
+    }).catch(function(e){$('admChat').innerHTML='<div class="banner" role="alert">'+esc(e.message||'Could not load.')+'</div>'});
+  }
+  function acContacts(em){var s=[];ac.pairs.forEach(function(p){if(p[0]===em)s.push(p[1]);else if(p[1]===em)s.push(p[0])});return s}
+  function acName(em){var u=ac.users.filter(function(x){return x.email===em})[0];return u&&u.name?u.name+' ('+em+')':em}
+  function acPaint(){
+    var en=ac.users.filter(function(u){return u.enabled}),h='<div class="eyebrow">Chat</div><h2 class="et">Who can chat with whom</h2>';
+    if(!ac.ready)h+='<div class="banner" role="status">Chat is not connected to Firebase yet. Finish the steps in CHAT_SETUP.txt, then reload this page. You can still prepare the lists below.</div>';
+    h+='<p class="hint">Only people who have the <b>Chat</b> right appear here. Tick that right on a person first (People, then the person, then Chat). If A may chat with B, then B may chat with A as well.</p>';
+    if(ac.msg)h+='<div class="banner" role="status">'+esc(ac.msg)+'</div>';
+    h+='<div class="acgrid"><div class="acpick"><label for="acSel"><b>Person</b></label><select id="acSel" class="field"><option value="">Choose a person</option>'+en.map(function(u){return '<option value="'+esc(u.email)+'"'+(u.email===ac.sel?' selected':'')+'>'+esc(u.name?u.name+' ('+u.email+')':u.email)+'</option>'}).join('')+'</select></div>';
+    if(ac.sel){
+      var cur=acContacts(ac.sel);
+      h+='<fieldset class="acbox"><legend>'+esc(acName(ac.sel))+' may chat with</legend>'+en.filter(function(u){return u.email!==ac.sel}).map(function(u){return '<label class="chk"><input type="checkbox" data-ap2="'+esc(u.email)+'"'+(cur.indexOf(u.email)>-1?' checked':'')+'> <span>'+esc(u.name?u.name+' ('+u.email+')':u.email)+'</span></label>'}).join('')+'<div class="acact"><button class="go sm" type="button" id="acSave">Save</button><button class="btn sm" type="button" id="acAll">Tick everyone</button><button class="btn sm" type="button" id="acNone">Untick everyone</button></div></fieldset>';
+    }
+    h+='</div><h3 class="et" style="margin-top:22px">Groups</h3>';
+    h+=ac.groups.length?'<ul class="aclist">'+ac.groups.map(function(g){return '<li><b>'+esc(g.name)+'</b> <small>'+g.members.length+' people</small><span><button class="btn sm" type="button" data-ge="'+esc(g.id)+'">Edit</button><button class="btn sm" type="button" data-gd="'+esc(g.id)+'">Delete</button></span></li>'}).join('')+'</ul>':'<p class="hint">No groups yet.</p>';
+    h+='<div style="margin-top:10px"><button class="btn" type="button" id="acNewG">New group</button></div>';
+    if(ac.gsel){
+      var g=ac.gsel;
+      h+='<fieldset class="acbox" style="margin-top:12px"><legend>'+(g.id?'Edit group':'New group')+'</legend><label for="acGn"><b>Group name</b></label><input id="acGn" class="field" maxlength="60" value="'+esc(g.name)+'">'+en.map(function(u){return '<label class="chk"><input type="checkbox" data-gm="'+esc(u.email)+'"'+(g.members.indexOf(u.email)>-1?' checked':'')+'> <span>'+esc(u.name?u.name+' ('+u.email+')':u.email)+'</span></label>'}).join('')+'<div class="acact"><button class="go sm" type="button" id="acGs">Save group</button><button class="btn sm" type="button" id="acGc">Cancel</button></div></fieldset>';
+    }
+    $('admChat').innerHTML=h;
+  }
+  function acCall(body){
+    body.action='chat';body.token=token;ac.msg='Saving…';acPaint();
+    return post(body).then(function(j){
+      if(!j||j.error)throw new Error((j&&j.error)||'Could not save.');
+      ac.ready=j.ready;ac.users=j.users||ac.users;ac.pairs=j.pairs||[];ac.groups=j.groups||[];ac.msg='Saved.';ac.gsel=null;acPaint();
+    }).catch(function(e){ac.msg=e.message||'Could not save.';acPaint()});
+  }
+  $('admChat').addEventListener('change',function(e){if(e.target.id==='acSel'){ac.sel=e.target.value;ac.msg='';acPaint()}});
+  $('admChat').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    if(b.id==='acSave'){var l=[].slice.call($('admChat').querySelectorAll('[data-ap2]:checked')).map(function(x){return x.getAttribute('data-ap2')});acCall({op:'adminPairs',email:ac.sel,contacts:l})}
+    else if(b.id==='acAll'||b.id==='acNone'){$('admChat').querySelectorAll('[data-ap2]').forEach(function(x){x.checked=b.id==='acAll'})}
+    else if(b.id==='acNewG'){ac.gsel={id:'',name:'',members:[]};acPaint();var n=$('acGn');if(n)n.focus()}
+    else if(b.id==='acGc'){ac.gsel=null;acPaint()}
+    else if(b.id==='acGs'){var m=[].slice.call($('admChat').querySelectorAll('[data-gm]:checked')).map(function(x){return x.getAttribute('data-gm')});acCall({op:'adminGroup',id:ac.gsel.id,name:$('acGn').value,members:m})}
+    else if(b.getAttribute('data-ge')){var g=ac.groups.filter(function(x){return x.id===b.getAttribute('data-ge')})[0];if(g){ac.gsel={id:g.id,name:g.name,members:g.members.slice()};acPaint()}}
+    else if(b.getAttribute('data-gd')){if(confirm('Delete this group? Its messages stay in the Admin view.'))acCall({op:'adminGroupRemove',id:b.getAttribute('data-gd')})}
+  });
+
   /* ================= phone layout: bottom tab bar and the More sheet ================= */
-  var NAV_ORDER=['home','report','dsr','brk','emp','admin'];
+  var NAV_ORDER=['home','report','dsr','brk','chat','emp','admin'];
   function phoneNav(){
     var links=$('navLinks');if(!links)return;
     var mb=$('moreBtn');
