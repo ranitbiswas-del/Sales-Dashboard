@@ -1483,7 +1483,7 @@ var CONFIG = {
       if(!arr)throw new Error('The reply has no "rows" list. Check Code.gs and redeploy.');
       PP={map:null,state:''};data=arr.map(clean).filter(function(r){return r.project});
       updated=(j&&j.updated)?new Date(j.updated).toLocaleString():new Date().toLocaleString();
-      isAdmin=(j.role==='ADMIN');empAcc=Array.isArray(j.empAccess)?j.empAccess:[];limited=!!j.limited;reports=Array.isArray(j.reports)?j.reports:null;creditOK=j.credit!==false;hid=Array.isArray(j.hidden)?j.hidden:[];teamLevel=j.level||(j.role==='ADMIN'?'ADMIN':'');
+      themeFromServer(j.theme||'');isAdmin=(j.role==='ADMIN');empAcc=Array.isArray(j.empAccess)?j.empAccess:[];limited=!!j.limited;reports=Array.isArray(j.reports)?j.reports:null;creditOK=j.credit!==false;hid=Array.isArray(j.hidden)?j.hidden:[];teamLevel=j.level||(j.role==='ADMIN'?'ADMIN':'');
       mode='live';if(reports&&!reports.length&&empAcc.length)view='emp';if(dsr.deep&&dsrOK())view='dsr';if(custDeep)view='report';showApp();start();brkCheck();if(view==='dsr'&&dsr.deep)dsrEnter();
       if(custDeep&&view==='report'){document.body.classList.add('solo');if(vis('cust_open'))custOpen(custDeep);document.title=custDeep+' · Customer details'}
     }).catch(function(e){
@@ -2293,6 +2293,15 @@ var CONFIG = {
     if(id==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',id);
     try{if(id==='auto')localStorage.removeItem('bsb-theme');else localStorage.setItem('bsb-theme',id)}catch(e){}
   }
+  /* each person's theme is saved on the server, so it follows them to every device */
+  function themeValid(id){return THEMES.some(function(t){return t[0]===id})}
+  function themeSave(id){if((mode==='live'||mode==='loading')&&token&&CONFIG.API_URL)post({action:'theme',token:token,theme:id}).catch(function(){})}
+  function themeFromServer(t){
+    if(t&&themeValid(t)){themeSet(t);return}
+    var loc='';try{loc=localStorage.getItem('bsb-theme')||''}catch(e){}
+    if(loc&&themeValid(loc))themeSave(loc);
+    else if(!t&&mode==='live'){/* nothing saved yet: keep the device default */}
+  }
   try{var sv=localStorage.getItem('bsb-theme');if(sv&&THEMES.some(function(t){return t[0]===sv&&sv!=='auto'}))root.setAttribute('data-theme',sv)}catch(e){}
   function themePaint(){
     var cur=root.getAttribute('data-theme')||'auto';
@@ -2304,7 +2313,7 @@ var CONFIG = {
   $('themeBtn').addEventListener('click',function(){themePaint();$('thm').hidden=false;var f=$('thmg').querySelector('[aria-pressed=true]');if(f)f.focus()});
   $('thm').addEventListener('click',function(e){
     if(e.target===$('thm')||e.target.closest('[data-thclose]')){themeClose();return}
-    var o=e.target.closest('[data-th]');if(o){themeSet(o.dataset.th);themePaint()}});
+    var o=e.target.closest('[data-th]');if(o){themeSet(o.dataset.th);themeSave(o.dataset.th);themePaint()}});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('thm').hidden){e.preventDefault();themeClose()}});
 
   var calm=window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.matchMedia('(pointer: coarse)').matches;
